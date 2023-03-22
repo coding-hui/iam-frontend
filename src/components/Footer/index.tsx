@@ -7,7 +7,15 @@ const Footer: React.FC = () => {
   const intl = useIntl();
   const defaultMessage = intl.formatMessage({
     id: 'app.copyright.produced',
-    defaultMessage: '蚂蚁集团体验技术部出品',
+    defaultMessage: 'WeCoding',
+  });
+  const websiteMessage = intl.formatMessage({
+    id: 'app.copyright.website',
+    defaultMessage: 'WeCoding',
+  });
+  const helpDocMessage = intl.formatMessage({
+    id: 'app.copyright.helpDoc',
+    defaultMessage: 'WeCoding',
   });
 
   const currentYear = new Date().getFullYear();
@@ -20,20 +28,20 @@ const Footer: React.FC = () => {
       copyright={`${currentYear} ${defaultMessage}`}
       links={[
         {
-          key: 'Ant Design Pro',
-          title: 'Ant Design Pro',
-          href: 'https://pro.ant.design',
+          key: 'websiteMessage',
+          title: `${websiteMessage}`,
+          href: 'http://authz.wecoding.top',
           blankTarget: true,
         },
         {
           key: 'github',
           title: <GithubOutlined />,
-          href: 'https://github.com/ant-design/ant-design-pro',
+          href: 'https://github.com/coding-hui/iam',
           blankTarget: true,
         },
         {
-          key: 'Ant Design',
-          title: 'Ant Design',
+          key: 'helpDocMessage',
+          title: `${helpDocMessage}`,
           href: 'https://ant.design',
           blankTarget: true,
         },

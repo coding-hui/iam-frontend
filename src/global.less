@@ -35,6 +35,14 @@ ol {
   list-style: none;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-transition: color 99999s ease-out, background-color 99999s ease-out;
+  -webkit-transition-delay: 99999s;
+}
+
 @media (max-width: 768px) {
   .ant-table {
     width: 100%;

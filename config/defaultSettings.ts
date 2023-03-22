@@ -1,7 +1,7 @@
 import { ProLayoutProps } from '@ant-design/pro-components';
 
 /**
- * @name
+ * Global Settings
  */
 const Settings: ProLayoutProps & {
   pwa?: boolean;
@@ -12,11 +12,13 @@ const Settings: ProLayoutProps & {
   colorPrimary: '#1890ff',
   layout: 'mix',
   contentWidth: 'Fluid',
-  fixedHeader: false,
+  fixedHeader: true,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Ant Design Pro',
+  title: 'WeCoding',
   pwa: true,
+  splitMenus: false,
+  siderMenuType: 'group',
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
   iconfontUrl: '',
   token: {
