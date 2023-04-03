@@ -77,7 +77,7 @@ export namespace API {
     current: number;
   };
 
-  /** POST /api/login/outLogin */
+  /** POST /api/logout */
   export type POST_API_LOGIN_OUT_LOGIN_QUERY = {
     /** example:  123 */
     token: string;

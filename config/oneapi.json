@@ -72,7 +72,7 @@
         }
       }
     },
-    "/api/login/outLogin": {
+    "/api/logout": {
       "post": {
         "description": "登录接口",
         "operationId": "outLogin",
