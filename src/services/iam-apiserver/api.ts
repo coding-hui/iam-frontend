@@ -6,7 +6,7 @@ import { request } from '@umijs/max';
 export async function currentUser(options?: { [key: string]: any }) {
   return request<{
     data: API.CurrentUser;
-  }>('/api/currentUser', {
+  }>('/api/v1/auth/user-info', {
     method: 'GET',
     ...(options || {}),
   });
@@ -22,7 +22,7 @@ export async function outLogin(options?: { [key: string]: any }) {
 
 /** 登录接口 POST /api/login/account */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/login/account', {
+  return request<API.LoginResult>('/api/v1/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,17 +33,17 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
 }
 
 /** 获取规则列表 GET /api/rule */
-export async function rule(
+export async function listUsers(
   params: {
     // query
     /** 当前的页码 */
-    current?: number;
+    offset?: number;
     /** 页面的容量 */
-    pageSize?: number;
+    limit?: number;
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.RuleList>('/api/rule', {
+  return request<API.UserList>('/api/v1/users', {
     method: 'GET',
     params: {
       ...params,
@@ -52,26 +52,22 @@ export async function rule(
   });
 }
 
-/** 新建规则 PUT /api/rule */
-export async function updateRule(options?: { [key: string]: any }) {
-  return request<API.RuleListItem>('/api/rule', {
+export async function updateUser(options?: { [key: string]: any }) {
+  return request<API.UserInfo>('/api/v1/users', {
     method: 'PUT',
     ...(options || {}),
   });
 }
 
-/** 新建规则 POST /api/rule */
-export async function addRule(options?: { [key: string]: any }) {
-  return request<API.RuleListItem>('/api/rule', {
+export async function addUser(options?: { [key: string]: any }) {
+  return request<API.UserInfo>('/api/v1/users', {
     method: 'POST',
     ...(options || {}),
   });
 }
 
-/** 删除规则 DELETE /api/rule */
-export async function removeRule(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/rule', {
+export async function removeUser(name?: string) {
+  return request<Record<string, any>>(`/api/v1/users/${name}`, {
     method: 'DELETE',
-    ...(options || {}),
   });
 }

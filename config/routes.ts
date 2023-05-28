@@ -36,7 +36,7 @@ export default [
       {
         path: '/user/list',
         name: 'user-list',
-        component: './TableList',
+        component: './User',
       },
     ],
   },

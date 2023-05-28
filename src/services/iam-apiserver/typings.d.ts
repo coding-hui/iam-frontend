@@ -2,11 +2,18 @@
 /* eslint-disable */
 
 declare namespace API {
+  // Standard object's metadata.
+  type ObjectMeta = {
+    id?: string | number;
+    name: string;
+    instanceID: string;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
   type CurrentUser = {
-    name?: string;
+    metadata?: ObjectMeta;
     avatar?: string;
-    userid?: string;
-    email?: string;
     signature?: string;
     title?: string;
     group?: string;
@@ -15,42 +22,45 @@ declare namespace API {
     unreadCount?: number;
     country?: string;
     access?: string;
-    geographic?: {
-      province?: { label?: string; key?: string };
-      city?: { label?: string; key?: string };
-    };
     address?: string;
+    disabled?: string;
     phone?: string;
+    alias?: string;
+    email?: string;
+    status?: string;
+    lastLoginTime?: string;
   };
 
   type LoginResult = {
     status?: string;
+    msg?: string;
+    data?: {
+      access_token?: string;
+    };
     type?: string;
     currentAuthority?: string;
   };
 
   type PageParams = {
     current?: number;
-    pageSize?: number;
+    limit?: number;
   };
 
-  type RuleListItem = {
-    key?: number;
-    disabled?: boolean;
-    href?: string;
+  type UserInfo = {
+    metadata: ObjectMeta;
+    password?: string;
     avatar?: string;
-    name?: string;
-    owner?: string;
-    desc?: string;
-    callNo?: number;
-    status?: number;
-    updatedAt?: string;
-    createdAt?: string;
-    progress?: number;
+    address?: string;
+    disabled?: string;
+    phone?: string;
+    alias?: string;
+    email?: string;
+    status?: string;
+    lastLoginTime?: string;
   };
 
-  type RuleList = {
-    data?: RuleListItem[];
+  type UserList = {
+    data?: UserInfo[];
     /** 列表的内容总数 */
     total?: number;
     success?: boolean;

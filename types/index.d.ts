@@ -46,7 +46,7 @@ export namespace API {
     /** example: 1 */
     current: string;
     /** example: 20 */
-    pageSize: string;
+    limit: string;
   };
 
   export type GET_API_RULE_PAYLOAD = Record<string, any>;
@@ -72,7 +72,7 @@ export namespace API {
     /** example: true */
     success: boolean;
     /** example: 20 */
-    pageSize: number;
+    limit: number;
     /** example: 1 */
     current: number;
   };

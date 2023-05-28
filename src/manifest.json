@@ -1,6 +1,6 @@
 {
-  "name": "WeCoding",
-  "short_name": "WeCoding",
+  "name": "WeCodingIAM",
+  "short_name": "wecoding_iam",
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
   "theme_color": "#002140",

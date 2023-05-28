@@ -1,4 +1,5 @@
 import Footer from '@/components/Footer';
+import { TOKEN_KEY } from '@/enums/cacheEnum';
 import { login } from '@/services/iam-apiserver/api';
 import { getFakeCaptcha } from '@/services/iam-apiserver/login';
 import {
@@ -47,7 +48,7 @@ const ActionIcons = (props: { otherLogin: string }) => {
       </Divider>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <WechatOutlined key="WechatOutlined" className={langClassName} />
-        <QqOutlined key="WeiboCircleOutlined" className={langClassName} />
+        <QqOutlined key="QqOutlined" className={langClassName} />
         <AlipayCircleOutlined key="AlipayCircleOutlined" className={langClassName} />
         <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={langClassName} />
         <WeiboCircleOutlined key="WeiboCircleOutlined" className={langClassName} />
@@ -140,8 +141,10 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: API.LoginParams) => {
     try {
       // 登录
-      const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
+      const res = await login({ ...values, type });
+      console.log(res);
+      if (res.msg === 'success' && res.data && res.data.access_token) {
+        localStorage.setItem(TOKEN_KEY, res.data.access_token);
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
@@ -152,9 +155,8 @@ const Login: React.FC = () => {
         history.push(urlParams.get('redirect') || '/');
         return;
       }
-      console.log(msg);
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      setUserLoginState(res);
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
