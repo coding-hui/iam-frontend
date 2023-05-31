@@ -1,6 +1,3 @@
-// @ts-ignore
-/* eslint-disable */
-
 declare namespace API {
   // Standard object's metadata.
   type ObjectMeta = {
@@ -112,7 +109,7 @@ declare namespace API {
   };
 
   type Resource = {
-    metadata: API.ObjectMeta;
+    metadata: ObjectMeta;
     method: string;
     api: string;
     type: string;
