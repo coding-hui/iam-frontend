@@ -1,7 +1,6 @@
 import Footer from '@/components/Footer';
 import { TOKEN_KEY } from '@/enums/cacheEnum';
-import { login } from '@/services/iam-apiserver/api';
-import { getFakeCaptcha } from '@/services/iam-apiserver/login';
+import { login, getFakeCaptcha } from '@/services/user/login';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -21,7 +20,7 @@ import {
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
-import { Alert, Divider, message, Tabs } from 'antd';
+import { Divider, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../config/defaultSettings';
@@ -80,23 +79,23 @@ const Lang = () => {
   );
 };
 
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => {
-  return (
-    <Alert
-      style={{
-        marginBottom: 24,
-      }}
-      message={content}
-      type="error"
-      showIcon
-    />
-  );
-};
+// const LoginMessage: React.FC<{
+//   content: string;
+// }> = ({ content }) => {
+//   return (
+//     <Alert
+//       style={{
+//         marginBottom: 24,
+//       }}
+//       message={content}
+//       type="error"
+//       showIcon
+//     />
+//   );
+// };
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  // const [userLoginState, setUserLoginState] = useState<API.LoginResult>();
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -142,9 +141,9 @@ const Login: React.FC = () => {
     try {
       // 登录
       const res = await login({ ...values, type });
-      console.log(res);
-      if (res.msg === 'success' && res.data && res.data.access_token) {
-        localStorage.setItem(TOKEN_KEY, res.data.access_token);
+      console.log(res, 'loginresult');
+      if (res && res.access_token) {
+        localStorage.setItem(TOKEN_KEY, res.access_token);
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
@@ -156,7 +155,7 @@ const Login: React.FC = () => {
         return;
       }
       // 如果失败去设置用户错误信息
-      setUserLoginState(res);
+      // setUserLoginState(res);
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
@@ -166,7 +165,7 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
-  const { status, type: loginType } = userLoginState;
+  // const { status, type: loginType } = userLoginState;
 
   return (
     <div className={containerClassName}>
@@ -235,14 +234,14 @@ const Login: React.FC = () => {
               ]}
             />
 
-            {status === 'error' && loginType === 'account' && (
-              <LoginMessage
-                content={intl.formatMessage({
-                  id: 'pages.login.accountLogin.errorMessage',
-                  defaultMessage: '账户或密码错误(admin/ant.design)',
-                })}
-              />
-            )}
+            {/*{status === 'error' && loginType === 'account' && (*/}
+            {/*  <LoginMessage*/}
+            {/*    content={intl.formatMessage({*/}
+            {/*      id: 'pages.login.accountLogin.errorMessage',*/}
+            {/*      defaultMessage: '账户或密码错误(admin/ant.design)',*/}
+            {/*    })}*/}
+            {/*  />*/}
+            {/*)}*/}
             {type === 'account' && (
               <>
                 <ProFormText
@@ -292,7 +291,7 @@ const Login: React.FC = () => {
               </>
             )}
 
-            {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
+            {/*{status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}*/}
             {type === 'mobile' && (
               <>
                 <ProFormText

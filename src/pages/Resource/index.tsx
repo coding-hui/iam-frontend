@@ -1,34 +1,34 @@
 import CreateUserModal from '@/pages/User/components/CreateUserModal';
-import { listUsers } from '@/services/user/listUsers';
-import { deleteUser } from '@/services/user/deleteUser';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
 import { Button, message, Popconfirm } from 'antd';
 import React, { useRef } from 'react';
+import { listResources } from '@/services/resource/listResources';
+import { deleteResource } from '@/services/resource/deleteResource';
 
 const INTL = {
   NO: 'pages.searchTable.no',
   TITLE_OPTION: 'pages.searchTable.titleOption',
-  TABLE_TITLE: 'users.table.title',
-  INSTANCE_ID: 'users.table.instanceId',
-  NAME: 'users.table.name',
-  ALIAS: 'users.table.alias',
-  PHONE: 'users.table.phone',
-  EMAIL: 'users.table.email',
-  LAST_LOGIN_TIME: 'users.table.lastLoginTime',
-  STATUS: 'users.table.status',
-  ACTIVE_STATUS: 'users.table.status.active',
-  DISABLED_STATUS: 'users.table.status.disabled',
-  EDIT_USER: 'users.table.edit',
-  DELETE_USER: 'users.table.delete',
-  DELETE_USER_CONFIRM_TITLE: 'users.popconfirm.delete.title',
-  DELETE_USER_CONFIRM_DESC: 'users.popconfirm.delete.description',
+  TABLE_TITLE: 'resource.table.title',
+  INSTANCE_ID: 'resource.table.instanceId',
+  NAME: 'resource.table.name',
+  API: 'resource.table.api',
+  METHOD: 'resource.table.method',
+  TYPE: 'resource.table.type',
+  DESCRIPTION: 'resource.table.description',
+  STATUS: 'resource.table.status',
+  ACTIVE_STATUS: 'resource.table.status.active',
+  DISABLED_STATUS: 'resource.table.status.disabled',
+  EDIT_EDIT: 'resource.table.edit',
+  DELETE_RESOURCE: 'resource.table.delete',
+  DELETE_RESOURCE_CONFIRM_TITLE: 'resource.popconfirm.delete.title',
+  DELETE_RESOURCE_CONFIRM_DESC: 'resource.popconfirm.delete.description',
   DELETE_SUCCESS: 'message.delete.success',
 };
 
-const UserList: React.FC = () => {
+const ResourceList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const intl = useIntl();
 
@@ -38,7 +38,7 @@ const UserList: React.FC = () => {
     }
   };
 
-  const { run: doDeleteUser } = useRequest(deleteUser, {
+  const { run: doDeleteResource } = useRequest(deleteResource, {
     manual: true,
     onSuccess: () => {
       reloadTable();
@@ -46,19 +46,19 @@ const UserList: React.FC = () => {
     },
   });
 
-  const handleListUsers = async (params: { offset?: number; limit?: number }) => {
-    const userList = await listUsers(params);
+  const handleListResources = async (params: { offset?: number; limit?: number }) => {
+    const resourceList = await listResources(params);
     return {
-      data: userList.list,
-      total: userList.total,
+      data: resourceList.list,
+      total: resourceList.total,
     };
   };
 
-  const handleEditUser = (instanceId: string) => {
-    history.push(`/user/${instanceId}`);
+  const handleEditResource = (instanceId: string) => {
+    history.push(`/resource/${instanceId}`);
   };
 
-  const columns: ProColumns<API.UserInfo>[] = [
+  const columns: ProColumns<API.Resource>[] = [
     {
       title: <FormattedMessage id={INTL.NO} defaultMessage="No" />,
       valueType: 'index',
@@ -68,26 +68,20 @@ const UserList: React.FC = () => {
       dataIndex: ['metadata', 'instanceId'],
     },
     {
-      title: <FormattedMessage id={INTL.NAME} defaultMessage="Username" />,
+      title: <FormattedMessage id={INTL.NAME} defaultMessage="Resource" />,
       dataIndex: ['metadata', 'name'],
     },
     {
-      title: <FormattedMessage id={INTL.ALIAS} defaultMessage="Alias" />,
-      dataIndex: 'alias',
+      title: <FormattedMessage id={INTL.API} defaultMessage="API" />,
+      dataIndex: 'api',
     },
     {
-      title: <FormattedMessage id={INTL.PHONE} defaultMessage="Phone" />,
-      dataIndex: 'phone',
+      title: <FormattedMessage id={INTL.METHOD} defaultMessage="Method" />,
+      dataIndex: 'method',
     },
     {
-      title: <FormattedMessage id={INTL.EMAIL} defaultMessage="Email" />,
-      dataIndex: 'email',
-    },
-    {
-      title: <FormattedMessage id={INTL.LAST_LOGIN_TIME} defaultMessage="Last login time" />,
-      dataIndex: 'lastLoginTime',
-      valueType: 'dateTime',
-      search: false,
+      title: <FormattedMessage id={INTL.TYPE} defaultMessage="Type" />,
+      dataIndex: 'type',
     },
     {
       title: <FormattedMessage id={INTL.STATUS} defaultMessage="Status" />,
@@ -109,19 +103,19 @@ const UserList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record: API.UserInfo) => [
-        <a key="editUser" onClick={() => handleEditUser(record.metadata.instanceId)}>
-          <FormattedMessage id={INTL.EDIT_USER} defaultMessage="Edit" />
+        <a key="editUser" onClick={() => handleEditResource(record.metadata.instanceId)}>
+          <FormattedMessage id={INTL.EDIT_EDIT} defaultMessage="Edit" />
         </a>,
         <Popconfirm
           key="deleteUserPopconfirm"
-          title={<FormattedMessage id={INTL.DELETE_USER_CONFIRM_TITLE} />}
-          description={<FormattedMessage id={INTL.DELETE_USER_CONFIRM_DESC} />}
+          title={<FormattedMessage id={INTL.DELETE_RESOURCE_CONFIRM_TITLE} />}
+          description={<FormattedMessage id={INTL.DELETE_RESOURCE_CONFIRM_DESC} />}
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           placement="left"
-          onConfirm={() => doDeleteUser(record.metadata.instanceId)}
+          onConfirm={() => doDeleteResource(record.metadata.instanceId)}
         >
           <Button key="deleteUserBtn" type="link">
-            <FormattedMessage id={INTL.DELETE_USER} defaultMessage="Delete" />
+            <FormattedMessage id={INTL.DELETE_RESOURCE} defaultMessage="Delete" />
           </Button>
         </Popconfirm>,
       ],
@@ -130,7 +124,7 @@ const UserList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.UserInfo, API.PageParams>
+      <ProTable<API.Resource, API.PageParams>
         headerTitle={intl.formatMessage({
           id: INTL.TABLE_TITLE,
         })}
@@ -138,7 +132,7 @@ const UserList: React.FC = () => {
         columns={columns}
         rowKey={(record) => record?.metadata?.id ?? ''}
         search={{ labelWidth: 90 }}
-        request={handleListUsers}
+        request={handleListResources}
         toolBarRender={() => [
           <CreateUserModal
             key="create"
@@ -153,4 +147,4 @@ const UserList: React.FC = () => {
   );
 };
 
-export default UserList;
+export default ResourceList;

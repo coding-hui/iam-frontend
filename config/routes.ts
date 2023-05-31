@@ -30,13 +30,44 @@ export default [
   },
   {
     name: 'user',
-    path: 'user',
+    path: '/user',
     icon: 'UserAddOutlined',
     routes: [
+      { path: '/user', redirect: '/user/list' },
       {
         path: '/user/list',
         name: 'user-list',
         component: './User',
+      },
+      {
+        path: '/user/:instanceId',
+        name: 'user-edit',
+        component: './User/Edit',
+        hideInMenu: true,
+        parentKeys: ['/user', '/user/list'],
+      },
+    ],
+  },
+  {
+    name: 'resource',
+    path: '/resource',
+    icon: 'SecurityScanOutlined',
+    routes: [
+      { path: '/resource', redirect: '/resource/list' },
+      {
+        path: '/resource/list',
+        name: 'resource-list',
+        component: './Resource',
+      },
+      {
+        path: '/resource/policy',
+        name: 'policy-list',
+        component: './Resource',
+      },
+      {
+        path: '/resource/role',
+        name: 'role-list',
+        component: './Resource',
       },
     ],
   },
@@ -44,7 +75,6 @@ export default [
     path: 'system',
     name: 'system',
     icon: 'SettingOutlined',
-    access: 'canAdmin',
     component: './Admin',
   },
   {

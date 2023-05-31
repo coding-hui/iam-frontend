@@ -6,7 +6,7 @@ declare namespace API {
   type ObjectMeta = {
     id?: string | number;
     name: string;
-    instanceID: string;
+    instanceId: string;
     createdAt?: string;
     updatedAt?: string;
   };
@@ -31,18 +31,22 @@ declare namespace API {
     lastLoginTime?: string;
   };
 
+  type PageInfo = {
+    data: any[];
+    total: number;
+  };
+
   type LoginResult = {
-    status?: string;
-    msg?: string;
-    data?: {
-      access_token?: string;
-    };
+    access_token?: string;
+    status: string;
     type?: string;
     currentAuthority?: string;
   };
 
   type PageParams = {
-    current?: number;
+    /** 当前的页码 */
+    offset?: number;
+    /** 页面的容量 */
     limit?: number;
   };
 
@@ -60,10 +64,8 @@ declare namespace API {
   };
 
   type UserList = {
-    data?: UserInfo[];
-    /** 列表的内容总数 */
-    total?: number;
-    success?: boolean;
+    list: UserInfo[];
+    total: number;
   };
 
   type FakeCaptcha = {
@@ -107,5 +109,19 @@ declare namespace API {
     datetime?: string;
     description?: string;
     type?: NoticeIconItemType;
+  };
+
+  type Resource = {
+    metadata: API.ObjectMeta;
+    method: string;
+    api: string;
+    type: string;
+    description: string;
+    status?: string;
+  };
+
+  type ResourceList = {
+    list: Resource[];
+    total: number;
   };
 }

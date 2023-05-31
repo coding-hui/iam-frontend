@@ -3,6 +3,7 @@ export default {
   'users.table.add': '新增',
   'users.table.edit': '编辑',
   'users.table.delete': '删除',
+  'users.table.instanceId': 'ID',
   'users.table.name': '用户',
   'users.table.alias': '昵称',
   'users.table.email': '邮箱',

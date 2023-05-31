@@ -4,9 +4,7 @@ import { request } from '@umijs/max';
 
 /** 获取当前的用户 GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<{
-    data: API.CurrentUser;
-  }>('/api/v1/auth/user-info', {
+  return request<API.CurrentUser>('/api/v1/auth/user-info', {
     method: 'GET',
     ...(options || {}),
   });
@@ -32,42 +30,19 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
   });
 }
 
-/** 获取规则列表 GET /api/rule */
-export async function listUsers(
+export async function getFakeCaptcha(
   params: {
     // query
-    /** 当前的页码 */
-    offset?: number;
-    /** 页面的容量 */
-    limit?: number;
+    /** 手机号 */
+    phone?: string;
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.UserList>('/api/v1/users', {
+  return request<API.FakeCaptcha>('/api/login/captcha', {
     method: 'GET',
     params: {
       ...params,
     },
     ...(options || {}),
-  });
-}
-
-export async function updateUser(options?: { [key: string]: any }) {
-  return request<API.UserInfo>('/api/v1/users', {
-    method: 'PUT',
-    ...(options || {}),
-  });
-}
-
-export async function addUser(options?: { [key: string]: any }) {
-  return request<API.UserInfo>('/api/v1/users', {
-    method: 'POST',
-    ...(options || {}),
-  });
-}
-
-export async function removeUser(name?: string) {
-  return request<Record<string, any>>(`/api/v1/users/${name}`, {
-    method: 'DELETE',
   });
 }

@@ -49,5 +49,11 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
   'menu.user': '用户管理',
   'menu.user.user-list': '用户列表',
+  'menu.user.user-edit': '编辑用户',
+  'menu.user.group-list': '用户列表',
+  'menu.resource': '资源权限',
+  'menu.resource.resource-list': '资源列表',
+  'menu.resource.policy-list': '权限策略',
+  'menu.resource.role-list': '角色列表',
   'menu.system': '系统设置',
 };

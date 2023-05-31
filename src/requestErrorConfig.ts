@@ -107,7 +107,7 @@ export const errorConfig: RequestConfig = {
       if (data?.success === false) {
         message.error('请求失败！');
       }
-      return response;
+      return data;
     },
   ],
 };
