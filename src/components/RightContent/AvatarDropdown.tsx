@@ -1,4 +1,4 @@
-import { outLogin } from '@/services/user/login';
+import { outLogin } from '@/services/system/login';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { history, useModel } from '@umijs/max';

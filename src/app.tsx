@@ -1,7 +1,5 @@
-import Footer from '@/components/Footer';
-import { Question, SelectLang } from '@/components/RightContent';
-import { AvatarDropdown, AvatarName } from '@/components/RightContent/AvatarDropdown';
-import { currentUser as queryCurrentUser } from '@/services/iam-apiserver/api';
+import { Footer, Question, SelectLang, AvatarDropdown, AvatarName } from '@/components';
+import { currentUser as queryCurrentUser } from '@/services/system/login';
 import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';

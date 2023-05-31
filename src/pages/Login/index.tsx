@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer';
 import { TOKEN_KEY } from '@/enums/cacheEnum';
-import { login, getFakeCaptcha } from '@/services/user/login';
+import { login, getFakeCaptcha } from '@/services/system/login';
 import {
   AlipayCircleOutlined,
   LockOutlined,

@@ -2,7 +2,6 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 获取当前的用户 GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
   return request<API.CurrentUser>('/api/v1/auth/user-info', {
     method: 'GET',
@@ -10,7 +9,6 @@ export async function currentUser(options?: { [key: string]: any }) {
   });
 }
 
-/** 退出登录接口 POST /api/logout */
 export async function outLogin(options?: { [key: string]: any }) {
   return request<Record<string, any>>('/api/logout', {
     method: 'POST',
@@ -18,7 +16,6 @@ export async function outLogin(options?: { [key: string]: any }) {
   });
 }
 
-/** 登录接口 POST /api/login/account */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
   return request<API.LoginResult>('/api/v1/login', {
     method: 'POST',
