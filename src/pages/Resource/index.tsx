@@ -56,7 +56,7 @@ const ResourceList: React.FC = () => {
   };
 
   const handleEditResource = (instanceId: string) => {
-    history.push(`/resource/${instanceId}`);
+    history.push(`/resource/edit/${instanceId}`);
   };
 
   const columns: ProColumns<API.Resource>[] = [

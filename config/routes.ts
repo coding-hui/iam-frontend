@@ -64,14 +64,14 @@ export default [
         name: 'resource-create',
         component: './Resource/Create',
         hideInMenu: true,
-        parentKeys: ['/resource/list'],
+        parentKeys: ['/resource', '/resource/list'],
       },
       {
-        path: '/resource/:instanceId',
+        path: '/resource/edit/:instanceId',
         name: 'resource-edit',
         component: './Resource/Edit',
         hideInMenu: true,
-        parentKeys: ['/resource/list'],
+        parentKeys: ['/resource', '/resource/list'],
       },
       {
         path: '/resource/policy',
@@ -83,7 +83,6 @@ export default [
         name: 'policy-create',
         component: './Policy/Create',
         hideInMenu: true,
-        parentKeys: ['/resource/policy'],
       },
       {
         path: '/resource/role',
@@ -95,7 +94,6 @@ export default [
         name: 'role-edit',
         component: './Role/Edit',
         hideInMenu: true,
-        parentKeys: ['/resource/role'],
       },
     ],
   },
