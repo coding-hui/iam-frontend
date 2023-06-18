@@ -1,5 +1,4 @@
-import CreateUserModal from '@/pages/User/components/CreateUserModal';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
@@ -7,25 +6,27 @@ import { Button, message, Popconfirm } from 'antd';
 import React, { useRef } from 'react';
 import { listResources } from '@/services/resource/listResources';
 import { deleteResource } from '@/services/resource/deleteResource';
+import { BASIC_INTL } from '@/constant';
 
 const INTL = {
-  NO: 'pages.searchTable.no',
-  TITLE_OPTION: 'pages.searchTable.titleOption',
-  TABLE_TITLE: 'resource.table.title',
-  INSTANCE_ID: 'resource.table.instanceId',
-  NAME: 'resource.table.name',
-  API: 'resource.table.api',
-  METHOD: 'resource.table.method',
-  TYPE: 'resource.table.type',
-  DESCRIPTION: 'resource.table.description',
-  STATUS: 'resource.table.status',
-  ACTIVE_STATUS: 'resource.table.status.active',
-  DISABLED_STATUS: 'resource.table.status.disabled',
-  EDIT_EDIT: 'resource.table.edit',
-  DELETE_RESOURCE: 'resource.table.delete',
-  DELETE_RESOURCE_CONFIRM_TITLE: 'resource.popconfirm.delete.title',
-  DELETE_RESOURCE_CONFIRM_DESC: 'resource.popconfirm.delete.description',
-  DELETE_SUCCESS: 'message.delete.success',
+  API: {
+    id: 'resource.table.api',
+  },
+  METHOD: {
+    id: 'resource.table.method',
+  },
+  TYPE: {
+    id: 'resource.table.type',
+  },
+  TABLE_TITLE: {
+    id: 'resource.table.title',
+  },
+  DELETE_RESOURCE_CONFIRM_TITLE: {
+    id: 'resource.popconfirm.delete.title',
+  },
+  DELETE_RESOURCE_CONFIRM_DESC: {
+    id: 'resource.popconfirm.delete.description',
+  },
 };
 
 const ResourceList: React.FC = () => {
@@ -42,7 +43,7 @@ const ResourceList: React.FC = () => {
     manual: true,
     onSuccess: () => {
       reloadTable();
-      message.success(intl.formatMessage({ id: INTL.DELETE_SUCCESS }));
+      message.success(intl.formatMessage({ ...BASIC_INTL.DELETE_SUCCESS }));
     },
   });
 
@@ -60,88 +61,84 @@ const ResourceList: React.FC = () => {
 
   const columns: ProColumns<API.Resource>[] = [
     {
-      title: <FormattedMessage id={INTL.NO} defaultMessage="No" />,
+      title: <FormattedMessage {...BASIC_INTL.NO} />,
       valueType: 'index',
     },
     {
-      title: <FormattedMessage id={INTL.INSTANCE_ID} defaultMessage="ID" />,
+      title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
       dataIndex: ['metadata', 'instanceId'],
     },
     {
-      title: <FormattedMessage id={INTL.NAME} defaultMessage="Resource" />,
+      title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
     },
     {
-      title: <FormattedMessage id={INTL.API} defaultMessage="API" />,
+      title: <FormattedMessage {...INTL.API} />,
       dataIndex: 'api',
     },
     {
-      title: <FormattedMessage id={INTL.METHOD} defaultMessage="Method" />,
+      title: <FormattedMessage {...INTL.METHOD} />,
       dataIndex: 'method',
     },
     {
-      title: <FormattedMessage id={INTL.TYPE} defaultMessage="Type" />,
+      title: <FormattedMessage {...INTL.TYPE} />,
       dataIndex: 'type',
     },
     {
-      title: <FormattedMessage id={INTL.STATUS} defaultMessage="Status" />,
-      dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        0: {
-          text: <FormattedMessage id={INTL.ACTIVE_STATUS} defaultMessage="Actived" />,
-          status: 'Success',
-        },
-        1: {
-          text: <FormattedMessage id={INTL.DISABLED_STATUS} defaultMessage="Disabled" />,
-          status: 'Error',
-        },
-      },
+      title: <FormattedMessage {...BASIC_INTL.CREATED_AT} />,
+      dataIndex: ['metadata', 'createdAt'],
+      valueType: 'dateTime',
+      width: 220,
+      search: false,
     },
     {
-      title: <FormattedMessage id={INTL.TITLE_OPTION} defaultMessage="Operating" />,
+      title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record: API.UserInfo) => [
-        <a key="editUser" onClick={() => handleEditResource(record.metadata.instanceId)}>
-          <FormattedMessage id={INTL.EDIT_EDIT} defaultMessage="Edit" />
+        <a key="edit" onClick={() => handleEditResource(record.metadata.instanceId)}>
+          <FormattedMessage {...BASIC_INTL.EDIT} />
         </a>,
         <Popconfirm
-          key="deleteUserPopconfirm"
-          title={<FormattedMessage id={INTL.DELETE_RESOURCE_CONFIRM_TITLE} />}
-          description={<FormattedMessage id={INTL.DELETE_RESOURCE_CONFIRM_DESC} />}
+          key="deletePopconfirm"
+          title={<FormattedMessage {...INTL.DELETE_RESOURCE_CONFIRM_TITLE} />}
+          description={<FormattedMessage {...INTL.DELETE_RESOURCE_CONFIRM_DESC} />}
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           placement="left"
           onConfirm={() => doDeleteResource(record.metadata.instanceId)}
         >
-          <Button key="deleteUserBtn" type="link">
-            <FormattedMessage id={INTL.DELETE_RESOURCE} defaultMessage="Delete" />
+          <Button key="deleteBtn" type="link">
+            <FormattedMessage {...BASIC_INTL.DELETE} />
           </Button>
         </Popconfirm>,
       ],
     },
   ];
 
+  const renderToolBar = (
+    <Button type="primary" onClick={() => history.push(`/resource/create`)}>
+      <PlusOutlined />
+      <FormattedMessage {...BASIC_INTL.ADD} />
+    </Button>
+  );
+
   return (
     <PageContainer>
       <ProTable<API.Resource, API.PageParams>
         headerTitle={intl.formatMessage({
-          id: INTL.TABLE_TITLE,
+          ...INTL.TABLE_TITLE,
         })}
         actionRef={actionRef}
         columns={columns}
-        rowKey={(record) => record?.metadata?.id ?? ''}
+        rowKey={(record) => record?.metadata?.instanceId ?? ''}
         search={{ labelWidth: 90 }}
+        pagination={{
+          defaultPageSize: 10,
+          showSizeChanger: true,
+          pageSizeOptions: [10, 20, 30, 50],
+        }}
         request={handleListResources}
-        toolBarRender={() => [
-          <CreateUserModal
-            key="create"
-            onFinish={async () => {
-              reloadTable();
-              return true;
-            }}
-          />,
-        ]}
+        toolBarRender={() => [renderToolBar]}
       />
     </PageContainer>
   );

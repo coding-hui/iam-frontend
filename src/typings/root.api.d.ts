@@ -1,7 +1,6 @@
 declare namespace API {
   // Standard object's metadata.
   type ObjectMeta = {
-    id?: string | number;
     name: string;
     instanceId: string;
     createdAt?: string;
@@ -108,17 +107,53 @@ declare namespace API {
     type?: NoticeIconItemType;
   };
 
+  type Action = {
+    name: string;
+    description?: string;
+  };
+
   type Resource = {
     metadata: ObjectMeta;
     method: string;
     api: string;
     type: string;
-    description: string;
+    description?: string;
+    actions: Action[];
     status?: string;
   };
 
   type ResourceList = {
     list: Resource[];
+    total: number;
+  };
+
+  type Policy = {
+    metadata: ObjectMeta;
+    subjects: string[];
+    resources: string[];
+    actions: string[];
+    effect: string;
+    type: string;
+    owner: string;
+    description: string;
+    status?: string;
+  };
+
+  type PolicyList = {
+    list: Policy[];
+    total: number;
+  };
+
+  type Role = {
+    metadata: ObjectMeta;
+    owner: string;
+    description: string;
+    disabled: boolean;
+    users: API.UserInfo[];
+  };
+
+  type RoleList = {
+    list: Role[];
     total: number;
   };
 }

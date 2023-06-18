@@ -1,4 +1,4 @@
-export const USER = {
+export const USER_REGEXP = {
   NAME_LENGTH: /^.{1,50}$/,
   PASSWORD_LENGTH: /^.{8,255}$/,
   PASSWORD_NUMBER: /\d{1,}/,

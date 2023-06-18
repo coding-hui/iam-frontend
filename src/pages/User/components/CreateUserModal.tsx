@@ -1,4 +1,4 @@
-import { USER } from '@/constant/reg';
+import { USER_REGEXP } from '@/constant';
 import { createUser, CreateUserRequest } from '@/services/user/createUser';
 import { randomPwd } from '@/utils';
 import { FormattedMessage } from '@@/exports';
@@ -111,7 +111,10 @@ const CreateUserModal: React.FC<UpdateFormProps> = (props) => {
           placeholder={intl.formatMessage({ id: INTL.PLACEHOLDER_PHONE })}
           rules={[
             { required: false },
-            { pattern: USER.PHONE, message: intl.formatMessage({ id: INTL.VALIDATOR_PHONE_MSG }) },
+            {
+              pattern: USER_REGEXP.PHONE,
+              message: intl.formatMessage({ id: INTL.VALIDATOR_PHONE_MSG }),
+            },
           ]}
         />
         <ProFormText

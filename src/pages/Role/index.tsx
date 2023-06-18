@@ -1,42 +1,27 @@
 import CreateUserModal from '@/pages/User/components/CreateUserModal';
-import { listUsers } from '@/services/user/listUsers';
-import { deleteUser } from '@/services/user/deleteUser';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
 import { Button, message, Popconfirm } from 'antd';
 import React, { useRef } from 'react';
+import { listRoles } from '@/services/role/listRoles';
 import { BASIC_INTL } from '@/constant';
+import { deleteRole } from '@/services/role/deleteRole';
 
 const INTL = {
   TABLE_TITLE: {
-    id: 'users.table.title',
+    id: 'role.table.title',
   },
-  ALIAS: {
-    id: 'users.table.alias',
+  DELETE_CONFIRM_TITLE: {
+    id: 'role.popconfirm.delete.title',
   },
-  PHONE: {
-    id: 'users.table.phone',
-  },
-  EMAIL: {
-    id: 'users.table.email',
-  },
-  LAST_LOGIN_TIME: {
-    id: 'users.table.lastLoginTime',
-  },
-  DELETE_USER_CONFIRM_TITLE: {
-    id: 'users.popconfirm.delete.title',
-  },
-  DELETE_USER_CONFIRM_DESC: {
-    id: 'users.popconfirm.delete.description',
-  },
-  DELETE_SUCCESS: {
-    id: 'message.delete.success',
+  DELETE_CONFIRM_DESC: {
+    id: 'role.popconfirm.delete.description',
   },
 };
 
-const UserList: React.FC = () => {
+const RoleList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const intl = useIntl();
 
@@ -46,27 +31,27 @@ const UserList: React.FC = () => {
     }
   };
 
-  const { run: doDeleteUser } = useRequest(deleteUser, {
+  const { run: doDeleteResource, loading: deleteLoading } = useRequest(deleteRole, {
     manual: true,
     onSuccess: () => {
       reloadTable();
-      message.success(intl.formatMessage(INTL.DELETE_SUCCESS));
+      message.success(intl.formatMessage({ ...BASIC_INTL.DELETE_SUCCESS }));
     },
   });
 
-  const handleListUsers = async (params: { offset?: number; limit?: number }) => {
-    const userList = await listUsers(params);
+  const handleListRoles = async (params: { offset?: number; limit?: number }) => {
+    const roleList = await listRoles(params);
     return {
-      data: userList.list,
-      total: userList.total,
+      data: roleList.list,
+      total: roleList.total,
     };
   };
 
-  const handleEditUser = (instanceId: string) => {
-    history.push(`/user/${instanceId}`);
+  const handleEditRole = (instanceId: string) => {
+    history.push(`/resource/role/${instanceId}`);
   };
 
-  const columns: ProColumns<API.UserInfo>[] = [
+  const columns: ProColumns<API.Role>[] = [
     {
       title: <FormattedMessage {...BASIC_INTL.NO} />,
       valueType: 'index',
@@ -80,55 +65,50 @@ const UserList: React.FC = () => {
       dataIndex: ['metadata', 'name'],
     },
     {
-      title: <FormattedMessage {...INTL.ALIAS} />,
-      dataIndex: 'alias',
-    },
-    {
-      title: <FormattedMessage {...INTL.PHONE} />,
-      dataIndex: 'phone',
-    },
-    {
-      title: <FormattedMessage {...INTL.EMAIL} />,
-      dataIndex: 'email',
-    },
-    {
-      title: <FormattedMessage {...INTL.LAST_LOGIN_TIME} />,
-      dataIndex: 'lastLoginTime',
-      valueType: 'dateTime',
-      search: false,
-    },
-    {
       title: <FormattedMessage {...BASIC_INTL.STATUS} />,
-      dataIndex: 'status',
-      hideInForm: true,
+      dataIndex: 'disabled',
       valueEnum: {
-        0: {
+        false: {
           text: <FormattedMessage {...BASIC_INTL.ACTIVED} />,
           status: 'Success',
         },
-        1: {
+        true: {
           text: <FormattedMessage {...BASIC_INTL.DISABLED} />,
           status: 'Error',
         },
       },
     },
     {
+      title: <FormattedMessage {...BASIC_INTL.DESCRIPTION} />,
+      dataIndex: 'description',
+      hideInSearch: true,
+    },
+    {
+      title: <FormattedMessage {...BASIC_INTL.CREATED_AT} />,
+      dataIndex: ['metadata', 'createdAt'],
+      valueType: 'dateTime',
+      width: 220,
+      search: false,
+    },
+    {
       title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record: API.UserInfo) => [
-        <a key="editUser" onClick={() => handleEditUser(record.metadata.instanceId)}>
+      width: 150,
+      render: (_, record: API.Role) => [
+        <a key="editRole" onClick={() => handleEditRole(record.metadata.instanceId)}>
           <FormattedMessage {...BASIC_INTL.EDIT} />
         </a>,
         <Popconfirm
-          key="deleteUserPopconfirm"
-          title={<FormattedMessage {...INTL.DELETE_USER_CONFIRM_TITLE} />}
-          description={<FormattedMessage {...INTL.DELETE_USER_CONFIRM_DESC} />}
+          key="deleteRolePopconfirm"
+          title={<FormattedMessage {...INTL.DELETE_CONFIRM_TITLE} />}
+          description={<FormattedMessage {...INTL.DELETE_CONFIRM_DESC} />}
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           placement="left"
-          onConfirm={() => doDeleteUser(record.metadata.instanceId)}
+          onConfirm={() => doDeleteResource(record.metadata.instanceId)}
+          okButtonProps={{ loading: deleteLoading }}
         >
-          <Button key="deleteUserBtn" type="link">
+          <Button key="deleteRoleBtn" type="link">
             <FormattedMessage {...BASIC_INTL.DELETE} />
           </Button>
         </Popconfirm>,
@@ -138,13 +118,13 @@ const UserList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.UserInfo, API.PageParams>
+      <ProTable<API.Role, API.PageParams>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
         search={{ labelWidth: 90 }}
-        request={handleListUsers}
+        request={handleListRoles}
         toolBarRender={() => [
           <CreateUserModal
             key="create"
@@ -159,4 +139,4 @@ const UserList: React.FC = () => {
   );
 };
 
-export default UserList;
+export default RoleList;
