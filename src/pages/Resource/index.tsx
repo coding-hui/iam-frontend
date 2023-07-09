@@ -2,7 +2,7 @@ import { DeleteOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icon
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
-import { Button, Dropdown, message, Modal } from 'antd';
+import { App, Button, Dropdown, message } from 'antd';
 import React, { useRef } from 'react';
 import { ListResourceParams, listResources } from '@/services/resource/listResources';
 import { deleteResource } from '@/services/resource/deleteResource';
@@ -37,7 +37,7 @@ const INTL = {
 
 const ResourceList: React.FC = () => {
   const intl = useIntl();
-  const [modal, contextHolder] = Modal.useModal();
+  const { modal } = App.useApp();
   const actionRef = useRef<ActionType>();
 
   const reloadTable = () => {
@@ -181,34 +181,31 @@ const ResourceList: React.FC = () => {
   );
 
   return (
-    <>
-      {contextHolder}
-      <PageContainer>
-        <ProTable<API.Resource, ListResourceParams>
-          headerTitle={intl.formatMessage({
-            ...INTL.TABLE_TITLE,
-          })}
-          rowSelection={
-            {
-              // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
-              // 注释该行则默认不显示下拉选项
-              // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
-            }
+    <PageContainer>
+      <ProTable<API.Resource, ListResourceParams>
+        headerTitle={intl.formatMessage({
+          ...INTL.TABLE_TITLE,
+        })}
+        rowSelection={
+          {
+            // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
+            // 注释该行则默认不显示下拉选项
+            // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
           }
-          actionRef={actionRef}
-          columns={columns}
-          rowKey={(record) => record?.metadata?.instanceId ?? ''}
-          search={{ labelWidth: 90 }}
-          pagination={{
-            defaultPageSize: 10,
-            showSizeChanger: true,
-            pageSizeOptions: [10, 20, 30, 50],
-          }}
-          request={handleListResources}
-          toolBarRender={() => [renderToolBar]}
-        />
-      </PageContainer>
-    </>
+        }
+        actionRef={actionRef}
+        columns={columns}
+        rowKey={(record) => record?.metadata?.instanceId ?? ''}
+        search={{ labelWidth: 90 }}
+        pagination={{
+          defaultPageSize: 10,
+          showSizeChanger: true,
+          pageSizeOptions: [10, 20, 30, 50],
+        }}
+        request={handleListResources}
+        toolBarRender={() => [renderToolBar]}
+      />
+    </PageContainer>
   );
 };
 

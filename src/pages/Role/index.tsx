@@ -3,7 +3,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
-import { Button, message, Popconfirm } from 'antd';
+import { App, Button, Popconfirm } from 'antd';
 import React, { useRef } from 'react';
 import { ListRoleParams, listRoles } from '@/services/role/listRoles';
 import { BASIC_INTL } from '@/constant';
@@ -23,6 +23,7 @@ const INTL = {
 
 const RoleList: React.FC = () => {
   const actionRef = useRef<ActionType>();
+  const { message } = App.useApp();
   const intl = useIntl();
 
   const reloadTable = () => {

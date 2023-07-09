@@ -10,7 +10,7 @@ import {
   ProFormTextArea,
 } from '@ant-design/pro-components';
 import { useIntl, useParams, useRequest } from '@umijs/max';
-import { message } from 'antd';
+import { App } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { getResourceInfo } from '@/services/resource/getResourceInfo';
 import { updateResource } from '@/services/resource/updateResource';
@@ -78,7 +78,7 @@ const RESOURCE_TABS = {
 const CreateResource: React.FC = () => {
   const intl = useIntl();
   const [currentTab, setCurrentTab] = useState('info');
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const formRef = useRef<ProFormInstance<API.Resource>>();
   const actionsActRef = useRef<FormListActionType>();
   const { instanceId } = useParams();
@@ -109,7 +109,7 @@ const CreateResource: React.FC = () => {
   const { run: doUpdateResource, loading: updateLoading } = useRequest(updateResource, {
     manual: true,
     onSuccess: async () => {
-      await messageApi.success(intl.formatMessage(INTL.UPDATE_SUCCESS));
+      await message.success(intl.formatMessage(INTL.UPDATE_SUCCESS));
     },
   });
 
@@ -128,99 +128,96 @@ const CreateResource: React.FC = () => {
   };
 
   return (
-    <>
-      {contextHolder}
-      <PageContainer
-        fixedHeader
-        title={resourceInfo?.metadata.name || '-'}
-        tabActiveKey={currentTab}
-        onTabChange={(tab) => setCurrentTab(tab)}
-        tabList={[RESOURCE_TABS.INFO]}
-      >
-        {isInfoTab() && (
-          <ProCard layout="center" direction="column">
-            <ProForm
-              loading={updateLoading || loading}
-              formRef={formRef}
-              onReset={handleReset}
-              onFinish={handleSubmit}
+    <PageContainer
+      fixedHeader
+      title={resourceInfo?.metadata.name || '-'}
+      tabActiveKey={currentTab}
+      onTabChange={(tab) => setCurrentTab(tab)}
+      tabList={[RESOURCE_TABS.INFO]}
+    >
+      {isInfoTab() && (
+        <ProCard layout="center" direction="column">
+          <ProForm
+            loading={updateLoading || loading}
+            formRef={formRef}
+            onReset={handleReset}
+            onFinish={handleSubmit}
+          >
+            <ProForm.Group
+              title={intl.formatMessage(INTL.BASIC_INFO)}
+              titleStyle={{ marginBottom: '14px' }}
+              align="center"
             >
-              <ProForm.Group
-                title={intl.formatMessage(INTL.BASIC_INFO)}
-                titleStyle={{ marginBottom: '14px' }}
-                align="center"
-              >
+              <ProFormText
+                width="md"
+                name={['metadata', 'name']}
+                label={intl.formatMessage(INTL.NAME)}
+                placeholder={intl.formatMessage(INTL.PLACEHOLDER_NAME)}
+                rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_NAME) }]}
+                transform={(val) => {
+                  return { name: val };
+                }}
+              />
+              <ProFormSelect.SearchSelect
+                width="sm"
+                name="method"
+                mode="single"
+                label={intl.formatMessage(INTL.METHOD)}
+                placeholder={intl.formatMessage(INTL.PLACEHOLDER_METHOD)}
+                options={METHOD_OPTIONS}
+                rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_METHOD) }]}
+                transform={(val) => {
+                  return { method: val.value ? val.value : val };
+                }}
+              />
+            </ProForm.Group>
+            <ProForm.Group align="center">
+              <ProFormText
+                width="xl"
+                name="api"
+                label={intl.formatMessage(INTL.API)}
+                placeholder={intl.formatMessage(INTL.PLACEHOLDER_API)}
+                rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_API) }]}
+              />
+            </ProForm.Group>
+            <ProForm.Group align="center">
+              <ProFormTextArea
+                width="xl"
+                name="description"
+                label={intl.formatMessage(INTL.DESCRIPTION)}
+                placeholder={intl.formatMessage(INTL.PLACEHOLDER_DESCRIPTION)}
+                rules={[{ required: false }]}
+              />
+            </ProForm.Group>
+            <ProFormList
+              label={intl.formatMessage(INTL.ACTION)}
+              name="actions"
+              actionRef={actionsActRef}
+              tooltip={intl.formatMessage(INTL.ACTION_TIP)}
+              creatorButtonProps={{ creatorButtonText: intl.formatMessage(INTL.ADD_ACTION) }}
+            >
+              <ProForm.Group align="center" size="small">
                 <ProFormText
-                  width="md"
-                  name={['metadata', 'name']}
-                  label={intl.formatMessage(INTL.NAME)}
-                  placeholder={intl.formatMessage(INTL.PLACEHOLDER_NAME)}
-                  rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_NAME) }]}
-                  transform={(val) => {
-                    return { name: val };
-                  }}
-                />
-                <ProFormSelect.SearchSelect
                   width="sm"
-                  name="method"
-                  mode="single"
-                  label={intl.formatMessage(INTL.METHOD)}
-                  placeholder={intl.formatMessage(INTL.PLACEHOLDER_METHOD)}
-                  options={METHOD_OPTIONS}
-                  rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_METHOD) }]}
-                  transform={(val) => {
-                    return { method: val.value ? val.value : val };
-                  }}
+                  name="name"
+                  placeholder={intl.formatMessage(INTL.PLACEHOLDER_ACTION_NAME)}
+                  rules={[
+                    { required: true, message: intl.formatMessage(INTL.PLACEHOLDER_ACTION_NAME) },
+                  ]}
+                  allowClear={false}
                 />
-              </ProForm.Group>
-              <ProForm.Group align="center">
                 <ProFormText
-                  width="xl"
-                  name="api"
-                  label={intl.formatMessage(INTL.API)}
-                  placeholder={intl.formatMessage(INTL.PLACEHOLDER_API)}
-                  rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_API) }]}
-                />
-              </ProForm.Group>
-              <ProForm.Group align="center">
-                <ProFormTextArea
-                  width="xl"
+                  width="sm"
                   name="description"
-                  label={intl.formatMessage(INTL.DESCRIPTION)}
-                  placeholder={intl.formatMessage(INTL.PLACEHOLDER_DESCRIPTION)}
+                  placeholder={intl.formatMessage(INTL.PLACEHOLDER_ACTION_DESCRIPTION)}
                   rules={[{ required: false }]}
                 />
               </ProForm.Group>
-              <ProFormList
-                label={intl.formatMessage(INTL.ACTION)}
-                name="actions"
-                actionRef={actionsActRef}
-                tooltip={intl.formatMessage(INTL.ACTION_TIP)}
-                creatorButtonProps={{ creatorButtonText: intl.formatMessage(INTL.ADD_ACTION) }}
-              >
-                <ProForm.Group align="center" size="small">
-                  <ProFormText
-                    width="sm"
-                    name="name"
-                    placeholder={intl.formatMessage(INTL.PLACEHOLDER_ACTION_NAME)}
-                    rules={[
-                      { required: true, message: intl.formatMessage(INTL.PLACEHOLDER_ACTION_NAME) },
-                    ]}
-                    allowClear={false}
-                  />
-                  <ProFormText
-                    width="sm"
-                    name="description"
-                    placeholder={intl.formatMessage(INTL.PLACEHOLDER_ACTION_DESCRIPTION)}
-                    rules={[{ required: false }]}
-                  />
-                </ProForm.Group>
-              </ProFormList>
-            </ProForm>
-          </ProCard>
-        )}
-      </PageContainer>
-    </>
+            </ProFormList>
+          </ProForm>
+        </ProCard>
+      )}
+    </PageContainer>
   );
 };
 

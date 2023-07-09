@@ -9,7 +9,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { useParams, useRequest, FormattedMessage, useIntl } from '@umijs/max';
-import { Button, Dropdown, Form, message } from 'antd';
+import { App, Button, Dropdown, Form } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { getRoleInfo } from '@/services/role/getRoleInfo';
 import { updateRole } from '@/services/role/updateRole';
@@ -68,7 +68,7 @@ const ROLE_TABS = {
 const EditRole: React.FC = () => {
   const intl = useIntl();
   const assignTableActionRef = useRef<ActionType>();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const [currentTab, setCurrentTab] = useState('info');
   const [assignUsers, setAssignUsers] = useState<API.UserInfo[]>();
   const { instanceId } = useParams();
@@ -102,7 +102,7 @@ const EditRole: React.FC = () => {
   const { run: doUpdateRoleInfo, loading: updateRoleInfoLoading } = useRequest(updateRole, {
     manual: true,
     onSuccess: () => {
-      messageApi.success(intl.formatMessage(BASIC_INTL.DELETE_SUCCESS));
+      message.success(intl.formatMessage(BASIC_INTL.DELETE_SUCCESS));
     },
   });
 
@@ -128,7 +128,7 @@ const EditRole: React.FC = () => {
       if (roleInfo) {
         doGetRoleInfo(roleInfo.metadata.instanceId);
       }
-      messageApi.success(intl.formatMessage(INTL.REVOKE_ROLE_SUCCESS));
+      message.success(intl.formatMessage(INTL.REVOKE_ROLE_SUCCESS));
     },
   });
 
@@ -154,7 +154,7 @@ const EditRole: React.FC = () => {
       if (roleInfo) {
         doGetRoleInfo(roleInfo.metadata.instanceId);
       }
-      messageApi.success(intl.formatMessage(INTL.ASSIGN_ROLE_SUCCESS));
+      message.success(intl.formatMessage(INTL.ASSIGN_ROLE_SUCCESS));
     },
   });
 
@@ -269,78 +269,75 @@ const EditRole: React.FC = () => {
   ];
 
   return (
-    <>
-      {contextHolder}
-      <PageContainer
-        fixedHeader
-        tabActiveKey={currentTab}
-        onTabChange={(tab) => setCurrentTab(tab)}
-        tabList={[ROLE_TABS.INFO, ROLE_TABS.ASSIGN]}
-        header={{
-          extra: [
-            <Dropdown
-              key="dropdown"
-              trigger={['click']}
-              menu={{
-                items: [
-                  {
-                    icon: roleInfo?.disabled === true ? <CheckCircleOutlined /> : <StopOutlined />,
-                    label: roleInfo?.disabled === false ? '启用角色' : '禁用角色',
-                    key: '1',
-                  },
-                  {
-                    icon: <DeleteOutlined />,
-                    label: '删除角色',
-                    key: '2',
-                  },
-                ],
-              }}
-            >
-              <Button key="4" style={{ padding: '0 8px' }}>
-                更多
-                <DownOutlined />
-              </Button>
-            </Dropdown>,
-            <Button key="3" type="primary">
-              重置密码
-            </Button>,
-          ],
-        }}
-      >
-        <ProCard direction="column" ghost gutter={[0, 16]}>
-          {isInfoTab() ? (
-            <ProCard loading={loading} title="角色信息">
-              <BetaSchemaForm<API.Role>
-                form={roleInfoForm}
-                layoutType="Form"
-                grid
-                loading={updateRoleInfoLoading}
-                onReset={handleResetRoleInfoFormValues}
-                onFinish={handleUpdateRoleInfo}
-                columns={roleInfoColumns}
-              />
-            </ProCard>
-          ) : (
-            <ProTable
-              headerTitle="已分配用户"
-              loading={revokeRoleLoading || assignRoleLoading || loading}
-              actionRef={assignTableActionRef}
-              search={false}
-              columns={roleAssignColumns}
-              dataSource={assignUsers}
-              rowKey={(record) => record?.metadata?.instanceId ?? ''}
-              toolBarRender={() => [
-                <SubjectTransfer
-                  key="assignRole"
-                  targetUsers={getAssignTargetKeys()}
-                  onOk={(values) => handleAssignRole(values)}
-                />,
-              ]}
-            ></ProTable>
-          )}
-        </ProCard>
-      </PageContainer>
-    </>
+    <PageContainer
+      fixedHeader
+      tabActiveKey={currentTab}
+      onTabChange={(tab) => setCurrentTab(tab)}
+      tabList={[ROLE_TABS.INFO, ROLE_TABS.ASSIGN]}
+      header={{
+        extra: [
+          <Dropdown
+            key="dropdown"
+            trigger={['click']}
+            menu={{
+              items: [
+                {
+                  icon: roleInfo?.disabled === true ? <CheckCircleOutlined /> : <StopOutlined />,
+                  label: roleInfo?.disabled === false ? '启用角色' : '禁用角色',
+                  key: '1',
+                },
+                {
+                  icon: <DeleteOutlined />,
+                  label: '删除角色',
+                  key: '2',
+                },
+              ],
+            }}
+          >
+            <Button key="4" style={{ padding: '0 8px' }}>
+              更多
+              <DownOutlined />
+            </Button>
+          </Dropdown>,
+          <Button key="3" type="primary">
+            重置密码
+          </Button>,
+        ],
+      }}
+    >
+      <ProCard direction="column" ghost gutter={[0, 16]}>
+        {isInfoTab() ? (
+          <ProCard loading={loading} title="角色信息">
+            <BetaSchemaForm<API.Role>
+              form={roleInfoForm}
+              layoutType="Form"
+              grid
+              loading={updateRoleInfoLoading}
+              onReset={handleResetRoleInfoFormValues}
+              onFinish={handleUpdateRoleInfo}
+              columns={roleInfoColumns}
+            />
+          </ProCard>
+        ) : (
+          <ProTable
+            headerTitle="已分配用户"
+            loading={revokeRoleLoading || assignRoleLoading || loading}
+            actionRef={assignTableActionRef}
+            search={false}
+            columns={roleAssignColumns}
+            dataSource={assignUsers}
+            rowKey={(record) => record?.metadata?.instanceId ?? ''}
+            toolBarRender={() => [
+              <SubjectTransfer
+                key="assignRole"
+                targetUsers={getAssignTargetKeys()}
+                onOk={(values) => handleAssignRole(values)}
+              />,
+            ]}
+          ></ProTable>
+        )}
+      </ProCard>
+    </PageContainer>
   );
 };
 
