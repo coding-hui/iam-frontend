@@ -1,7 +1,7 @@
 import { request } from '@umijs/max';
 
 export type ListPolicyParams = {
-  fuzzyName: string;
+  fuzzyName?: string;
 } & API.PageParams;
 
 const url = '/api/v1/policies';

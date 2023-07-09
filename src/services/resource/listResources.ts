@@ -1,7 +1,7 @@
 import { request } from '@umijs/max';
 
 export type ListResourceParams = {
-  fuzzyName: string;
+  fuzzyName?: string;
 } & API.PageParams;
 
 const url = '/api/v1/resources';
