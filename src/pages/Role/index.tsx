@@ -5,7 +5,7 @@ import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
 import { Button, message, Popconfirm } from 'antd';
 import React, { useRef } from 'react';
-import { listRoles } from '@/services/role/listRoles';
+import { ListRoleParams, listRoles } from '@/services/role/listRoles';
 import { BASIC_INTL } from '@/constant';
 import { deleteRole } from '@/services/role/deleteRole';
 
@@ -39,7 +39,7 @@ const RoleList: React.FC = () => {
     },
   });
 
-  const handleListRoles = async (params: { offset?: number; limit?: number }) => {
+  const handleListRoles = async (params: ListRoleParams) => {
     const roleList = await listRoles(params);
     return {
       data: roleList.list,
@@ -106,7 +106,7 @@ const RoleList: React.FC = () => {
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           placement="left"
           onConfirm={() => doDeleteResource(record.metadata.instanceId)}
-          okButtonProps={{ getInfoLoading: deleteLoading }}
+          okButtonProps={{ loading: deleteLoading }}
         >
           <Button key="deleteRoleBtn" type="link">
             <FormattedMessage {...BASIC_INTL.DELETE} />
@@ -118,7 +118,7 @@ const RoleList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.Role, API.PageParams>
+      <ProTable<API.Role, ListRoleParams>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}
         columns={columns}

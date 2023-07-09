@@ -4,7 +4,7 @@ import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
 import { App, Button, Dropdown } from 'antd';
 import React, { useRef } from 'react';
-import { listPolicies } from '@/services/policy/listPolicies';
+import { listPolicies, ListPolicyParams } from '@/services/policy/listPolicies';
 import { BASIC_INTL } from '@/constant';
 import { deletePolicy } from '@/services/policy/deletePolicy';
 
@@ -39,7 +39,7 @@ const PolicyList: React.FC = () => {
     },
   });
 
-  const handleListPolicies = async (params: { offset?: number; limit?: number }) => {
+  const handleListPolicies = async (params: ListPolicyParams) => {
     const policies = await listPolicies(params);
     return {
       data: policies.list,
@@ -161,7 +161,7 @@ const PolicyList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.Policy, API.PageParams>
+      <ProTable<API.Policy, ListPolicyParams>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}
         columns={columns}

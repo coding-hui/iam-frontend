@@ -44,6 +44,8 @@ declare namespace API {
     current?: number;
     /** 页面的容量 */
     pageSize?: number;
+    /** 查询关键字 */
+    keyword?: string;
   };
 
   type UserInfo = {

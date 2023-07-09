@@ -1,5 +1,5 @@
 import CreateUserModal from '@/pages/User/components/CreateUserModal';
-import { listUsers } from '@/services/user/listUsers';
+import { ListUserParams, listUsers } from '@/services/user/listUsers';
 import { deleteUser } from '@/services/user/deleteUser';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -54,7 +54,7 @@ const UserList: React.FC = () => {
     },
   });
 
-  const handleListUsers = async (params: { offset?: number; limit?: number }) => {
+  const handleListUsers = async (params: ListUserParams) => {
     const userList = await listUsers(params);
     return {
       data: userList.list,
@@ -138,7 +138,7 @@ const UserList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.UserInfo, API.PageParams>
+      <ProTable<API.UserInfo, ListUserParams>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}
         columns={columns}

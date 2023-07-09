@@ -4,7 +4,7 @@ import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
 import { Button, Dropdown, message, Modal } from 'antd';
 import React, { useRef } from 'react';
-import { listResources } from '@/services/resource/listResources';
+import { ListResourceParams, listResources } from '@/services/resource/listResources';
 import { deleteResource } from '@/services/resource/deleteResource';
 import { BASIC_INTL } from '@/constant';
 
@@ -54,7 +54,7 @@ const ResourceList: React.FC = () => {
     },
   });
 
-  const handleListResources = async (params: { offset?: number; limit?: number }) => {
+  const handleListResources = async (params: ListResourceParams) => {
     const resourceList = await listResources(params);
     return {
       data: resourceList.list,
@@ -184,7 +184,7 @@ const ResourceList: React.FC = () => {
     <>
       {contextHolder}
       <PageContainer>
-        <ProTable<API.Resource, API.PageParams>
+        <ProTable<API.Resource, ListResourceParams>
           headerTitle={intl.formatMessage({
             ...INTL.TABLE_TITLE,
           })}
