@@ -1,11 +1,11 @@
 import CreateUserModal from '@/pages/User/components/CreateUserModal';
 import { ListUserParams, listUsers } from '@/services/user/listUsers';
 import { deleteUser } from '@/services/user/deleteUser';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EllipsisOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
-import { Button, message, Popconfirm } from 'antd';
+import { App, Button, Dropdown, message } from 'antd';
 import React, { useRef } from 'react';
 import { BASIC_INTL } from '@/constant';
 
@@ -38,6 +38,7 @@ const INTL = {
 
 const UserList: React.FC = () => {
   const actionRef = useRef<ActionType>();
+  const { modal } = App.useApp();
   const intl = useIntl();
 
   const reloadTable = () => {
@@ -66,14 +67,40 @@ const UserList: React.FC = () => {
     history.push(`/user/${instanceId}`);
   };
 
+  const deleteModalConfig = (records: API.UserInfo[]) => {
+    let title =
+      records.length === 1
+        ? intl.formatMessage(BASIC_INTL.DELETE_CONFIRM_TITLE, {
+            name: records[0].metadata.name,
+          })
+        : intl.formatMessage(BASIC_INTL.MULTI_DELETE_CONFIRM_TITLE, {
+            count: records.length,
+          });
+    return {
+      title: title,
+      content: (
+        <span>
+          <FormattedMessage {...BASIC_INTL.DELETE_CONFIRM_CONTENT} />
+        </span>
+      ),
+      centered: true,
+      onOk: () => {
+        doDeleteUser(records[0].metadata.instanceId);
+      },
+      okText: intl.formatMessage(BASIC_INTL.DELETE),
+      okButtonProps: { danger: true },
+    };
+  };
+
   const columns: ProColumns<API.UserInfo>[] = [
-    {
-      title: <FormattedMessage {...BASIC_INTL.NO} />,
-      valueType: 'index',
-    },
     {
       title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
       dataIndex: ['metadata', 'instanceId'],
+      render: (_, record: API.UserInfo) => (
+        <a key="instanceId" onClick={() => handleEditUser(record.metadata.instanceId)}>
+          {record.metadata.instanceId}
+        </a>
+      ),
     },
     {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
@@ -117,21 +144,25 @@ const UserList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record: API.UserInfo) => [
-        <a key="editUser" onClick={() => handleEditUser(record.metadata.instanceId)}>
-          <FormattedMessage {...BASIC_INTL.EDIT} />
-        </a>,
-        <Popconfirm
-          key="deleteUserPopconfirm"
-          title={<FormattedMessage {...INTL.DELETE_USER_CONFIRM_TITLE} />}
-          description={<FormattedMessage {...INTL.DELETE_USER_CONFIRM_DESC} />}
-          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          placement="left"
-          onConfirm={() => doDeleteUser(record.metadata.instanceId)}
+        <Dropdown
+          key="dropdown"
+          trigger={['click']}
+          placement="bottom"
+          menu={{
+            items: [
+              {
+                key: 'deleteUser',
+                icon: <DeleteOutlined />,
+                label: intl.formatMessage(BASIC_INTL.DELETE),
+                onClick: () => {
+                  modal.confirm(deleteModalConfig([record]));
+                },
+              },
+            ],
+          }}
         >
-          <Button key="deleteUserBtn" type="link">
-            <FormattedMessage {...BASIC_INTL.DELETE} />
-          </Button>
-        </Popconfirm>,
+          <Button shape="default" type="text" icon={<EllipsisOutlined />}></Button>
+        </Dropdown>,
       ],
     },
   ];
@@ -145,6 +176,7 @@ const UserList: React.FC = () => {
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
         search={{ labelWidth: 90 }}
         request={handleListUsers}
+        rowSelection={{}}
         toolBarRender={() => [
           <CreateUserModal
             key="create"

@@ -1,9 +1,9 @@
 import CreateUserModal from '@/pages/User/components/CreateUserModal';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EllipsisOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
-import { App, Button, Popconfirm } from 'antd';
+import { App, Button, Dropdown } from 'antd';
 import React, { useRef } from 'react';
 import { ListRoleParams, listRoles } from '@/services/role/listRoles';
 import { BASIC_INTL } from '@/constant';
@@ -23,7 +23,7 @@ const INTL = {
 
 const RoleList: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const { message } = App.useApp();
+  const { message, modal } = App.useApp();
   const intl = useIntl();
 
   const reloadTable = () => {
@@ -32,7 +32,7 @@ const RoleList: React.FC = () => {
     }
   };
 
-  const { run: doDeleteResource, loading: deleteLoading } = useRequest(deleteRole, {
+  const { run: doDeleteRole } = useRequest(deleteRole, {
     manual: true,
     onSuccess: () => {
       reloadTable();
@@ -48,18 +48,44 @@ const RoleList: React.FC = () => {
     };
   };
 
+  const deleteModalConfig = (records: API.Role[]) => {
+    let title =
+      records.length === 1
+        ? intl.formatMessage(BASIC_INTL.DELETE_CONFIRM_TITLE, {
+            name: records[0].metadata.name,
+          })
+        : intl.formatMessage(BASIC_INTL.MULTI_DELETE_CONFIRM_TITLE, {
+            count: records.length,
+          });
+    return {
+      title: title,
+      content: (
+        <span>
+          <FormattedMessage {...BASIC_INTL.DELETE_CONFIRM_CONTENT} />
+        </span>
+      ),
+      centered: true,
+      onOk: () => {
+        doDeleteRole(records[0].metadata.instanceId);
+      },
+      okText: intl.formatMessage(BASIC_INTL.DELETE),
+      okButtonProps: { danger: true },
+    };
+  };
+
   const handleEditRole = (instanceId: string) => {
     history.push(`/resource/role/${instanceId}`);
   };
 
   const columns: ProColumns<API.Role>[] = [
     {
-      title: <FormattedMessage {...BASIC_INTL.NO} />,
-      valueType: 'index',
-    },
-    {
       title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
       dataIndex: ['metadata', 'instanceId'],
+      render: (_, record: API.Role) => (
+        <a key="instanceId" onClick={() => handleEditRole(record.metadata.instanceId)}>
+          {record.metadata.instanceId}
+        </a>
+      ),
     },
     {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
@@ -97,22 +123,25 @@ const RoleList: React.FC = () => {
       valueType: 'option',
       width: 150,
       render: (_, record: API.Role) => [
-        <a key="editRole" onClick={() => handleEditRole(record.metadata.instanceId)}>
-          <FormattedMessage {...BASIC_INTL.EDIT} />
-        </a>,
-        <Popconfirm
-          key="deleteRolePopconfirm"
-          title={<FormattedMessage {...INTL.DELETE_CONFIRM_TITLE} />}
-          description={<FormattedMessage {...INTL.DELETE_CONFIRM_DESC} />}
-          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          placement="left"
-          onConfirm={() => doDeleteResource(record.metadata.instanceId)}
-          okButtonProps={{ loading: deleteLoading }}
+        <Dropdown
+          key="dropdown"
+          trigger={['click']}
+          placement="bottom"
+          menu={{
+            items: [
+              {
+                key: 'deleteRole',
+                icon: <DeleteOutlined />,
+                label: intl.formatMessage(BASIC_INTL.DELETE),
+                onClick: () => {
+                  modal.confirm(deleteModalConfig([record]));
+                },
+              },
+            ],
+          }}
         >
-          <Button key="deleteRoleBtn" type="link">
-            <FormattedMessage {...BASIC_INTL.DELETE} />
-          </Button>
-        </Popconfirm>,
+          <Button shape="default" type="text" icon={<EllipsisOutlined />}></Button>
+        </Dropdown>,
       ],
     },
   ];
@@ -126,6 +155,7 @@ const RoleList: React.FC = () => {
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
         search={{ labelWidth: 90 }}
         request={handleListRoles}
+        rowSelection={{}}
         toolBarRender={() => [
           <CreateUserModal
             key="create"
