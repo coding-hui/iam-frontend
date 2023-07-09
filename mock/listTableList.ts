@@ -10,6 +10,7 @@ const genList = (current: number, limit: number) => {
     tableListDataSource.push({
       metadata: {
         name: `TradeCode ${index}`,
+        instanceId: 'user-' + i,
       },
       avatar: [
         'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
@@ -39,30 +40,6 @@ function getRule(req: Request, res: Response, u: string) {
     ((current as number) - 1) * (limit as number),
     (current as number) * (limit as number),
   );
-  if (params.sorter) {
-    const sorter = JSON.parse(params.sorter);
-    dataSource = dataSource.sort((prev, next) => {
-      let sortNumber = 0;
-      (Object.keys(sorter) as Array<keyof API.UserInfo>).forEach((key) => {
-        let nextSort = next?.[key] as number;
-        let preSort = prev?.[key] as number;
-        if (sorter[key] === 'descend') {
-          if (preSort - nextSort > 0) {
-            sortNumber += -1;
-          } else {
-            sortNumber += 1;
-          }
-          return;
-        }
-        if (preSort - nextSort > 0) {
-          sortNumber += 1;
-        } else {
-          sortNumber += -1;
-        }
-      });
-      return sortNumber;
-    });
-  }
   if (params.filter) {
     const filter = JSON.parse(params.filter as any) as {
       [key: string]: string[];
@@ -114,7 +91,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
     /* eslint no-case-declarations:0 */
     case 'delete':
       tableListDataSource = tableListDataSource.filter(
-        (item) => key.indexOf(item.metadata?.id) === -1,
+        (item) => key.indexOf(item.metadata?.instanceId) === -1,
       );
       break;
     case 'post':
@@ -123,6 +100,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
         const newRule: API.UserInfo = {
           metadata: {
             name: name,
+            instanceId: 'user-' + i,
           },
           avatar: [
             'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',

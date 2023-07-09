@@ -41,9 +41,9 @@ declare namespace API {
 
   type PageParams = {
     /** 当前的页码 */
-    offset?: number;
+    current?: number;
     /** 页面的容量 */
-    limit?: number;
+    pageSize?: number;
   };
 
   type UserInfo = {
