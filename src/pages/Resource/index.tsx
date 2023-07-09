@@ -1,8 +1,8 @@
-import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
-import { Button, message, Popconfirm } from 'antd';
+import { Button, Dropdown, message, Modal } from 'antd';
 import React, { useRef } from 'react';
 import { listResources } from '@/services/resource/listResources';
 import { deleteResource } from '@/services/resource/deleteResource';
@@ -21,6 +21,12 @@ const INTL = {
   TABLE_TITLE: {
     id: 'resource.table.title',
   },
+  ACTIONS: {
+    id: 'resource.table.actions',
+  },
+  DESCRIPTION: {
+    id: 'resource.table.description',
+  },
   DELETE_RESOURCE_CONFIRM_TITLE: {
     id: 'resource.popconfirm.delete.title',
   },
@@ -30,8 +36,9 @@ const INTL = {
 };
 
 const ResourceList: React.FC = () => {
-  const actionRef = useRef<ActionType>();
   const intl = useIntl();
+  const [modal, contextHolder] = Modal.useModal();
+  const actionRef = useRef<ActionType>();
 
   const reloadTable = () => {
     if (actionRef.current) {
@@ -55,18 +62,43 @@ const ResourceList: React.FC = () => {
     };
   };
 
+  const deleteModalConfig = (records: API.Resource[]) => {
+    let title =
+      records.length === 1
+        ? intl.formatMessage(BASIC_INTL.DELETE_CONFIRM_TITLE, {
+            name: records[0].metadata.name,
+          })
+        : intl.formatMessage(BASIC_INTL.MULTI_DELETE_CONFIRM_TITLE, {
+            count: records.length,
+          });
+    return {
+      title: title,
+      content: (
+        <span>
+          <FormattedMessage {...BASIC_INTL.DELETE_CONFIRM_CONTENT} />
+        </span>
+      ),
+      centered: true,
+      onOk: () => {
+        doDeleteResource(records[0].metadata.instanceId);
+      },
+      okText: intl.formatMessage(BASIC_INTL.DELETE),
+      okButtonProps: { danger: true },
+    };
+  };
+
   const handleEditResource = (instanceId: string) => {
     history.push(`/resource/edit/${instanceId}`);
   };
 
   const columns: ProColumns<API.Resource>[] = [
     {
-      title: <FormattedMessage {...BASIC_INTL.NO} />,
-      valueType: 'index',
-    },
-    {
       title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
-      dataIndex: ['metadata', 'instanceId'],
+      render: (_, record: API.Resource) => (
+        <a key="instanceId" onClick={() => handleEditResource(record.metadata.instanceId)}>
+          {record.metadata.instanceId}
+        </a>
+      ),
     },
     {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
@@ -85,6 +117,26 @@ const ResourceList: React.FC = () => {
       dataIndex: 'type',
     },
     {
+      title: <FormattedMessage {...INTL.ACTIONS} />,
+      ellipsis: true,
+      render: (_, record: API.Resource) => [
+        <span key="actions">
+          {record.actions
+            ? record.actions
+                .map((item) => {
+                  return item.name;
+                })
+                .join(',')
+            : '-'}
+        </span>,
+      ],
+    },
+    {
+      title: <FormattedMessage {...INTL.DESCRIPTION} />,
+      dataIndex: 'description',
+      ellipsis: true,
+    },
+    {
       title: <FormattedMessage {...BASIC_INTL.CREATED_AT} />,
       dataIndex: ['metadata', 'createdAt'],
       valueType: 'dateTime',
@@ -95,22 +147,28 @@ const ResourceList: React.FC = () => {
       title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record: API.UserInfo) => [
-        <a key="edit" onClick={() => handleEditResource(record.metadata.instanceId)}>
-          <FormattedMessage {...BASIC_INTL.EDIT} />
-        </a>,
-        <Popconfirm
-          key="deletePopconfirm"
-          title={<FormattedMessage {...INTL.DELETE_RESOURCE_CONFIRM_TITLE} />}
-          description={<FormattedMessage {...INTL.DELETE_RESOURCE_CONFIRM_DESC} />}
-          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          placement="left"
-          onConfirm={() => doDeleteResource(record.metadata.instanceId)}
+      width: 60,
+      fixed: 'right',
+      render: (_, record: API.Resource) => [
+        <Dropdown
+          key="dropdown"
+          trigger={['click']}
+          placement="bottom"
+          menu={{
+            items: [
+              {
+                key: 'deleteResource',
+                icon: <DeleteOutlined />,
+                label: intl.formatMessage(BASIC_INTL.DELETE),
+                onClick: () => {
+                  modal.confirm(deleteModalConfig([record]));
+                },
+              },
+            ],
+          }}
         >
-          <Button key="deleteBtn" type="link">
-            <FormattedMessage {...BASIC_INTL.DELETE} />
-          </Button>
-        </Popconfirm>,
+          <Button shape="default" type="text" icon={<EllipsisOutlined />}></Button>
+        </Dropdown>,
       ],
     },
   ];
@@ -123,24 +181,34 @@ const ResourceList: React.FC = () => {
   );
 
   return (
-    <PageContainer>
-      <ProTable<API.Resource, API.PageParams>
-        headerTitle={intl.formatMessage({
-          ...INTL.TABLE_TITLE,
-        })}
-        actionRef={actionRef}
-        columns={columns}
-        rowKey={(record) => record?.metadata?.instanceId ?? ''}
-        search={{ labelWidth: 90 }}
-        pagination={{
-          defaultPageSize: 10,
-          showSizeChanger: true,
-          pageSizeOptions: [10, 20, 30, 50],
-        }}
-        request={handleListResources}
-        toolBarRender={() => [renderToolBar]}
-      />
-    </PageContainer>
+    <>
+      {contextHolder}
+      <PageContainer>
+        <ProTable<API.Resource, API.PageParams>
+          headerTitle={intl.formatMessage({
+            ...INTL.TABLE_TITLE,
+          })}
+          rowSelection={
+            {
+              // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
+              // 注释该行则默认不显示下拉选项
+              // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
+            }
+          }
+          actionRef={actionRef}
+          columns={columns}
+          rowKey={(record) => record?.metadata?.instanceId ?? ''}
+          search={{ labelWidth: 90 }}
+          pagination={{
+            defaultPageSize: 10,
+            showSizeChanger: true,
+            pageSizeOptions: [10, 20, 30, 50],
+          }}
+          request={handleListResources}
+          toolBarRender={() => [renderToolBar]}
+        />
+      </PageContainer>
+    </>
   );
 };
 

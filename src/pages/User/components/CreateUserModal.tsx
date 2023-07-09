@@ -78,7 +78,6 @@ const CreateUserModal: React.FC<UpdateFormProps> = (props) => {
       }}
       title={intl.formatMessage({ id: INTL.TITLE })}
       form={form}
-      autoFocusFirstInput
       autoComplete="off"
       trigger={
         <Button type="primary">
@@ -92,6 +91,7 @@ const CreateUserModal: React.FC<UpdateFormProps> = (props) => {
           width="md"
           required
           name="name"
+          fieldProps={{ autoComplete: 'off' }}
           label={intl.formatMessage({ id: INTL.NAME })}
           placeholder={intl.formatMessage({ id: INTL.PLACEHOLDER_NAME })}
           rules={[{ required: true }]}
@@ -99,6 +99,7 @@ const CreateUserModal: React.FC<UpdateFormProps> = (props) => {
         <ProFormText
           width="md"
           name="alias"
+          fieldProps={{ autoComplete: 'off' }}
           label={intl.formatMessage({ id: INTL.ALIAS })}
           placeholder={intl.formatMessage({ id: INTL.PLACEHOLDER_ALIAS })}
         />
@@ -107,6 +108,7 @@ const CreateUserModal: React.FC<UpdateFormProps> = (props) => {
         <ProFormText
           width="md"
           name="phone"
+          fieldProps={{ autoComplete: 'off' }}
           label={intl.formatMessage({ id: INTL.PHONE })}
           placeholder={intl.formatMessage({ id: INTL.PLACEHOLDER_PHONE })}
           rules={[
@@ -120,6 +122,7 @@ const CreateUserModal: React.FC<UpdateFormProps> = (props) => {
         <ProFormText
           width="md"
           name="email"
+          fieldProps={{ autoComplete: 'off' }}
           label={intl.formatMessage({ id: INTL.EMAIL })}
           placeholder={intl.formatMessage({ id: INTL.PLACEHOLDER_EMAIL })}
           rules={[{ required: false }, { type: 'email' }]}
@@ -130,6 +133,7 @@ const CreateUserModal: React.FC<UpdateFormProps> = (props) => {
           width="md"
           required
           name="password"
+          fieldProps={{ autoComplete: 'off' }}
           label={intl.formatMessage({ id: INTL.PWD })}
           placeholder={intl.formatMessage({ id: INTL.PLACEHOLDER_PWD })}
           addonAfter={genRandomPwd}

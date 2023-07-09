@@ -7,21 +7,21 @@ import {
   ProFormSelect,
   ProFormRadio,
   ProFormDependency,
-  ProFormInstance,
-  FormListActionType,
+  ProFormTextArea,
 } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
-import { message } from 'antd';
-import React, { useRef } from 'react';
+import { Checkbox, Col, Row } from 'antd';
+import React from 'react';
 import { POLICY_EFFECT, POLICY_EFFECT_VALUE_ENUM } from '@/constant';
-import { listResources } from '@/services/resource/listResources';
 import { SubjectTransfer } from '@/components';
-import { useRequest } from '@@/exports';
-import { createPolicy } from '@/services/policy/createPolicy';
+import usePolicyHook from '@/pages/Policy/Create/_hooks';
 
 const INTL = {
-  TABLE_TITLE: {
-    id: 'policy.table.title',
+  BASIC_INFO: {
+    id: 'policy.form.title.basicInfo',
+  },
+  SUBJECT_INFO: {
+    id: 'policy.form.title.subjectInfo',
   },
   NAME: {
     id: 'policy.name',
@@ -71,131 +71,112 @@ const INTL = {
   PLACEHOLDER_SUBJECTS: {
     id: 'policy.subjects.placeholder',
   },
-  CREATE_SUCCESS: {
-    id: 'policy.message.create.success',
-  },
 };
 
-const EditRole: React.FC = () => {
+const CreatePolicy: React.FC = () => {
   const intl = useIntl();
-  const [messageApi, contextHolder] = message.useMessage();
-  const formRef = useRef<ProFormInstance<API.Policy>>();
-  const actionsActRef = useRef<FormListActionType>();
-
-  const handleSearchResources = async () => {
-    const res = await listResources({});
-    return res.list.map((item) => {
-      return {
-        key: item.metadata.instanceId,
-        label: item.metadata.name,
-        value: item.metadata.instanceId,
-      };
-    });
-  };
-
-  const handleSelectSubjects = async (values: string[]) => {
-    const subjects = values.map((item) => {
-      return {
-        label: item,
-        value: item,
-        key: item,
-      };
-    });
-    formRef.current?.setFieldValue('subjects', subjects);
-    return true;
-  };
-
-  const getSelectUsers = () => {
-    let val = formRef.current?.getFieldFormatValueObject?.('subjects');
-    if (val && val.subjects) {
-      return val.subjects.filter((item) => {
-        return item.startsWith('user');
-      });
-    }
-    return [];
-  };
-
-  const getSelectRoles = () => {
-    let val = formRef.current?.getFieldFormatValueObject?.('subjects');
-    if (val && val.subjects) {
-      return val.subjects.filter((item) => {
-        return item.startsWith('role');
-      });
-    }
-    return [];
-  };
-
-  const { run: doCreatePolicy, loading: createPolicyLoading } = useRequest(createPolicy, {
-    manual: true,
-    onSuccess: () => {
-      messageApi.success(intl.formatMessage(INTL.CREATE_SUCCESS));
+  const {
+    states: { isEdit, formRef, getInfoLoading, createPolicyLoading, updatePolicyLoading },
+    actions: {
+      handleSelectSubjects,
+      handleSearchResources,
+      getSelectUsers,
+      getSelectRoles,
+      handleSubmit,
+      handleReset,
     },
-  });
-
-  const handleSubmit = async () => {
-    const values = await formRef.current?.validateFieldsReturnFormatValue?.();
-    if (values) {
-      doCreatePolicy(values);
-    }
-  };
+  } = usePolicyHook();
 
   return (
-    <>
-      {contextHolder}
-      <PageContainer fixedHeader>
-        <ProCard layout="center" direction="column">
-          <ProForm loading={createPolicyLoading} formRef={formRef} onFinish={handleSubmit}>
-            <ProForm.Group align="center">
-              <ProFormText
-                width="md"
-                name="name"
-                label={intl.formatMessage(INTL.NAME)}
-                placeholder={intl.formatMessage(INTL.PLACEHOLDER_NAME)}
-                rules={[{ required: true }]}
-              />
-              <ProFormSelect.SearchSelect
-                width="sm"
-                name="resources"
-                mode="single"
-                label={intl.formatMessage(INTL.RESOURCES)}
-                placeholder={intl.formatMessage(INTL.PLACEHOLDER_RESOURCES)}
-                request={(params) => handleSearchResources(params)}
-                debounceTime={600}
-                rules={[{ required: true }]}
-                transform={(value) => {
-                  return { resources: [value.value] };
-                }}
-              />
-            </ProForm.Group>
-            <ProForm.Group align="center" size="small">
-              <ProFormSelect.SearchSelect
-                width="xl"
-                name="subjects"
-                label={intl.formatMessage(INTL.SUBJECTS)}
-                placeholder={intl.formatMessage(INTL.PLACEHOLDER_SUBJECTS)}
-                rules={[{ required: true }]}
-                showSearch
-                transform={(values: { value: string }[]) => {
-                  return {
-                    subjects: [
-                      ...values.map((item) => {
-                        return item.value;
-                      }),
-                    ],
-                  };
-                }}
-                addonAfter={
-                  <SubjectTransfer
-                    key="subjectTransfer"
-                    doGetTargetUsers={() => getSelectUsers()}
-                    doGetTargetRoles={() => getSelectRoles()}
-                    onOk={(values) => handleSelectSubjects(values)}
-                    okText="选择主体"
-                  />
-                }
-              />
-            </ProForm.Group>
-            <ProForm.Group align="center">
+    <PageContainer fixedHeader>
+      <ProCard layout="center" direction="column">
+        <ProForm
+          loading={getInfoLoading || createPolicyLoading || updatePolicyLoading}
+          formRef={formRef}
+          onFinish={handleSubmit}
+          onReset={handleReset}
+        >
+          <ProForm.Group
+            title={intl.formatMessage(INTL.BASIC_INFO)}
+            titleStyle={{ marginBottom: '14px' }}
+            align="center"
+            direction="vertical"
+          >
+            <ProFormText
+              width="xl"
+              name="name"
+              disabled={isEdit}
+              label={intl.formatMessage(INTL.NAME)}
+              placeholder={intl.formatMessage(INTL.PLACEHOLDER_NAME)}
+              rules={[{ required: true }]}
+            />
+            <ProFormTextArea
+              width="xl"
+              name="description"
+              label={intl.formatMessage(INTL.DESCRIPTION)}
+              placeholder={intl.formatMessage(INTL.PLACEHOLDER_DESCRIPTION)}
+              rules={[{ required: false }]}
+            />
+          </ProForm.Group>
+          <ProForm.Group
+            title={intl.formatMessage(INTL.SUBJECT_INFO)}
+            titleStyle={{ marginBottom: '14px' }}
+            align="center"
+          >
+            <ProFormSelect.SearchSelect
+              width="xl"
+              name="subjects"
+              label={intl.formatMessage(INTL.SUBJECTS)}
+              placeholder={intl.formatMessage(INTL.PLACEHOLDER_SUBJECTS)}
+              rules={[{ required: true }]}
+              showSearch
+              transform={(values: { value: string }[]) => {
+                return {
+                  subjects: [
+                    ...values.map((item) => {
+                      return item.value;
+                    }),
+                  ],
+                };
+              }}
+              addonAfter={
+                <SubjectTransfer
+                  key="subjectTransfer"
+                  doGetTargetUsers={() => getSelectUsers()}
+                  doGetTargetRoles={() => getSelectRoles()}
+                  onOk={(values) => handleSelectSubjects(values)}
+                  okText="选择主体"
+                />
+              }
+            />
+          </ProForm.Group>
+          <ProFormList
+            name="statements"
+            min={1}
+            creatorButtonProps={{
+              position: 'bottom',
+              creatorButtonText: '添加授权规则',
+            }}
+            creatorRecord={{
+              effect: POLICY_EFFECT.ALLOW,
+              allowAll: true,
+              resourceIdentifier: '*',
+            }}
+            initialValue={[{ effect: POLICY_EFFECT.ALLOW, allowAll: true }]}
+            itemRender={({ listDom, action }, { index }) => (
+              <ProCard
+                hoverable
+                bordered
+                style={{ marginBlockEnd: 8 }}
+                title={`#${index + 1}`}
+                extra={action}
+                bodyStyle={{ paddingBlockEnd: 0 }}
+              >
+                {listDom}
+              </ProCard>
+            )}
+          >
+            <ProForm.Group titleStyle={{ marginBottom: '14px' }} align="center">
               <ProFormRadio.Group
                 name="effect"
                 valueEnum={POLICY_EFFECT_VALUE_ENUM}
@@ -204,6 +185,36 @@ const EditRole: React.FC = () => {
                 placeholder={intl.formatMessage(INTL.PLACEHOLDER_EFFECT)}
                 rules={[{ required: true }]}
               />
+            </ProForm.Group>
+            <ProForm.Group>
+              <ProFormSelect.SearchSelect
+                width="sm"
+                name="selectedResource"
+                mode="single"
+                label={intl.formatMessage(INTL.RESOURCES)}
+                placeholder={intl.formatMessage(INTL.PLACEHOLDER_RESOURCES)}
+                request={(params) => handleSearchResources(params)}
+                debounceTime={599}
+                rules={[{ required: true }]}
+              />
+              <ProFormDependency name={['selectedResource']}>
+                {({ selectedResource }) => {
+                  return (
+                    selectedResource &&
+                    selectedResource.name && (
+                      <ProFormText
+                        width="sm"
+                        name="resourceIdentifier"
+                        label="资源标识符"
+                        initialValue="*"
+                        addonBefore={`${selectedResource.value}:`}
+                        placeholder={intl.formatMessage(INTL.PLACEHOLDER_NAME)}
+                        rules={[{ required: true }]}
+                      />
+                    )
+                  );
+                }}
+              </ProFormDependency>
             </ProForm.Group>
             <ProForm.Group align="center">
               <ProFormRadio.Group
@@ -222,63 +233,37 @@ const EditRole: React.FC = () => {
                   },
                 ]}
                 rules={[{ required: true }]}
-                transform={(allowAll) => {
-                  if (allowAll) {
-                    return { actions: [{ name: '*', description: '' }] };
-                  }
-                  return allowAll;
-                }}
               />
             </ProForm.Group>
-            {/*<ProForm.Group align="center">*/}
-            {/*  <ProFormTextArea*/}
-            {/*    width="xl"*/}
-            {/*    name="description"*/}
-            {/*    label={intl.formatMessage(INTL.DESCRIPTION)}*/}
-            {/*    placeholder={intl.formatMessage(INTL.PLACEHOLDER_DESCRIPTION)}*/}
-            {/*    rules={[{ required: false }]}*/}
-            {/*  />*/}
-            {/*</ProForm.Group>*/}
-            <ProFormDependency name={['allowAll', 'resources']}>
-              {({ allowAll, resources }) => {
-                const addonBeforeText = resources ? `${resources}:` : '';
-                return allowAll !== undefined && !allowAll ? (
-                  <ProFormList
-                    label={intl.formatMessage(INTL.RULES)}
-                    required
-                    actionRef={actionsActRef}
-                    creatorButtonProps={{ hidden: allowAll, creatorButtonText: '添加授权规则' }}
-                    name="actions"
-                    min={1}
-                    initialValue={[{ name: '', description: '' }]}
-                  >
-                    <ProForm.Group align="center" size="small">
-                      <ProFormText
-                        addonBefore={addonBeforeText}
-                        width="sm"
-                        name="name"
-                        placeholder="授权规则"
-                        rules={[{ required: true }]}
-                        allowClear={false}
-                      />
-                      <ProFormText
-                        width="sm"
-                        name="description"
-                        placeholder="描述"
-                        rules={[{ required: false }]}
-                      />
-                    </ProForm.Group>
-                  </ProFormList>
-                ) : (
-                  <></>
+            <ProFormDependency name={['selectedResource', 'allowAll']}>
+              {({ selectedResource, allowAll }) => {
+                if (allowAll || !selectedResource || !selectedResource.actions) {
+                  return <></>;
+                }
+                return (
+                  <ProForm.Item name="actions">
+                    <Checkbox.Group style={{ width: '100%' }}>
+                      <Row>
+                        {selectedResource.actions.map((act: API.Action) => {
+                          return (
+                            <Col key={act.name} span={6}>
+                              <Checkbox value={act.name} key={`${act.name}-act`}>
+                                {act.name}
+                              </Checkbox>
+                            </Col>
+                          );
+                        })}
+                      </Row>
+                    </Checkbox.Group>
+                  </ProForm.Item>
                 );
               }}
             </ProFormDependency>
-          </ProForm>
-        </ProCard>
-      </PageContainer>
-    </>
+          </ProFormList>
+        </ProForm>
+      </ProCard>
+    </PageContainer>
   );
 };
 
-export default EditRole;
+export default CreatePolicy;

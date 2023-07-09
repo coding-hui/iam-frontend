@@ -5,8 +5,6 @@ import {
   ProFormText,
   ProFormList,
   ProFormSelect,
-  ProFormRadio,
-  ProFormDependency,
   ProFormInstance,
   FormListActionType,
   ProFormTextArea,
@@ -16,6 +14,7 @@ import { message } from 'antd';
 import React, { useRef } from 'react';
 import { history, useRequest } from '@@/exports';
 import { createResource } from '@/services/resource/createResource';
+import { METHOD_OPTIONS } from '@/constant';
 
 const INTL = {
   NAME: {
@@ -30,18 +29,6 @@ const INTL = {
   PLACEHOLDER_API: {
     id: 'resource.api.placeholder',
   },
-  ACTIONS: {
-    id: 'resource.actions',
-  },
-  PLACEHOLDER_ACTIONS: {
-    id: 'resource.actions.placeholder',
-  },
-  RULES: {
-    id: 'resource.rules',
-  },
-  PLACEHOLDER_RULES: {
-    id: 'resource.rules.placeholder',
-  },
   DESCRIPTION: {
     id: 'resource.description',
   },
@@ -54,29 +41,29 @@ const INTL = {
   PLACEHOLDER_METHOD: {
     id: 'resource.method.placeholder',
   },
-  ACTION_NAME: {
-    id: 'resource.action.name',
+  ACTION_TIP: {
+    id: 'resource.actions.tip',
   },
-  ACTION_DESCRIPTION: {
-    id: 'resource.action.description',
+  ACTION: {
+    id: 'resource.actions',
+  },
+  PLACEHOLDER_ACTION_NAME: {
+    id: 'resource.actions.name.placeholder',
+  },
+  REQUIRED_ACTION_NAME: {
+    id: 'resource.actions.name.requiredMsg',
+  },
+  PLACEHOLDER_ACTION_DESCRIPTION: {
+    id: 'resource.actions.description.placeholder',
+  },
+  ADD_ACTION: {
+    id: 'resource.actions.add',
   },
   CREATE_SUCCESS: {
     id: 'resource.message.create.success',
   },
   BASIC_INFO: {
     id: 'resource.form.basicInfo',
-  },
-  ACTION_INFO: {
-    id: 'resource.form.actionInfo',
-  },
-  ADD_ACTION: {
-    id: 'resource.form.action.add',
-  },
-  ALLOW_ALL: {
-    id: 'policy.type.allowAll',
-  },
-  SPECIFIC: {
-    id: 'policy.type.specific',
   },
 };
 
@@ -118,7 +105,7 @@ const CreateResource: React.FC = () => {
                 name="name"
                 label={intl.formatMessage(INTL.NAME)}
                 placeholder={intl.formatMessage(INTL.PLACEHOLDER_NAME)}
-                rules={[{ required: true }]}
+                rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_NAME) }]}
               />
               <ProFormSelect.SearchSelect
                 width="sm"
@@ -126,29 +113,8 @@ const CreateResource: React.FC = () => {
                 mode="single"
                 label={intl.formatMessage(INTL.METHOD)}
                 placeholder={intl.formatMessage(INTL.PLACEHOLDER_METHOD)}
-                options={[
-                  {
-                    label: 'GET',
-                    value: 'GET',
-                  },
-                  {
-                    label: 'POST',
-                    value: 'POST',
-                  },
-                  {
-                    label: 'PUT',
-                    value: 'PUT',
-                  },
-                  {
-                    label: 'DELETE',
-                    value: 'DELETE',
-                  },
-                  {
-                    label: 'ANY',
-                    value: '*',
-                  },
-                ]}
-                rules={[{ required: true }]}
+                options={METHOD_OPTIONS}
+                rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_METHOD) }]}
                 transform={(value) => {
                   return { method: value.value };
                 }}
@@ -160,7 +126,7 @@ const CreateResource: React.FC = () => {
                 name="api"
                 label={intl.formatMessage(INTL.API)}
                 placeholder={intl.formatMessage(INTL.PLACEHOLDER_API)}
-                rules={[{ required: true }]}
+                rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_API) }]}
               />
             </ProForm.Group>
             <ProForm.Group align="center">
@@ -169,76 +135,36 @@ const CreateResource: React.FC = () => {
                 name="description"
                 label={intl.formatMessage(INTL.DESCRIPTION)}
                 placeholder={intl.formatMessage(INTL.PLACEHOLDER_DESCRIPTION)}
-                rules={[{ required: false }]}
-              />
-            </ProForm.Group>
-            <ProForm.Group
-              title={intl.formatMessage(INTL.ACTION_INFO)}
-              titleStyle={{ marginBottom: '14px' }}
-              align="center"
-            >
-              <ProFormRadio.Group
-                name="allowAll"
-                width="md"
-                label={intl.formatMessage(INTL.ACTIONS)}
-                initialValue={false}
-                options={[
-                  {
-                    label: intl.formatMessage(INTL.ALLOW_ALL),
-                    value: true,
-                  },
-                  {
-                    label: intl.formatMessage(INTL.SPECIFIC),
-                    value: false,
-                  },
+                rules={[
+                  { required: true, message: intl.formatMessage(INTL.PLACEHOLDER_DESCRIPTION) },
                 ]}
-                rules={[{ required: true }]}
-                transform={(allowAll) => {
-                  if (allowAll) {
-                    return { actions: [{ name: '*', description: '' }] };
-                  }
-                  return allowAll;
-                }}
               />
             </ProForm.Group>
-            <ProFormDependency name={['allowAll', 'resources']}>
-              {({ allowAll, resources }) => {
-                const addonBeforeText = resources ? `${resources}:` : '';
-                return allowAll !== undefined && !allowAll ? (
-                  <ProFormList
-                    label={intl.formatMessage(INTL.RULES)}
-                    name="actions"
-                    required
-                    actionRef={actionsActRef}
-                    creatorButtonProps={{
-                      hidden: allowAll,
-                      creatorButtonText: intl.formatMessage(INTL.ADD_ACTION),
-                    }}
-                    min={1}
-                    initialValue={[{ name: '', description: '' }]}
-                  >
-                    <ProForm.Group align="center" size="small">
-                      <ProFormText
-                        addonBefore={addonBeforeText}
-                        width="sm"
-                        name="name"
-                        placeholder={intl.formatMessage(INTL.ACTION_NAME)}
-                        rules={[{ required: true }]}
-                        allowClear={false}
-                      />
-                      <ProFormText
-                        width="sm"
-                        name="description"
-                        placeholder={intl.formatMessage(INTL.ACTION_DESCRIPTION)}
-                        rules={[{ required: false }]}
-                      />
-                    </ProForm.Group>
-                  </ProFormList>
-                ) : (
-                  <></>
-                );
-              }}
-            </ProFormDependency>
+            <ProFormList
+              label={intl.formatMessage(INTL.ACTION)}
+              name="actions"
+              actionRef={actionsActRef}
+              tooltip={intl.formatMessage(INTL.ACTION_TIP)}
+              creatorButtonProps={{ creatorButtonText: intl.formatMessage(INTL.ADD_ACTION) }}
+            >
+              <ProForm.Group align="center" size="small">
+                <ProFormText
+                  width="sm"
+                  name="name"
+                  placeholder={intl.formatMessage(INTL.PLACEHOLDER_ACTION_NAME)}
+                  rules={[
+                    { required: true, message: intl.formatMessage(INTL.REQUIRED_ACTION_NAME) },
+                  ]}
+                  allowClear={false}
+                />
+                <ProFormText
+                  width="sm"
+                  name="description"
+                  placeholder={intl.formatMessage(INTL.PLACEHOLDER_ACTION_DESCRIPTION)}
+                  rules={[{ required: false }]}
+                />
+              </ProForm.Group>
+            </ProFormList>
           </ProForm>
         </ProCard>
       </PageContainer>

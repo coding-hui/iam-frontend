@@ -1,8 +1,8 @@
-import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
-import { Button, message, Popconfirm } from 'antd';
+import { App, Button, Dropdown } from 'antd';
 import React, { useRef } from 'react';
 import { listPolicies } from '@/services/policy/listPolicies';
 import { BASIC_INTL } from '@/constant';
@@ -21,6 +21,7 @@ const INTL = {
 };
 
 const PolicyList: React.FC = () => {
+  const { message, modal } = App.useApp();
   const actionRef = useRef<ActionType>();
   const intl = useIntl();
 
@@ -54,29 +55,52 @@ const PolicyList: React.FC = () => {
   );
 
   const handleEditPolicy = (instanceId: string) => {
-    history.push(`/resource/policy/${instanceId}`);
+    history.push(`/resource/policy/edit/${instanceId}`);
+  };
+
+  const deleteModalConfig = (records: API.Policy[]) => {
+    let title =
+      records.length === 1
+        ? intl.formatMessage(BASIC_INTL.DELETE_CONFIRM_TITLE, {
+            name: records[0].metadata.name,
+          })
+        : intl.formatMessage(BASIC_INTL.MULTI_DELETE_CONFIRM_TITLE, {
+            count: records.length,
+          });
+    return {
+      title: title,
+      content: (
+        <span>
+          <FormattedMessage {...BASIC_INTL.DELETE_CONFIRM_CONTENT} />
+        </span>
+      ),
+      centered: true,
+      onOk: () => {
+        doDeletePolicy(records[0].metadata.name);
+      },
+      okText: intl.formatMessage(BASIC_INTL.DELETE),
+      okButtonProps: { danger: true },
+    };
   };
 
   const columns: ProColumns<API.Policy>[] = [
     {
-      title: <FormattedMessage {...BASIC_INTL.NO} />,
-      valueType: 'index',
-    },
-    {
       title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
       dataIndex: ['metadata', 'instanceId'],
+      render: (_, record: API.Policy) => (
+        <a key="instanceId" onClick={() => handleEditPolicy(record.metadata.instanceId)}>
+          {record.metadata.instanceId}
+        </a>
+      ),
     },
     {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
     },
     {
-      title: <FormattedMessage {...BASIC_INTL.TYPE} />,
-      dataIndex: 'type',
-    },
-    {
       title: <FormattedMessage {...BASIC_INTL.STATUS} />,
       dataIndex: 'status',
+      hideInForm: true,
       valueEnum: {
         0: {
           text: <FormattedMessage {...BASIC_INTL.ACTIVED} />,
@@ -87,6 +111,11 @@ const PolicyList: React.FC = () => {
           status: 'Error',
         },
       },
+    },
+    {
+      title: '授权主体',
+      dataIndex: 'subjects',
+      valueType: 'segmented',
     },
     {
       title: <FormattedMessage {...BASIC_INTL.DESCRIPTION} />,
@@ -104,23 +133,28 @@ const PolicyList: React.FC = () => {
       title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
       dataIndex: 'option',
       valueType: 'option',
-      width: 150,
+      width: 60,
+      fixed: 'right',
       render: (_, record: API.Policy) => [
-        <a key="edit" onClick={() => handleEditPolicy(record.metadata.instanceId)}>
-          <FormattedMessage {...BASIC_INTL.EDIT} />
-        </a>,
-        <Popconfirm
-          key="deletePopconfirm"
-          title={<FormattedMessage {...INTL.DELETE_CONFIRM_TITLE} />}
-          description={<FormattedMessage {...INTL.DELETE_CONFIRM_DESC} />}
-          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          placement="left"
-          onConfirm={() => doDeletePolicy(record.metadata.name)}
+        <Dropdown
+          key="dropdown"
+          trigger={['click']}
+          placement="bottom"
+          menu={{
+            items: [
+              {
+                key: 'deleteResource',
+                icon: <DeleteOutlined />,
+                label: intl.formatMessage(BASIC_INTL.DELETE),
+                onClick: () => {
+                  modal.confirm(deleteModalConfig([record]));
+                },
+              },
+            ],
+          }}
         >
-          <Button key="deleteBtn" type="link">
-            <FormattedMessage {...BASIC_INTL.DELETE} />
-          </Button>
-        </Popconfirm>,
+          <Button shape="default" type="text" icon={<EllipsisOutlined />}></Button>
+        </Dropdown>,
       ],
     },
   ];
@@ -135,6 +169,13 @@ const PolicyList: React.FC = () => {
         search={{ labelWidth: 90 }}
         request={handleListPolicies}
         toolBarRender={() => [renderToolBar]}
+        rowSelection={
+          {
+            // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
+            // 注释该行则默认不显示下拉选项
+            // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
+          }
+        }
       />
     </PageContainer>
   );

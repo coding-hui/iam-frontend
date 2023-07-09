@@ -127,12 +127,18 @@ declare namespace API {
     total: number;
   };
 
+  type Statement = {
+    effect: boolean;
+    resource: string;
+    resourceIdentifier: string;
+    actions: string[];
+  };
+
   type Policy = {
     metadata: ObjectMeta;
     subjects: string[];
-    resources: string[];
-    actions: string[];
-    effect: string;
+    resources: Resource[];
+    statements: Statement[];
     type: string;
     owner: string;
     description: string;

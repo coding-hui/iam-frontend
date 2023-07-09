@@ -85,6 +85,12 @@ export default [
         hideInMenu: true,
       },
       {
+        path: '/resource/policy/edit/:instanceId',
+        name: 'policy-edit',
+        component: './Policy/Create',
+        hideInMenu: true,
+      },
+      {
         path: '/resource/role',
         name: 'role-list',
         component: './Role',

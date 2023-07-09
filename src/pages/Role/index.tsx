@@ -106,7 +106,7 @@ const RoleList: React.FC = () => {
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           placement="left"
           onConfirm={() => doDeleteResource(record.metadata.instanceId)}
-          okButtonProps={{ loading: deleteLoading }}
+          okButtonProps={{ getInfoLoading: deleteLoading }}
         >
           <Button key="deleteRoleBtn" type="link">
             <FormattedMessage {...BASIC_INTL.DELETE} />

@@ -1,6 +1,6 @@
 import { request } from '@umijs/max';
 
-export interface CreatePolicyRequest {
+export interface UpdatePolicyRequest {
   name?: string;
   description?: string;
   type?: string;
@@ -10,13 +10,14 @@ export interface CreatePolicyRequest {
   statements?: API.Statement[];
 }
 
-export async function createPolicy(
-  createReq: CreatePolicyRequest,
+export async function updatePolicy(
+  instanceId: string,
+  updateReq: UpdatePolicyRequest,
   options?: { [key: string]: any },
 ) {
-  return request(`/api/v1/policies`, {
-    method: 'POST',
-    data: createReq,
+  return request(`/api/v1/policies/${instanceId}`, {
+    method: 'PUT',
+    data: updateReq,
     ...(options || {}),
   });
 }

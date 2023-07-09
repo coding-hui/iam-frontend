@@ -41,4 +41,13 @@ export const BASIC_INTL = {
   DELETE_SUCCESS: {
     id: 'message.delete.success',
   },
+  DELETE_CONFIRM_TITLE: {
+    id: 'message.delete.confirm.title',
+  },
+  MULTI_DELETE_CONFIRM_TITLE: {
+    id: 'message.multi_delete.confirm.title',
+  },
+  DELETE_CONFIRM_CONTENT: {
+    id: 'message.delete.confirm.content',
+  },
 };

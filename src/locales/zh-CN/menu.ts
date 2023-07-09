@@ -57,6 +57,7 @@ export default {
   'menu.resource.resource-edit': '编辑资源',
   'menu.resource.policy-list': '权限策略',
   'menu.resource.policy-create': '创建策略',
+  'menu.resource.policy-edit': '编辑策略',
   'menu.resource.role-list': '角色管理',
   'menu.resource.role-edit': '编辑角色',
   'menu.system': '系统设置',

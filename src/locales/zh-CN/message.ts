@@ -6,4 +6,7 @@ export default {
   'message.delete.success': '删除成功',
   'message.create.failed': '创建失败，请稍后重试',
   'message.delete.failed': '删除失败，请稍后重试',
+  'message.delete.confirm.title': '确定要删除 `{name}` ？',
+  'message.multi_delete.confirm.title': '确定删除 {count} 个资源？',
+  'message.delete.confirm.content': '删除后将无法恢复，请谨慎操作!',
 };
