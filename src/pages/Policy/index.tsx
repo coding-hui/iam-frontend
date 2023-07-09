@@ -98,6 +98,10 @@ const PolicyList: React.FC = () => {
       dataIndex: ['metadata', 'name'],
     },
     {
+      title: <FormattedMessage {...BASIC_INTL.TYPE} />,
+      dataIndex: 'type',
+    },
+    {
       title: <FormattedMessage {...BASIC_INTL.STATUS} />,
       dataIndex: 'status',
       hideInForm: true,
