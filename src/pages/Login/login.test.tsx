@@ -40,14 +40,14 @@ describe('Login Page', () => {
       />,
     );
 
-    await rootContainer.findAllByText('Ant Design');
+    await rootContainer.findAllByText('WeCoding');
 
     act(() => {
       historyRef.current?.push('/user/login');
     });
 
     expect(rootContainer.baseElement?.querySelector('.ant-pro-form-login-desc')?.textContent).toBe(
-      'Ant Design is the most influential web design specification in Xihu district',
+      'Welcome to WeCoding Identity and Access Management',
     );
 
     expect(rootContainer.asFragment()).toMatchSnapshot();
@@ -66,18 +66,18 @@ describe('Login Page', () => {
       />,
     );
 
-    await rootContainer.findAllByText('Ant Design');
+    await rootContainer.findAllByText('WeCoding');
 
-    const userNameInput = await rootContainer.findByPlaceholderText('Username: admin or user');
+    const userNameInput = await rootContainer.findByPlaceholderText('Username/Phone/Email');
 
     act(() => {
-      fireEvent.change(userNameInput, { target: { value: 'admin' } });
+      fireEvent.change(userNameInput, { target: { value: 'ADMIN' } });
     });
 
-    const passwordInput = await rootContainer.findByPlaceholderText('Password: ant.design');
+    const passwordInput = await rootContainer.findByPlaceholderText('Password');
 
     act(() => {
-      fireEvent.change(passwordInput, { target: { value: 'ant.design' } });
+      fireEvent.change(passwordInput, { target: { value: 'WECODING' } });
     });
 
     await (await rootContainer.findByText('Login')).click();
@@ -85,7 +85,7 @@ describe('Login Page', () => {
     // 等待接口返回结果
     await waitTime(5000);
 
-    await rootContainer.findAllByText('Ant Design Pro');
+    await rootContainer.findAllByText('WeCoding');
 
     expect(rootContainer.asFragment()).toMatchSnapshot();
 

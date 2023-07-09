@@ -141,7 +141,6 @@ const Login: React.FC = () => {
     try {
       // 登录
       const res = await login({ ...values, type });
-      console.log(res, 'loginresult');
       if (res && res.access_token) {
         localStorage.setItem(TOKEN_KEY, res.access_token);
         const defaultLoginSuccessMessage = intl.formatMessage({
@@ -161,7 +160,6 @@ const Login: React.FC = () => {
         id: 'pages.login.failure',
         defaultMessage: '登录失败，请重试！',
       });
-      console.log(error);
       message.error(defaultLoginFailureMessage);
     }
   };
