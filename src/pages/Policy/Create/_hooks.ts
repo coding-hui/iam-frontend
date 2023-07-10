@@ -16,6 +16,14 @@ const INTL = {
   },
 };
 
+const ALL_RESOURCE = {
+  key: '*',
+  label: '全部资源',
+  name: '*',
+  value: '*',
+  actions: [],
+};
+
 export type AdvancedStatement = API.Statement & {
   allowAll: boolean;
   selectedResource: {
@@ -41,18 +49,19 @@ export default function usePolicyHook() {
 
   const setFormFieldsValue = (policyInfo: API.Policy) => {
     let statements = policyInfo.statements.map((item: API.Statement) => {
-      let resource = policyInfo.resources
-        .filter((r) => {
-          return r.metadata.instanceId === item.resource;
-        })
-        .pop();
+      let resource =
+        item.resource === ALL_RESOURCE.value
+          ? ALL_RESOURCE
+          : policyInfo.resources &&
+            policyInfo.resources.filter((r) => r.metadata.instanceId === item.resource).pop();
       const split = item.resourceIdentifier.split(':');
+      const resourceName = split.length > 0 ? split[0] : '';
       const resourceIdentifier = split.length > 1 ? split[1] : '*';
       let selectedResource = {
         key: item.resource,
         value: item.resource,
-        name: resource?.metadata.name,
-        label: resource?.metadata.name,
+        name: resourceName,
+        label: resourceName,
         actions: resource?.actions,
       };
       return {
@@ -109,15 +118,25 @@ export default function usePolicyHook() {
   // @ts-ignore
   const handleSearchResources = async (params) => {
     const res = await listResources(params);
-    return res.list.map((item) => {
-      return {
+    const resources = [
+      {
+        key: '*',
+        label: '全部资源',
+        name: '*',
+        value: '*',
+        actions: [{ name: '*' }],
+      },
+    ];
+    res.list.forEach((item) => {
+      resources.push({
         key: item.metadata.instanceId,
         label: item.metadata.name,
         name: item.metadata.name,
         value: item.metadata.instanceId,
         actions: item.actions,
-      };
+      });
     });
+    return resources;
   };
 
   const getSelectRoles = () => {

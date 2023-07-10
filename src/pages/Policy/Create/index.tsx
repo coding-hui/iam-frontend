@@ -216,28 +216,42 @@ const CreatePolicy: React.FC = () => {
                 }}
               </ProFormDependency>
             </ProForm.Group>
-            <ProForm.Group align="center">
-              <ProFormRadio.Group
-                name="allowAll"
-                width="md"
-                label={intl.formatMessage(INTL.ACTIONS)}
-                initialValue={false}
-                options={[
-                  {
-                    label: '全部操作',
-                    value: true,
-                  },
-                  {
-                    label: '特定操作',
-                    value: false,
-                  },
-                ]}
-                rules={[{ required: true }]}
-              />
-            </ProForm.Group>
+            <ProFormDependency name={['selectedResource']}>
+              {({ selectedResource }) => {
+                if (selectedResource && selectedResource.value === '*') {
+                  return <></>;
+                }
+                return (
+                  <ProForm.Group align="center">
+                    <ProFormRadio.Group
+                      name="allowAll"
+                      width="md"
+                      label={intl.formatMessage(INTL.ACTIONS)}
+                      initialValue={false}
+                      options={[
+                        {
+                          label: '全部操作',
+                          value: true,
+                        },
+                        {
+                          label: '特定操作',
+                          value: false,
+                        },
+                      ]}
+                      rules={[{ required: true }]}
+                    />
+                  </ProForm.Group>
+                );
+              }}
+            </ProFormDependency>
             <ProFormDependency name={['selectedResource', 'allowAll']}>
               {({ selectedResource, allowAll }) => {
-                if (allowAll || !selectedResource || !selectedResource.actions) {
+                if (
+                  allowAll ||
+                  !selectedResource ||
+                  selectedResource.value === '*' ||
+                  !selectedResource.actions
+                ) {
                   return <></>;
                 }
                 return (
