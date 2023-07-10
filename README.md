@@ -1,4 +1,4 @@
-Language : 🇺🇸 | [🇨🇳](./README.zh-CN.md) | [🇷🇺](./README.ru-RU.md) | [🇹🇷](./README.tr-TR.md) | [🇯🇵](./README.ja-JP.md) | [🇫🇷](./README.fr-FR.md) | [🇵🇹](./README.pt-BR.md) | [🇸🇦](./README.ar-DZ.md)
+Language : 🇺🇸 | [🇨🇳](./README.zh-CN.md)
 
 <h1 align="center">WeCoding IAM</h1>
 
@@ -14,20 +14,8 @@ WeCoding Identity and Access Management
 
 </div>
 
-- Preview: http://preview.pro.ant.design
-- Home Page: http://pro.ant.design
-- Documentation: http://pro.ant.design/docs/getting-started
-- ChangeLog: http://pro.ant.design/docs/changelog
-- FAQ: http://pro.ant.design/docs/faq
-- Mirror Site in China: http://ant-design-pro.gitee.io
-
-## 5.0 is out! 🎉🎉🎉
-
-[Ant Design Pro 5.0.0](https://github.com/ant-design/ant-design-pro/issues/8656)
-
-## Translation Recruitment :loudspeaker:
-
-We need your help: https://github.com/ant-design/ant-design-pro/issues/120
+- Preview: http://iam.wecoding.top
+- FAQ: https://github.com/coding-hui/iam/issues
 
 ## Features
 
@@ -42,41 +30,6 @@ We need your help: https://github.com/ant-design/ant-design-pro/issues/120
 - :gear: **Best Practices**: Solid workflow to make your code healthy
 - :1234: **Mock development**: Easy to use mock development solution
 - :white_check_mark: **UI Test**: Fly safely with unit and e2e tests
-
-## Templates
-
-```
-- Dashboard
-  - Analytic
-  - Monitor
-  - Workspace
-- Form
-  - Basic Form
-  - Step Form
-  - Advanced From
-- List
-  - Standard Table
-  - Standard List
-  - Card List
-  - Search List (Project/Applications/Article)
-- Profile
-  - Simple Profile
-  - Advanced Profile
-- Account
-  - Account Center
-  - Account Settings
-- Result
-  - Success
-  - Failed
-- Exception
-  - 403
-  - 404
-  - 500
-- User
-  - Login
-  - Register
-  - Register Result
-```
 
 ## Usage
 
@@ -115,6 +68,17 @@ $ cd myapp && tyarn
 // or
 $ cd myapp && npm install
 ```
+
+## Git Contribution submission specification
+
+- reference vue specification. See https://github.com/vuejs/core/blob/main/.github/commit-convention.md
+  - 💥 feat(compiler): add 'comments' option
+  - 🐛 fix(compiler): fix some bug
+  - 📝 docs(compiler): add some docs
+  - 🌷 UI(compiler): better styles
+  - 🏰 chore(compiler): Made some changes to the scaffolding
+  - 🌐 locale(compiler): Made a small contribution to internationalization
+  - Other commit types: refactor, perf, workflow, build, CI, typos, tests, types, wip, release, dep
 
 ## Browsers support
 
