@@ -38,6 +38,9 @@ export const BASIC_INTL = {
   CREATED_AT: {
     id: 'pages.searchTable.createdAt',
   },
+  UPDATE_SUCCESS: {
+    id: 'message.update.success',
+  },
   DELETE_SUCCESS: {
     id: 'message.delete.success',
   },

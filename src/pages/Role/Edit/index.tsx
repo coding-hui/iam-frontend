@@ -20,9 +20,6 @@ import { assignRole } from '@/services/role/assignRole';
 import { TRANSFER_TYPE } from '@/components/Transfer';
 
 const INTL = {
-  TABLE_TITLE: {
-    id: 'users.table.title',
-  },
   ALIAS: {
     id: 'users.table.alias',
   },
@@ -31,18 +28,6 @@ const INTL = {
   },
   EMAIL: {
     id: 'users.table.email',
-  },
-  LAST_LOGIN_TIME: {
-    id: 'users.table.lastLoginTime',
-  },
-  DELETE_USER_CONFIRM_TITLE: {
-    id: 'users.popconfirm.delete.title',
-  },
-  DELETE_USER_CONFIRM_DESC: {
-    id: 'users.popconfirm.delete.description',
-  },
-  DELETE_SUCCESS: {
-    id: 'message.delete.success',
   },
   REVOKE_ROLE: {
     id: 'role.revoke.user',
@@ -103,7 +88,7 @@ const EditRole: React.FC = () => {
   const { run: doUpdateRoleInfo, loading: updateRoleInfoLoading } = useRequest(updateRole, {
     manual: true,
     onSuccess: () => {
-      message.success(intl.formatMessage(BASIC_INTL.DELETE_SUCCESS));
+      message.success(intl.formatMessage(BASIC_INTL.UPDATE_SUCCESS));
     },
   });
 

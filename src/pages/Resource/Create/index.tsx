@@ -133,9 +133,7 @@ const CreateResource: React.FC = () => {
               name="description"
               label={intl.formatMessage(INTL.DESCRIPTION)}
               placeholder={intl.formatMessage(INTL.PLACEHOLDER_DESCRIPTION)}
-              rules={[
-                { required: true, message: intl.formatMessage(INTL.PLACEHOLDER_DESCRIPTION) },
-              ]}
+              rules={[{ required: false }]}
             />
           </ProForm.Group>
           <ProFormList
