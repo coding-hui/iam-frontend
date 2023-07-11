@@ -5,6 +5,7 @@ import { listUsers } from '@/services/user/listUsers';
 import { PlusOutlined } from '@ant-design/icons';
 import { useActive } from '@/hooks';
 import { listRoles } from '@/services/role/listRoles';
+import { TRANSFER_TYPE, TransferType } from '@/components/Transfer/typings';
 
 interface Props {
   modal?: false;
@@ -16,6 +17,7 @@ interface Props {
   doGetTargetRoles?: () => string[];
   onOk: (values: string[]) => Promise<boolean>;
   okText?: string;
+  types?: TransferType[];
 }
 
 const SubjectTransfer: React.FC<Props> = (props) => {
@@ -27,10 +29,11 @@ const SubjectTransfer: React.FC<Props> = (props) => {
     doGetTargetRoles,
     modalWidth = 730,
     modalTitle = '分配角色',
+    types = [TRANSFER_TYPE.USER, TRANSFER_TYPE.ROLE],
     onOk,
   } = props;
   const [visible, { toggle: handleEditVisible }] = useActive(false);
-  const [currentTab, setCurrentTab] = useState('user');
+  const [currentTab, setCurrentTab] = useState<string>(types[0]);
   const [userTargetKeys, setUserTargetKeys] = useState<string[]>();
   const [userSelectedKeys, setUserSelectedKeys] = useState<string[]>([]);
   const [roleTargetKeys, setRoleTargetKeys] = useState<string[]>();
@@ -110,9 +113,9 @@ const SubjectTransfer: React.FC<Props> = (props) => {
 
   const handleTabChange = (tab: string) => {
     setCurrentTab(tab);
-    if (tab === 'user') {
+    if (tab === TRANSFER_TYPE.USER) {
       doListUsers({});
-    } else if (tab === 'role') {
+    } else if (tab === TRANSFER_TYPE.ROLE) {
       doListRoles({});
     }
   };
@@ -135,7 +138,7 @@ const SubjectTransfer: React.FC<Props> = (props) => {
   };
 
   const handleOpen = () => {
-    doListUsers({});
+    handleTabChange(types[0]);
     handleEditVisible();
   };
 
@@ -169,15 +172,24 @@ const SubjectTransfer: React.FC<Props> = (props) => {
     />
   );
 
+  const renderTransferByType = (type: TransferType) => {
+    switch (type) {
+      case TRANSFER_TYPE.USER:
+        return renderUserTransfer;
+      case TRANSFER_TYPE.ROLE:
+        return renderRoleTransfer;
+    }
+  };
+
   const tabOptions = [
     {
       label: `用户`,
-      key: 'user',
+      key: TRANSFER_TYPE.USER,
       children: renderUserTransfer,
     },
     {
       label: `角色`,
-      key: 'role',
+      key: TRANSFER_TYPE.ROLE,
       children: renderRoleTransfer,
     },
   ];
@@ -196,11 +208,15 @@ const SubjectTransfer: React.FC<Props> = (props) => {
         onOk={handleSubmit}
         destroyOnClose
       >
-        <Tabs
-          activeKey={currentTab}
-          items={tabOptions}
-          onChange={(tab) => handleTabChange(tab)}
-        ></Tabs>
+        {types.length === 1 ? (
+          renderTransferByType(types[0])
+        ) : (
+          <Tabs
+            activeKey={currentTab}
+            items={tabOptions.filter((tab) => types.some((t) => t === tab.key))}
+            onChange={(tab) => handleTabChange(tab)}
+          ></Tabs>
+        )}
       </Modal>
     </>
   );

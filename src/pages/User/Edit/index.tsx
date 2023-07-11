@@ -1,30 +1,54 @@
-import { getUserInfo } from '@/services/user/getUserInfo';
 import { CheckCircleOutlined, DeleteOutlined, DownOutlined, StopOutlined } from '@ant-design/icons';
 import {
   BetaSchemaForm,
   PageContainer,
   ProCard,
+  ProColumns,
   ProFormColumnsType,
+  ProTable,
 } from '@ant-design/pro-components';
-import { useParams, useRequest } from '@umijs/max';
-import { App, Avatar, Button, Dropdown, Form } from 'antd';
-import React, { useEffect } from 'react';
-import { FormattedMessage, useIntl } from '@@/exports';
-import { updateUser } from '@/services/user/updateUser';
+import { Avatar, Button, Dropdown } from 'antd';
+import React from 'react';
+import { FormattedMessage } from '@umijs/max';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
+import useUserHook from '@/pages/User/Edit/_hooks';
+import { BASIC_INTL } from '@/constant';
+import { SubjectTransfer } from '@/components';
+import { TRANSFER_TYPE } from '@/components/Transfer';
 
 const INTL = {
   ACTIVE_STATUS: 'users.table.status.active',
   DISABLED_STATUS: 'users.table.status.disabled',
   UPDATE_SUCCESS: 'message.update.success',
+  REVOKE_ROLE: {
+    id: 'role.revoke.user',
+  },
 };
 
 const EditUser: React.FC = () => {
-  const intl = useIntl();
-  const { message } = App.useApp();
-  const { instanceId } = useParams();
-  const [userInfoForm] = Form.useForm();
-  const [accountInfoForm] = Form.useForm();
+  const {
+    states: {
+      userTabs,
+      currentTab,
+      userInfo,
+      loading,
+      updateUserInfoLoading,
+      userInfoForm,
+      accountInfoForm,
+      roleTableActionRef,
+    },
+    actions: {
+      isInfoTab,
+      fetchUserRoles,
+      getAssignRolesKeys,
+      handleTabChange,
+      handleToEditRole,
+      handleRevokeUserRole,
+      handleAssignUserRole,
+      handleUpdateUserInfo,
+      handleResetUserInfoFormValues,
+    },
+  } = useUserHook();
 
   const userInfoColumns: ProFormColumnsType<API.UserInfo>[] = [
     {
@@ -110,48 +134,58 @@ const EditUser: React.FC = () => {
     },
   ];
 
-  const {
-    run: doGetUserInfo,
-    data: userInfo,
-    loading,
-  } = useRequest(getUserInfo, {
-    manual: true,
-    loadingDelay: 600,
-    formatResult: (userInfo) => userInfo,
-    onSuccess: (userInfo) => {
-      userInfoForm.setFieldsValue(userInfo);
-      accountInfoForm.setFieldsValue(userInfo);
+  const roleColumns: ProColumns<API.Role>[] = [
+    {
+      title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
+      dataIndex: ['metadata', 'instanceId'],
+      render: (_, record: API.Role) => (
+        <a key="instanceId" onClick={() => handleToEditRole(record.metadata.instanceId)}>
+          {record.metadata.instanceId}
+        </a>
+      ),
     },
-  });
-
-  useEffect(() => {
-    if (instanceId) {
-      doGetUserInfo(instanceId);
-    }
-  }, []);
-
-  const { run: doUpdateUserInfo, loading: updateUserInfoLoading } = useRequest(updateUser, {
-    manual: true,
-    onSuccess: () => {
-      message.success(intl.formatMessage({ id: INTL.UPDATE_SUCCESS }));
+    {
+      title: <FormattedMessage {...BASIC_INTL.NAME} />,
+      dataIndex: ['metadata', 'name'],
     },
-  });
-
-  const handleResetUserInfoFormValues = () => {
-    userInfoForm.setFieldsValue(userInfo);
-    accountInfoForm.setFieldsValue(userInfo);
-  };
-
-  const handleUpdateUserInfo = async () => {
-    try {
-      const values = await userInfoForm.validateFields();
-      if (userInfo) {
-        doUpdateUserInfo(userInfo.metadata.instanceId, values);
-      }
-    } catch (err) {
-      //
-    }
-  };
+    {
+      title: <FormattedMessage {...BASIC_INTL.STATUS} />,
+      dataIndex: 'disabled',
+      valueEnum: {
+        false: {
+          text: <FormattedMessage {...BASIC_INTL.ACTIVED} />,
+          status: 'Success',
+        },
+        true: {
+          text: <FormattedMessage {...BASIC_INTL.DISABLED} />,
+          status: 'Error',
+        },
+      },
+    },
+    {
+      title: <FormattedMessage {...BASIC_INTL.DESCRIPTION} />,
+      dataIndex: 'description',
+      hideInSearch: true,
+    },
+    {
+      title: <FormattedMessage {...BASIC_INTL.CREATED_AT} />,
+      dataIndex: ['metadata', 'createdAt'],
+      valueType: 'dateTime',
+      width: 220,
+      search: false,
+    },
+    {
+      title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
+      dataIndex: 'option',
+      valueType: 'option',
+      width: 150,
+      render: (_, record: API.Role) => [
+        <a key="revokeUserRole" onClick={() => handleRevokeUserRole(record.metadata.instanceId)}>
+          <FormattedMessage {...INTL.REVOKE_ROLE} />
+        </a>,
+      ],
+    },
+  ];
 
   const userAvatarTitleClassName = useEmotionCss(() => {
     return {
@@ -209,21 +243,9 @@ const EditUser: React.FC = () => {
   return (
     <PageContainer
       fixedHeader
-      tabList={[
-        {
-          tab: '用户信息',
-          key: '1',
-        },
-        {
-          tab: '角色权限',
-          key: '2',
-        },
-        {
-          tab: '访问日志',
-          key: '3',
-          disabled: true,
-        },
-      ]}
+      tabActiveKey={currentTab}
+      onTabChange={(tab) => handleTabChange(tab)}
+      tabList={[userTabs.INFO, userTabs.ROLES, userTabs.LOG]}
       header={{
         title: userAvatarTitle,
         subTitle: userSubTitleInfo,
@@ -258,27 +280,48 @@ const EditUser: React.FC = () => {
       }}
     >
       <ProCard direction="column" ghost gutter={[0, 16]}>
-        <ProCard loading={loading} title="用户信息">
-          <BetaSchemaForm<API.UserInfo>
-            form={userInfoForm}
-            layoutType="Form"
-            grid
-            loading={updateUserInfoLoading}
-            onReset={handleResetUserInfoFormValues}
-            onFinish={handleUpdateUserInfo}
-            columns={userInfoColumns}
-          />
-        </ProCard>
-        <ProCard loading={loading} title="账号信息">
-          <BetaSchemaForm<API.UserInfo>
-            form={accountInfoForm}
-            layoutType="Form"
-            grid
-            readonly
-            columns={accountInfoColumns}
-            submitter={false}
-          />
-        </ProCard>
+        {isInfoTab() ? (
+          <>
+            <ProCard loading={loading} title="用户信息">
+              <BetaSchemaForm<API.UserInfo>
+                form={userInfoForm}
+                layoutType="Form"
+                grid
+                loading={updateUserInfoLoading}
+                onReset={handleResetUserInfoFormValues}
+                onFinish={handleUpdateUserInfo}
+                columns={userInfoColumns}
+              />
+            </ProCard>
+            <ProCard loading={loading} title="账号信息">
+              <BetaSchemaForm<API.UserInfo>
+                form={accountInfoForm}
+                layoutType="Form"
+                grid
+                readonly
+                columns={accountInfoColumns}
+                submitter={false}
+              />
+            </ProCard>
+          </>
+        ) : (
+          <ProTable
+            headerTitle="拥有角色"
+            actionRef={roleTableActionRef}
+            search={false}
+            columns={roleColumns}
+            request={fetchUserRoles}
+            rowKey={(record) => record?.metadata?.instanceId ?? ''}
+            toolBarRender={() => [
+              <SubjectTransfer
+                key="assignUserRole"
+                types={[TRANSFER_TYPE.ROLE]}
+                doGetTargetRoles={() => getAssignRolesKeys()}
+                onOk={(values) => handleAssignUserRole(values)}
+              />,
+            ]}
+          ></ProTable>
+        )}
       </ProCard>
     </PageContainer>
   );

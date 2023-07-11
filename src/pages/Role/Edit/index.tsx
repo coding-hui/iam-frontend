@@ -17,6 +17,7 @@ import { BASIC_INTL } from '@/constant';
 import { revokeRole } from '@/services/role/revokeRole';
 import { SubjectTransfer } from '@/components';
 import { assignRole } from '@/services/role/assignRole';
+import { TRANSFER_TYPE } from '@/components/Transfer';
 
 const INTL = {
   TABLE_TITLE: {
@@ -330,7 +331,8 @@ const EditRole: React.FC = () => {
             toolBarRender={() => [
               <SubjectTransfer
                 key="assignRole"
-                targetUsers={getAssignTargetKeys()}
+                types={[TRANSFER_TYPE.USER]}
+                doGetTargetRoles={() => getAssignTargetKeys()}
                 onOk={(values) => handleAssignRole(values)}
               />,
             ]}
