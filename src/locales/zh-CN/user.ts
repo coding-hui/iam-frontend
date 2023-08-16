@@ -28,4 +28,9 @@ export default {
   'users.form.validator.phone.msg': '手机号格式不正确',
   'users.popconfirm.delete.title': '删除用户',
   'users.popconfirm.delete.description': '确定要删除该用户？',
+  'users.modalconfirm.enable.title': '确定要启用账号 `{name}` ？',
+  'users.modalconfirm.disable.title': '确定要禁用账号 `{name}` ？',
+  'users.modalconfirm.enable.content': '启用后该账号可正常使用 IAM 相关服务!',
+  'users.modalconfirm.disable.content':
+    '禁用后该账号无法正常使用 IAM 相关服务，无法登录系统，请谨慎操作!',
 };

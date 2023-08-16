@@ -68,7 +68,7 @@ const RoleList: React.FC = () => {
       onOk: () => {
         doDeleteRole(records[0].metadata.instanceId);
       },
-      okText: intl.formatMessage(BASIC_INTL.DELETE),
+      okText: intl.formatMessage(BASIC_INTL.BTN_DELETE),
       okButtonProps: { danger: true },
     };
   };
@@ -132,7 +132,7 @@ const RoleList: React.FC = () => {
               {
                 key: 'deleteRole',
                 icon: <DeleteOutlined />,
-                label: intl.formatMessage(BASIC_INTL.DELETE),
+                label: intl.formatMessage(BASIC_INTL.BTN_DELETE),
                 onClick: () => {
                   modal.confirm(deleteModalConfig([record]));
                 },

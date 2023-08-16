@@ -87,7 +87,7 @@ const UserList: React.FC = () => {
       onOk: () => {
         doDeleteUser(records[0].metadata.instanceId);
       },
-      okText: intl.formatMessage(BASIC_INTL.DELETE),
+      okText: intl.formatMessage(BASIC_INTL.BTN_DELETE),
       okButtonProps: { danger: true },
     };
   };
@@ -138,14 +138,14 @@ const UserList: React.FC = () => {
     },
     {
       title: <FormattedMessage {...BASIC_INTL.STATUS} />,
-      dataIndex: 'status',
+      dataIndex: 'disabled',
       hideInForm: true,
       valueEnum: {
-        0: {
+        false: {
           text: <FormattedMessage {...BASIC_INTL.ACTIVED} />,
           status: 'Success',
         },
-        1: {
+        true: {
           text: <FormattedMessage {...BASIC_INTL.DISABLED} />,
           status: 'Error',
         },
@@ -165,7 +165,7 @@ const UserList: React.FC = () => {
               {
                 key: 'deleteUser',
                 icon: <DeleteOutlined />,
-                label: intl.formatMessage(BASIC_INTL.DELETE),
+                label: intl.formatMessage(BASIC_INTL.BTN_DELETE),
                 onClick: () => {
                   modal.confirm(deleteModalConfig([record]));
                 },

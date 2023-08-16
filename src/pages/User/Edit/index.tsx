@@ -24,6 +24,18 @@ const INTL = {
   REVOKE_ROLE: {
     id: 'role.revoke.user',
   },
+  ENABLE_CONFIRM_TITLE: {
+    id: 'users.modalconfirm.enable.title',
+  },
+  ENABLE_CONFIRM_CONTENT: {
+    id: 'users.modalconfirm.enable.content',
+  },
+  DISABLE_CONFIRM_TITLE: {
+    id: 'users.modalconfirm.disable.title',
+  },
+  DISABLE_CONFIRM_CONTENT: {
+    id: 'users.modalconfirm.disable.content',
+  },
 };
 
 const EditUser: React.FC = () => {
@@ -50,6 +62,7 @@ const EditUser: React.FC = () => {
       handleRevokeUserRole,
       handleAssignUserRole,
       handleUpdateUserInfo,
+      handleChangeUserState,
       handleResetUserInfoFormValues,
     },
   } = useUserHook();
@@ -96,7 +109,7 @@ const EditUser: React.FC = () => {
   const accountInfoColumns: ProFormColumnsType<API.UserInfo>[] = [
     {
       title: '账号状态',
-      dataIndex: 'status',
+      dataIndex: 'disabled',
       width: 'md',
       readonly: true,
       colProps: {
@@ -104,11 +117,11 @@ const EditUser: React.FC = () => {
         md: 8,
       },
       valueEnum: {
-        0: {
+        false: {
           text: <FormattedMessage id={INTL.ACTIVE_STATUS} defaultMessage="Actived" />,
           status: 'Success',
         },
-        1: {
+        true: {
           text: <FormattedMessage id={INTL.DISABLED_STATUS} defaultMessage="Disabled" />,
           status: 'Error',
         },
@@ -259,8 +272,37 @@ const EditUser: React.FC = () => {
       onOk: () => {
         handleDeleteUser();
       },
-      okText: intl.formatMessage(BASIC_INTL.DELETE),
+      okText: intl.formatMessage(BASIC_INTL.BTN_DELETE),
       okButtonProps: { danger: true },
+    };
+  };
+
+  const changeUserStateModalConfig = () => {
+    let title = intl.formatMessage(INTL.DISABLE_CONFIRM_TITLE, {
+      name: userInfo?.metadata.name,
+    });
+    let content = intl.formatMessage(INTL.DISABLE_CONFIRM_CONTENT, {
+      name: userInfo?.metadata.name,
+    });
+    let okText = intl.formatMessage(BASIC_INTL.BTN_DISABLE);
+    if (userInfo?.disabled) {
+      title = intl.formatMessage(INTL.ENABLE_CONFIRM_TITLE, {
+        name: userInfo?.metadata.name,
+      });
+      content = intl.formatMessage(INTL.ENABLE_CONFIRM_CONTENT, {
+        name: userInfo?.metadata.name,
+      });
+      okText = intl.formatMessage(BASIC_INTL.BTN_ENABLE);
+    }
+    return {
+      title: title,
+      content: content,
+      centered: true,
+      onOk: () => {
+        handleChangeUserState(!userInfo?.disabled);
+      },
+      okText: okText,
+      okButtonProps: { danger: !userInfo?.disabled },
     };
   };
 
@@ -280,9 +322,12 @@ const EditUser: React.FC = () => {
             menu={{
               items: [
                 {
-                  icon: userInfo?.status === '1' ? <CheckCircleOutlined /> : <StopOutlined />,
-                  label: userInfo?.status === '1' ? '启用账号' : '禁用账号',
+                  icon: userInfo?.disabled ? <CheckCircleOutlined /> : <StopOutlined />,
+                  label: userInfo?.disabled ? '启用账号' : '禁用账号',
                   key: '1',
+                  onClick: () => {
+                    modal.confirm(changeUserStateModalConfig());
+                  },
                 },
                 {
                   icon: <DeleteOutlined />,

@@ -2,14 +2,20 @@ export const BASIC_INTL = {
   TITLE_OPTION: {
     id: 'pages.searchTable.titleOption',
   },
-  EDIT: {
-    id: 'pages.searchTable.edit',
+  BTN_EDIT: {
+    id: 'pages.common.btn.edit',
   },
-  DELETE: {
-    id: 'pages.searchTable.delete',
+  BTN_DELETE: {
+    id: 'pages.common.btn.delete',
   },
-  ADD: {
-    id: 'pages.searchTable.add',
+  BTN_ADD: {
+    id: 'pages.common.btn.add',
+  },
+  BTN_DISABLE: {
+    id: 'pages.common.btn.disable',
+  },
+  BTN_ENABLE: {
+    id: 'pages.common.btn.enable',
   },
   NO: {
     id: 'pages.searchTable.no',

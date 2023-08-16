@@ -9,6 +9,8 @@ import { ActionType } from '@ant-design/pro-components';
 import { batchAssignRole } from '@/services/role/assignRole';
 import { deleteUser } from '@/services/user/deleteUser';
 import { BASIC_INTL } from '@/constant';
+import { enableUser } from '@/services/user/enableUser';
+import { disableUser } from '@/services/user/disableUser';
 
 const INTL = {
   ACTIVE_STATUS: 'users.table.status.active',
@@ -172,6 +174,38 @@ export default function useUserHook() {
     }
   };
 
+  const { run: doDisableUser } = useRequest(disableUser, {
+    manual: true,
+    onSuccess: () => {
+      if (userInfo) {
+        doGetUserInfo(userInfo.metadata.instanceId);
+        roleTableActionRef.current?.reload();
+      }
+      message.success(intl.formatMessage(BASIC_INTL.UPDATE_SUCCESS));
+    },
+  });
+
+  const { run: doEnableUser } = useRequest(enableUser, {
+    manual: true,
+    onSuccess: () => {
+      if (userInfo) {
+        doGetUserInfo(userInfo.metadata.instanceId);
+        roleTableActionRef.current?.reload();
+      }
+      message.success(intl.formatMessage(BASIC_INTL.UPDATE_SUCCESS));
+    },
+  });
+
+  const handleChangeUserState = (disabled?: boolean) => {
+    if (userInfo) {
+      if (disabled) {
+        doDisableUser(userInfo.metadata.instanceId);
+      } else {
+        doEnableUser(userInfo.metadata.instanceId);
+      }
+    }
+  };
+
   const states = {
     userTabs: USER_TABS,
     instanceId,
@@ -197,6 +231,7 @@ export default function useUserHook() {
     handleRevokeUserRole,
     handleAssignUserRole,
     handleUpdateUserInfo,
+    handleChangeUserState,
     handleResetUserInfoFormValues,
   };
 

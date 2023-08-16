@@ -50,7 +50,7 @@ const PolicyList: React.FC = () => {
   const renderToolBar = (
     <Button type="primary" onClick={() => history.push(`/resource/policy/create`)}>
       <PlusOutlined />
-      <FormattedMessage {...BASIC_INTL.ADD} />
+      <FormattedMessage {...BASIC_INTL.BTN_ADD} />
     </Button>
   );
 
@@ -78,7 +78,7 @@ const PolicyList: React.FC = () => {
       onOk: () => {
         doDeletePolicy(records[0].metadata.name);
       },
-      okText: intl.formatMessage(BASIC_INTL.DELETE),
+      okText: intl.formatMessage(BASIC_INTL.BTN_DELETE),
       okButtonProps: { danger: true },
     };
   };
@@ -149,7 +149,7 @@ const PolicyList: React.FC = () => {
               {
                 key: 'deleteResource',
                 icon: <DeleteOutlined />,
-                label: intl.formatMessage(BASIC_INTL.DELETE),
+                label: intl.formatMessage(BASIC_INTL.BTN_DELETE),
                 onClick: () => {
                   modal.confirm(deleteModalConfig([record]));
                 },

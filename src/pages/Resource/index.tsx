@@ -82,7 +82,7 @@ const ResourceList: React.FC = () => {
       onOk: () => {
         doDeleteResource(records[0].metadata.instanceId);
       },
-      okText: intl.formatMessage(BASIC_INTL.DELETE),
+      okText: intl.formatMessage(BASIC_INTL.BTN_DELETE),
       okButtonProps: { danger: true },
     };
   };
@@ -159,7 +159,7 @@ const ResourceList: React.FC = () => {
               {
                 key: 'deleteResource',
                 icon: <DeleteOutlined />,
-                label: intl.formatMessage(BASIC_INTL.DELETE),
+                label: intl.formatMessage(BASIC_INTL.BTN_DELETE),
                 onClick: () => {
                   modal.confirm(deleteModalConfig([record]));
                 },
@@ -176,7 +176,7 @@ const ResourceList: React.FC = () => {
   const renderToolBar = (
     <Button type="primary" onClick={() => history.push(`/resource/create`)}>
       <PlusOutlined />
-      <FormattedMessage {...BASIC_INTL.ADD} />
+      <FormattedMessage {...BASIC_INTL.BTN_ADD} />
     </Button>
   );
 
