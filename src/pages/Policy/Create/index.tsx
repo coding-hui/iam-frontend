@@ -260,9 +260,10 @@ const CreatePolicy: React.FC = () => {
                       <Row>
                         {selectedResource.actions.map((act: API.Action) => {
                           return (
-                            <Col key={act.name} span={6}>
+                            <Col key={act.name} span={8}>
                               <Checkbox value={act.name} key={`${act.name}-act`}>
                                 {act.name}
+                                {act.description ? `(${act.description})` : ''}
                               </Checkbox>
                             </Col>
                           );
