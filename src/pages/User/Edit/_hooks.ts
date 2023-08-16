@@ -7,6 +7,8 @@ import { App, Form } from 'antd';
 import { revokeRole } from '@/services/role/revokeRole';
 import { ActionType } from '@ant-design/pro-components';
 import { batchAssignRole } from '@/services/role/assignRole';
+import { deleteUser } from '@/services/user/deleteUser';
+import { BASIC_INTL } from '@/constant';
 
 const INTL = {
   ACTIVE_STATUS: 'users.table.status.active',
@@ -154,6 +156,22 @@ export default function useUserHook() {
     setCurrentTab(tab);
   };
 
+  const { run: doDeleteUser } = useRequest(deleteUser, {
+    manual: true,
+    onSuccess: () => {
+      message.success(intl.formatMessage(BASIC_INTL.DELETE_SUCCESS));
+      setTimeout(() => {
+        history.push(`/user/list`);
+      }, 200);
+    },
+  });
+
+  const handleDeleteUser = () => {
+    if (userInfo) {
+      doDeleteUser(userInfo.metadata.instanceId);
+    }
+  };
+
   const states = {
     userTabs: USER_TABS,
     instanceId,
@@ -175,6 +193,7 @@ export default function useUserHook() {
     fetchUserRoles,
     getAssignRolesKeys,
     handleToEditRole,
+    handleDeleteUser,
     handleRevokeUserRole,
     handleAssignUserRole,
     handleUpdateUserInfo,

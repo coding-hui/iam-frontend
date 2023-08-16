@@ -7,7 +7,7 @@ import {
   ProFormColumnsType,
   ProTable,
 } from '@ant-design/pro-components';
-import { Avatar, Button, Dropdown } from 'antd';
+import { App, Avatar, Button, Dropdown } from 'antd';
 import React from 'react';
 import { FormattedMessage } from '@umijs/max';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
@@ -15,6 +15,7 @@ import useUserHook from '@/pages/User/Edit/_hooks';
 import { BASIC_INTL } from '@/constant';
 import { SubjectTransfer } from '@/components';
 import { TRANSFER_TYPE } from '@/components/Transfer';
+import { useIntl } from '@@/exports';
 
 const INTL = {
   ACTIVE_STATUS: 'users.table.status.active',
@@ -26,6 +27,8 @@ const INTL = {
 };
 
 const EditUser: React.FC = () => {
+  const intl = useIntl();
+  const { modal } = App.useApp();
   const {
     states: {
       userTabs,
@@ -43,6 +46,7 @@ const EditUser: React.FC = () => {
       getAssignRolesKeys,
       handleTabChange,
       handleToEditRole,
+      handleDeleteUser,
       handleRevokeUserRole,
       handleAssignUserRole,
       handleUpdateUserInfo,
@@ -240,6 +244,26 @@ const EditUser: React.FC = () => {
     </div>
   );
 
+  const deleteModalConfig = () => {
+    let title = intl.formatMessage(BASIC_INTL.DELETE_CONFIRM_TITLE, {
+      name: userInfo?.metadata.name,
+    });
+    return {
+      title: title,
+      content: (
+        <span>
+          <FormattedMessage {...BASIC_INTL.DELETE_CONFIRM_CONTENT} />
+        </span>
+      ),
+      centered: true,
+      onOk: () => {
+        handleDeleteUser();
+      },
+      okText: intl.formatMessage(BASIC_INTL.DELETE),
+      okButtonProps: { danger: true },
+    };
+  };
+
   return (
     <PageContainer
       fixedHeader
@@ -264,6 +288,9 @@ const EditUser: React.FC = () => {
                   icon: <DeleteOutlined />,
                   label: '删除账号',
                   key: '2',
+                  onClick: () => {
+                    modal.confirm(deleteModalConfig());
+                  },
                 },
               ],
             }}
