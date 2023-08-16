@@ -1,6 +1,7 @@
 import { request } from '@umijs/max';
 
 export type ListRoleParams = {
+  name?: string;
   fuzzyName?: string;
 } & API.PageParams;
 

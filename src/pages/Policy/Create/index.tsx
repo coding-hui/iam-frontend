@@ -207,7 +207,7 @@ const CreatePolicy: React.FC = () => {
                         name="resourceIdentifier"
                         label="资源标识符"
                         initialValue="*"
-                        addonBefore={`${selectedResource.value}:`}
+                        addonBefore={`${selectedResource.name}:`}
                         placeholder={intl.formatMessage(INTL.PLACEHOLDER_NAME)}
                         rules={[{ required: true }]}
                       />

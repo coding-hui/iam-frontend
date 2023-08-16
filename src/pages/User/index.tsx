@@ -101,10 +101,20 @@ const UserList: React.FC = () => {
           {record.metadata.instanceId}
         </a>
       ),
+      search: {
+        transform: (val) => {
+          return { instanceId: val };
+        },
+      },
     },
     {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
+      search: {
+        transform: (val) => {
+          return { name: val };
+        },
+      },
     },
     {
       title: <FormattedMessage {...INTL.ALIAS} />,
@@ -113,10 +123,12 @@ const UserList: React.FC = () => {
     {
       title: <FormattedMessage {...INTL.PHONE} />,
       dataIndex: 'phone',
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage {...INTL.EMAIL} />,
       dataIndex: 'email',
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage {...INTL.LAST_LOGIN_TIME} />,
@@ -177,6 +189,11 @@ const UserList: React.FC = () => {
         search={{ labelWidth: 90 }}
         request={handleListUsers}
         rowSelection={{}}
+        pagination={{
+          defaultPageSize: 10,
+          showSizeChanger: true,
+          pageSizeOptions: [10, 20, 30, 50],
+        }}
         toolBarRender={() => [
           <CreateUserModal
             key="create"

@@ -1,6 +1,7 @@
 import { request } from '@@/exports';
 
 export type ListUserParams = {
+  name?: string;
   fuzzyName?: string;
 } & API.PageParams;
 

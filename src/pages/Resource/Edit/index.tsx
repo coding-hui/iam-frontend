@@ -204,6 +204,7 @@ const CreateResource: React.FC = () => {
                   rules={[
                     { required: true, message: intl.formatMessage(INTL.PLACEHOLDER_ACTION_NAME) },
                   ]}
+                  convertValue={(val) => val && val.split(':')[1]}
                   allowClear={false}
                 />
                 <ProFormText

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Modal, Button, Transfer, Tabs } from 'antd';
+import { Modal, Button, Transfer, Tabs, Spin } from 'antd';
 import { useRequest } from '@umijs/max';
 import { listUsers } from '@/services/user/listUsers';
 import { PlusOutlined } from '@ant-design/icons';
 import { useActive } from '@/hooks';
 import { listRoles } from '@/services/role/listRoles';
 import { TRANSFER_TYPE, TransferType } from '@/components/Transfer/typings';
+import { TransferDirection } from 'antd/es/transfer';
 
 interface Props {
   modal?: false;
@@ -65,8 +66,13 @@ const SubjectTransfer: React.FC<Props> = (props) => {
     });
   };
 
-  const { run: doListUsers, data: users } = useRequest(listUsers, {
+  const {
+    run: doListUsers,
+    data: users,
+    loading: listUserLoading,
+  } = useRequest(listUsers, {
     manual: true,
+    debounceInterval: 500,
     formatResult: (users) => users,
     onSuccess: () => {
       let users = targetUsers;
@@ -77,8 +83,13 @@ const SubjectTransfer: React.FC<Props> = (props) => {
     },
   });
 
-  const { run: doListRoles, data: roles } = useRequest(listRoles, {
+  const {
+    run: doListRoles,
+    data: roles,
+    loading: listRoleLoading,
+  } = useRequest(listRoles, {
     manual: true,
+    debounceInterval: 500,
     formatResult: (roles) => roles,
     onSuccess: () => {
       let targetKeys = targetRoles;
@@ -142,34 +153,58 @@ const SubjectTransfer: React.FC<Props> = (props) => {
     handleEditVisible();
   };
 
+  const handleSearchUser = (dir: TransferDirection, value: string) => {
+    if (dir === 'left') {
+      doListUsers({ name: value });
+    }
+  };
+
+  const handleSearchRole = (dir: TransferDirection, value: string) => {
+    if (dir === 'left') {
+      doListRoles({ name: value });
+    }
+  };
+
   const renderUserTransfer = (
-    <Transfer
-      dataSource={convertUserToRecordType(users)}
-      titles={['用户列表', '已选用户']}
-      targetKeys={userTargetKeys}
-      selectedKeys={userSelectedKeys}
-      onChange={handleUserTransferChange}
-      onSelectChange={handleUserTransferSelectChange}
-      render={(item) => item.title}
-      listStyle={{
-        width: '50%',
-      }}
-    />
+    <Spin spinning={listUserLoading}>
+      <Transfer
+        dataSource={convertUserToRecordType(users)}
+        showSearch
+        titles={['用户列表', '已选用户']}
+        targetKeys={userTargetKeys}
+        selectedKeys={userSelectedKeys}
+        onSearch={handleSearchUser}
+        onChange={handleUserTransferChange}
+        onSelectChange={handleUserTransferSelectChange}
+        render={(item) => item.title}
+        listStyle={{
+          width: '50%',
+          minHeight: '420px',
+          height: 'auto',
+        }}
+      />
+    </Spin>
   );
 
   const renderRoleTransfer = (
-    <Transfer
-      dataSource={convertRoleToRecordType(roles)}
-      titles={['角色列表', '已选角色']}
-      targetKeys={roleTargetKeys}
-      selectedKeys={roleSelectedKeys}
-      onChange={handleRoleTransferChange}
-      onSelectChange={handleRoleTransferSelectChange}
-      render={(item) => item.title}
-      listStyle={{
-        width: '50%',
-      }}
-    />
+    <Spin spinning={listRoleLoading}>
+      <Transfer
+        dataSource={convertRoleToRecordType(roles)}
+        showSearch
+        titles={['角色列表', '已选角色']}
+        targetKeys={roleTargetKeys}
+        selectedKeys={roleSelectedKeys}
+        onChange={handleRoleTransferChange}
+        onSearch={handleSearchRole}
+        onSelectChange={handleRoleTransferSelectChange}
+        render={(item) => item.title}
+        listStyle={{
+          width: '50%',
+          minHeight: '420px',
+          height: 'auto',
+        }}
+      />
+    </Spin>
   );
 
   const renderTransferByType = (type: TransferType) => {
