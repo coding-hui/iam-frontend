@@ -86,10 +86,13 @@ export default function useUserHook() {
     accountInfoForm.setFieldsValue(userInfo);
   };
 
-  const handleUpdateUserInfo = async () => {
+  const handleUpdateUserInfo = async (pwd?: string) => {
     try {
       const values = await userInfoForm.validateFields();
       if (userInfo) {
+        if (pwd && pwd !== '') {
+          values.password = pwd;
+        }
         doUpdateUserInfo(userInfo.metadata.instanceId, values);
       }
     } catch (err) {

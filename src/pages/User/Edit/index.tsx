@@ -36,7 +36,12 @@ const INTL = {
   DISABLE_CONFIRM_CONTENT: {
     id: 'users.modalconfirm.disable.content',
   },
+  RESET_PWD_TITLE: {
+    id: 'users.modalconfirm.resetPwd.title',
+  },
 };
+
+const DEFAULT_PWD = '123456';
 
 const EditUser: React.FC = () => {
   const intl = useIntl();
@@ -306,6 +311,17 @@ const EditUser: React.FC = () => {
     };
   };
 
+  const restartPwdModalConfig = () => {
+    let title = intl.formatMessage(INTL.RESET_PWD_TITLE);
+    return {
+      title: title,
+      centered: true,
+      onOk: async () => {
+        await handleUpdateUserInfo(DEFAULT_PWD);
+      },
+    };
+  };
+
   return (
     <PageContainer
       fixedHeader
@@ -345,7 +361,13 @@ const EditUser: React.FC = () => {
               <DownOutlined />
             </Button>
           </Dropdown>,
-          <Button key="3" type="primary">
+          <Button
+            key="3"
+            type="primary"
+            onClick={() => {
+              modal.confirm(restartPwdModalConfig());
+            }}
+          >
             重置密码
           </Button>,
         ],
@@ -361,7 +383,7 @@ const EditUser: React.FC = () => {
                 grid
                 loading={updateUserInfoLoading}
                 onReset={handleResetUserInfoFormValues}
-                onFinish={handleUpdateUserInfo}
+                onFinish={() => handleUpdateUserInfo()}
                 columns={userInfoColumns}
               />
             </ProCard>

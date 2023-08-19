@@ -4,6 +4,7 @@ export interface UpdateUserRequest {
   alias?: string;
   email?: string;
   phone?: string;
+  password?: string;
 }
 
 export async function updateUser(

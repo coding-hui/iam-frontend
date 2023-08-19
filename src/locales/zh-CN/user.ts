@@ -33,4 +33,5 @@ export default {
   'users.modalconfirm.enable.content': '启用后该账号可正常使用 IAM 相关服务!',
   'users.modalconfirm.disable.content':
     '禁用后该账号无法正常使用 IAM 相关服务，无法登录系统，请谨慎操作!',
+  'users.modalconfirm.resetPwd.title': '是否将用户密码重置为 `123456` ？',
 };
