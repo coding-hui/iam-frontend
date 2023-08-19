@@ -317,7 +317,7 @@ const EditRole: React.FC = () => {
               <SubjectTransfer
                 key="assignRole"
                 types={[TRANSFER_TYPE.USER]}
-                doGetTargetRoles={() => getAssignTargetKeys()}
+                doGetTargetUsers={() => getAssignTargetKeys()}
                 onOk={(values) => handleAssignRole(values)}
               />,
             ]}
