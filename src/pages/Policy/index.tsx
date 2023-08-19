@@ -4,9 +4,10 @@ import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
 import { App, Button, Dropdown } from 'antd';
 import React, { useRef } from 'react';
-import { listPolicies, ListPolicyParams } from '@/services/policy/listPolicies';
+import { listPolicies, ListPolicyOptions } from '@/services/policy/listPolicies';
 import { BASIC_INTL } from '@/constant';
 import { deletePolicy } from '@/services/policy/deletePolicy';
+import { transformSearchParams } from '@/utils';
 
 const INTL = {
   TABLE_TITLE: {
@@ -39,8 +40,14 @@ const PolicyList: React.FC = () => {
     },
   });
 
-  const handleListPolicies = async (params: ListPolicyParams) => {
-    const policies = await listPolicies(params);
+  const handleListPolicies = async (opts: ListPolicyOptions) => {
+    let finalOpts = {
+      current: opts.current,
+      pageSize: opts.pageSize,
+      fieldSelector: '',
+    };
+    finalOpts.fieldSelector = transformSearchParams(opts, ['type', 'status']).join(',');
+    const policies = await listPolicies(finalOpts);
     return {
       data: policies.list,
       total: policies.total,
@@ -165,7 +172,7 @@ const PolicyList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.Policy, ListPolicyParams>
+      <ProTable<API.Policy, ListPolicyOptions>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}
         columns={columns}

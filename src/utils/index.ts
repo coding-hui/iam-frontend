@@ -1,3 +1,5 @@
+import { isBoolean } from 'lodash';
+
 /**
  * Add the object as a parameter to the URL
  * @param baseUrl url
@@ -23,7 +25,7 @@ export function setObjToUrlParams(baseUrl: string, obj: any): string {
  * @param {*} len 密码位数
  * @param {*} mode 密码难度：hide(大小写数字特殊字符)、medium(大小写数字)、low(小写数字)
  */
-export const randomPwd = function (len = 16, mode = 'high') {
+export const randomPwd = function (len: any = 16, mode: any = 'high') {
   const lowerCaseArr = [
     'a',
     'b',
@@ -120,4 +122,28 @@ export const randomPwd = function (len = 16, mode = 'high') {
   }
 
   return password;
+};
+
+export const transformSearchParams = function (opts: any, searchFields: string[]) {
+  let fieldSelector: string[] = [];
+  if (opts.hasOwnProperty('metadata') && opts.metadata) {
+    Object.entries(opts.metadata).forEach(([field, value]) => {
+      if (field && value) {
+        fieldSelector.push(`metadata.${field}=${value}`);
+      }
+    });
+  }
+  searchFields.forEach((field) => {
+    if (opts.hasOwnProperty(field) && opts[field]) {
+      let val = opts[field];
+      const isBooleanStr = /^(true|false)$/i.test(val);
+      if (isBoolean(val)) {
+        val = val ? 1 : 0;
+      } else if (isBooleanStr) {
+        val = val === 'true' ? 1 : 0;
+      }
+      fieldSelector.push(`${field}=${val}`);
+    }
+  });
+  return fieldSelector;
 };

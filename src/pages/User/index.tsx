@@ -1,5 +1,5 @@
 import CreateUserModal from '@/pages/User/components/CreateUserModal';
-import { ListUserParams, listUsers } from '@/services/user/listUsers';
+import { ListUserOptions, listUsers } from '@/services/user/listUsers';
 import { deleteUser } from '@/services/user/deleteUser';
 import { DeleteOutlined, EllipsisOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -8,6 +8,7 @@ import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
 import { App, Button, Dropdown, message } from 'antd';
 import React, { useRef } from 'react';
 import { BASIC_INTL } from '@/constant';
+import { transformSearchParams } from '@/utils';
 
 const INTL = {
   TABLE_TITLE: {
@@ -55,8 +56,14 @@ const UserList: React.FC = () => {
     },
   });
 
-  const handleListUsers = async (params: ListUserParams) => {
-    const userList = await listUsers(params);
+  const handleListUsers = async (opts: ListUserOptions) => {
+    let finalOpts = {
+      current: opts.current,
+      pageSize: opts.pageSize,
+      fieldSelector: '',
+    };
+    finalOpts.fieldSelector = transformSearchParams(opts, ['disabled', 'alias']).join(',');
+    const userList = await listUsers(finalOpts);
     return {
       data: userList.list,
       total: userList.total,
@@ -101,20 +108,10 @@ const UserList: React.FC = () => {
           {record.metadata.instanceId}
         </a>
       ),
-      search: {
-        transform: (val) => {
-          return { instanceId: val };
-        },
-      },
     },
     {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
-      search: {
-        transform: (val) => {
-          return { name: val };
-        },
-      },
     },
     {
       title: <FormattedMessage {...INTL.ALIAS} />,
@@ -181,12 +178,14 @@ const UserList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.UserInfo, ListUserParams>
+      <ProTable<API.UserInfo, ListUserOptions>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
-        search={{ labelWidth: 90 }}
+        search={{
+          labelWidth: 90,
+        }}
         request={handleListUsers}
         rowSelection={{}}
         pagination={{

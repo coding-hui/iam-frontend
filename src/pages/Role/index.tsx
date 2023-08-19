@@ -4,10 +4,11 @@ import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
 import { App, Button, Dropdown } from 'antd';
 import React, { useRef } from 'react';
-import { ListRoleParams, listRoles } from '@/services/role/listRoles';
+import { ListRoleOptions, listRoles } from '@/services/role/listRoles';
 import { BASIC_INTL } from '@/constant';
 import { deleteRole } from '@/services/role/deleteRole';
 import CreateRoleModal from '@/pages/Role/components/CreateRoleModal';
+import { transformSearchParams } from '@/utils';
 
 const INTL = {
   TABLE_TITLE: {
@@ -40,8 +41,14 @@ const RoleList: React.FC = () => {
     },
   });
 
-  const handleListRoles = async (params: ListRoleParams) => {
-    const roleList = await listRoles(params);
+  const handleListRoles = async (opts: ListRoleOptions) => {
+    let finalOpts = {
+      current: opts.current,
+      pageSize: opts.pageSize,
+      fieldSelector: '',
+    };
+    finalOpts.fieldSelector = transformSearchParams(opts, ['disabled']).join(',');
+    const roleList = await listRoles(finalOpts);
     return {
       data: roleList.list,
       total: roleList.total,
@@ -148,7 +155,7 @@ const RoleList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.Role, ListRoleParams>
+      <ProTable<API.Role, ListRoleOptions>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}
         columns={columns}

@@ -4,9 +4,10 @@ import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
 import { App, Button, Dropdown, message } from 'antd';
 import React, { useRef } from 'react';
-import { ListResourceParams, listResources } from '@/services/resource/listResources';
+import { ListResourceOptions, listResources } from '@/services/resource/listResources';
 import { deleteResource } from '@/services/resource/deleteResource';
-import { BASIC_INTL } from '@/constant';
+import { BASIC_INTL, METHOD_OPTIONS } from '@/constant';
+import { transformSearchParams } from '@/utils';
 
 const INTL = {
   API: {
@@ -54,8 +55,14 @@ const ResourceList: React.FC = () => {
     },
   });
 
-  const handleListResources = async (params: ListResourceParams) => {
-    const resourceList = await listResources(params);
+  const handleListResources = async (opts: ListResourceOptions) => {
+    let finalOpts = {
+      current: opts.current,
+      pageSize: opts.pageSize,
+      fieldSelector: '',
+    };
+    finalOpts.fieldSelector = transformSearchParams(opts, ['status', 'type', 'method']).join(',');
+    const resourceList = await listResources(finalOpts);
     return {
       data: resourceList.list,
       total: resourceList.total,
@@ -107,14 +114,21 @@ const ResourceList: React.FC = () => {
     {
       title: <FormattedMessage {...INTL.API} />,
       dataIndex: 'api',
+      search: false,
     },
     {
       title: <FormattedMessage {...INTL.METHOD} />,
       dataIndex: 'method',
+      valueType: 'select',
+      fieldProps: {
+        options: METHOD_OPTIONS,
+      },
+      width: 90,
     },
     {
       title: <FormattedMessage {...INTL.TYPE} />,
       dataIndex: 'type',
+      width: 90,
     },
     {
       title: <FormattedMessage {...INTL.ACTIONS} />,
@@ -130,11 +144,13 @@ const ResourceList: React.FC = () => {
             : '-'}
         </span>,
       ],
+      search: false,
     },
     {
       title: <FormattedMessage {...INTL.DESCRIPTION} />,
       dataIndex: 'description',
       ellipsis: true,
+      search: false,
     },
     {
       title: <FormattedMessage {...BASIC_INTL.CREATED_AT} />,
@@ -182,7 +198,7 @@ const ResourceList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.Resource, ListResourceParams>
+      <ProTable<API.Resource, ListResourceOptions>
         headerTitle={intl.formatMessage({
           ...INTL.TABLE_TITLE,
         })}

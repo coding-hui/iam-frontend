@@ -30,7 +30,7 @@ function getRule(req: Request, res: Response, u: string) {
     realUrl = req.url;
   }
   const { current = 1, limit = 10 } = req.query;
-  const params = parse(realUrl, true).query as unknown as API.PageParams &
+  const params = parse(realUrl, true).query as unknown as API.ListOptions &
     API.UserInfo & {
       sorter: any;
       filter: any;

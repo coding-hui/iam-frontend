@@ -39,13 +39,15 @@ declare namespace API {
     currentAuthority?: string;
   };
 
-  type PageParams = {
+  type ListOptions = {
     /** 当前的页码 */
     current?: number;
     /** 页面的容量 */
     pageSize?: number;
     /** 查询关键字 */
     keyword?: string;
+    /** 筛选字段，例如 name=v1,type=2,status!=2 */
+    fieldSelector?: string;
   };
 
   type UserInfo = {
