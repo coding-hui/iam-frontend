@@ -44,6 +44,15 @@ export const BASIC_INTL = {
   CREATED_AT: {
     id: 'pages.searchTable.createdAt',
   },
+  CREATING: {
+    id: 'message.loading.creating',
+  },
+  CREATE_SUCCESS: {
+    id: 'message.create.success',
+  },
+  CREATE_FAILED: {
+    id: 'message.create.failed',
+  },
   UPDATE_SUCCESS: {
     id: 'message.update.success',
   },

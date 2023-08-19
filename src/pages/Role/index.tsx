@@ -1,4 +1,3 @@
-import CreateUserModal from '@/pages/User/components/CreateUserModal';
 import { DeleteOutlined, EllipsisOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
@@ -8,6 +7,7 @@ import React, { useRef } from 'react';
 import { ListRoleParams, listRoles } from '@/services/role/listRoles';
 import { BASIC_INTL } from '@/constant';
 import { deleteRole } from '@/services/role/deleteRole';
+import CreateRoleModal from '@/pages/Role/components/CreateRoleModal';
 
 const INTL = {
   TABLE_TITLE: {
@@ -157,7 +157,7 @@ const RoleList: React.FC = () => {
         request={handleListRoles}
         rowSelection={{}}
         toolBarRender={() => [
-          <CreateUserModal
+          <CreateRoleModal
             key="create"
             onFinish={async () => {
               reloadTable();
