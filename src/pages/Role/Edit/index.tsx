@@ -261,6 +261,7 @@ const EditRole: React.FC = () => {
       onTabChange={(tab) => setCurrentTab(tab)}
       tabList={[ROLE_TABS.INFO, ROLE_TABS.ASSIGN]}
       header={{
+        title: roleInfo?.metadata.name,
         extra: [
           <Dropdown
             key="dropdown"
