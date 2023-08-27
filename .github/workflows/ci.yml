@@ -5,26 +5,59 @@ on: [push, pull_request]
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node_version: [16.x, 14.x]
+        node-version: [14.x, 16.x, 18.x]
         os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node_version }}
-        uses: actions/setup-node@v1
+
+      - name: Install pnpm
+        if: ${{ matrix.node-version != '14.x' }}
+        uses: pnpm/action-setup@v2.2.4
+
+      - name: Install pnpm (node 14)
+        if: ${{ matrix.node-version == '14.x' }}
+        run: npm install -g @pnpm/exe@8.6.2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node_version }}
-      - run: echo ${{github.ref}}
-      - run: npm install
-      - run: yarn run lint
-      - run: yarn run tsc
-      - run: yarn run build
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org/'
+          cache: 'pnpm'
+
+      # We use week in the turbo cache key to keep the cache from infinitely growing
+      - name: Get cache expires mark (non-windows)
+        if: runner.os != 'Windows'
+        run: echo "EXPIRES_WEEK_MARK=$(date +%U)" >> $GITHUB_OUTPUT
+      - name: Get cache expires mark (windows)
+        if: runner.os == 'Windows'
+        run: echo "EXPIRES_WEEK_MARK=$(date +%U)" >> $env:GITHUB_OUTPUT
+
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v3
+        with:
+          path: .turbo
+          key: turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ env.EXPIRES_WEEK_MARK }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-
+            turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ env.EXPIRES_WEEK_MARK }}-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - run: pnpm run lint
+      - run: pnpm run tsc
+      - run: pnpm run build
         env:
           CI: true
-          PROGRESS: none
           NODE_ENV: test
-          NODE_OPTIONS: --max_old_space_size=4096

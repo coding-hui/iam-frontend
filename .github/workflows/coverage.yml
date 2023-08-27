@@ -1,27 +1,58 @@
 name: coverage CI
 
-on: [push, pull_request]
+env:
+  NODE_OPTIONS: --max-old-space-size=6144
 
-permissions:
-  contents: read
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'examples/**'
+      - 'docs/**'
+      - '**/*.md'
+  pull_request:
+    types:
+      - 'opened'
+      - 'synchronize'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  coverage:
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 16.x
-      - run: echo ${{github.ref}}
-      - run: curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@7
-      - run: pnpm config set store-dir ~/.pnpm-store
-      - run: pnpm install  --strict-peer-dependencies=false
-      - run: yarn run test:coverage
-        env:
-          CI: true
-          PROGRESS: none
-          NODE_ENV: test
-          NODE_OPTIONS: --max_old_space_size=4096
-      - run: bash <(curl -s https://codecov.io/bash)
+          registry-url: 'https://registry.npmjs.org/'
+          cache: 'pnpm'
+
+      - run: pnpm install
+
+      - run: pnpm build
+
+      - name: Run tests
+        run: pnpm run test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
