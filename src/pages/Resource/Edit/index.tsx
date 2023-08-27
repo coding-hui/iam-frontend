@@ -14,7 +14,7 @@ import { App } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { getResourceInfo } from '@/services/resource/getResourceInfo';
 import { updateResource } from '@/services/resource/updateResource';
-import { METHOD_OPTIONS } from '@/constant';
+import { RESOURCE_TYPES_OPTIONS } from '@/constant/options';
 
 const INTL = {
   NAME: {
@@ -35,11 +35,11 @@ const INTL = {
   PLACEHOLDER_DESCRIPTION: {
     id: 'resource.description.placeholder',
   },
-  METHOD: {
-    id: 'resource.method',
+  TYPE: {
+    id: 'resource.type',
   },
-  PLACEHOLDER_METHOD: {
-    id: 'resource.method.placeholder',
+  PLACEHOLDER_TYPE: {
+    id: 'resource.type.placeholder',
   },
   UPDATE_SUCCESS: {
     id: 'resource.message.update.success',
@@ -147,6 +147,7 @@ const CreateResource: React.FC = () => {
               title={intl.formatMessage(INTL.BASIC_INFO)}
               titleStyle={{ marginBottom: '14px' }}
               align="center"
+              size="small"
             >
               <ProFormText
                 width="md"
@@ -160,14 +161,14 @@ const CreateResource: React.FC = () => {
               />
               <ProFormSelect.SearchSelect
                 width="sm"
-                name="method"
+                name="type"
                 mode="single"
-                label={intl.formatMessage(INTL.METHOD)}
-                placeholder={intl.formatMessage(INTL.PLACEHOLDER_METHOD)}
-                options={METHOD_OPTIONS}
-                rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_METHOD) }]}
-                transform={(val) => {
-                  return { method: val.value ? val.value : val };
+                label={intl.formatMessage(INTL.TYPE)}
+                placeholder={intl.formatMessage(INTL.PLACEHOLDER_TYPE)}
+                options={RESOURCE_TYPES_OPTIONS}
+                rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_TYPE) }]}
+                transform={(value) => {
+                  return { method: value.value };
                 }}
               />
             </ProForm.Group>

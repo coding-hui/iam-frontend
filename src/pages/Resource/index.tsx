@@ -6,8 +6,9 @@ import { App, Button, Dropdown, message } from 'antd';
 import React, { useRef } from 'react';
 import { ListResourceOptions, listResources } from '@/services/resource/listResources';
 import { deleteResource } from '@/services/resource/deleteResource';
-import { BASIC_INTL, METHOD_OPTIONS } from '@/constant';
+import { BASIC_INTL } from '@/constant';
 import { transformSearchParams } from '@/utils';
+import { RESOURCE_TYPES_OPTIONS } from '@/constant/options';
 
 const INTL = {
   API: {
@@ -117,17 +118,12 @@ const ResourceList: React.FC = () => {
       search: false,
     },
     {
-      title: <FormattedMessage {...INTL.METHOD} />,
-      dataIndex: 'method',
-      valueType: 'select',
-      fieldProps: {
-        options: METHOD_OPTIONS,
-      },
-      width: 90,
-    },
-    {
       title: <FormattedMessage {...INTL.TYPE} />,
       dataIndex: 'type',
+      valueType: 'select',
+      fieldProps: {
+        options: RESOURCE_TYPES_OPTIONS,
+      },
       width: 90,
     },
     {

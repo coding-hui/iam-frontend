@@ -20,3 +20,10 @@ export const METHOD_OPTIONS = [
     value: '*',
   },
 ];
+
+export const RESOURCE_TYPES_OPTIONS = [
+  {
+    label: 'API',
+    value: 'API',
+  },
+];

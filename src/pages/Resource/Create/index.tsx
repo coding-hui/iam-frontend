@@ -14,7 +14,7 @@ import { App } from 'antd';
 import React, { useRef } from 'react';
 import { history, useRequest } from '@@/exports';
 import { createResource } from '@/services/resource/createResource';
-import { METHOD_OPTIONS } from '@/constant';
+import { RESOURCE_TYPES_OPTIONS } from '@/constant/options';
 
 const INTL = {
   NAME: {
@@ -35,11 +35,11 @@ const INTL = {
   PLACEHOLDER_DESCRIPTION: {
     id: 'resource.description.placeholder',
   },
-  METHOD: {
-    id: 'resource.method',
+  TYPE: {
+    id: 'resource.type',
   },
-  PLACEHOLDER_METHOD: {
-    id: 'resource.method.placeholder',
+  PLACEHOLDER_TYPE: {
+    id: 'resource.type.placeholder',
   },
   ACTION_TIP: {
     id: 'resource.actions.tip',
@@ -97,6 +97,7 @@ const CreateResource: React.FC = () => {
             title={intl.formatMessage(INTL.BASIC_INFO)}
             titleStyle={{ marginBottom: '14px' }}
             align="center"
+            size="small"
           >
             <ProFormText
               width="md"
@@ -107,12 +108,12 @@ const CreateResource: React.FC = () => {
             />
             <ProFormSelect.SearchSelect
               width="sm"
-              name="method"
+              name="type"
               mode="single"
-              label={intl.formatMessage(INTL.METHOD)}
-              placeholder={intl.formatMessage(INTL.PLACEHOLDER_METHOD)}
-              options={METHOD_OPTIONS}
-              rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_METHOD) }]}
+              label={intl.formatMessage(INTL.TYPE)}
+              placeholder={intl.formatMessage(INTL.PLACEHOLDER_TYPE)}
+              options={RESOURCE_TYPES_OPTIONS}
+              rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_TYPE) }]}
               transform={(value) => {
                 return { method: value.value };
               }}
