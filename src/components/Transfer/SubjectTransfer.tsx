@@ -155,13 +155,13 @@ const SubjectTransfer: React.FC<Props> = (props) => {
 
   const handleSearchUser = (dir: TransferDirection, value: string) => {
     if (dir === 'left') {
-      doListUsers({ name: value });
+      doListUsers({ fieldSelector: `name=${value}` });
     }
   };
 
   const handleSearchRole = (dir: TransferDirection, value: string) => {
     if (dir === 'left') {
-      doListRoles({ name: value });
+      doListRoles({ fieldSelector: `name=${value}` });
     }
   };
 
