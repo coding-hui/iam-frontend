@@ -92,8 +92,10 @@
     "typescript": "^5.0.0",
     "umi-presets-pro": "^2.0.3"
   },
+  "packageManager": "pnpm@8.5.1",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=14",
+    "pnpm": "^8.5.1"
   },
   "create-umi": {
     "ignoreScript": [
