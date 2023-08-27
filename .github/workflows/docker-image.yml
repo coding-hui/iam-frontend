@@ -34,4 +34,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: wecoding/iam-frontend:latest
+        tags: ${{ secrets.REGISTRY }}/iam-frontend:latest

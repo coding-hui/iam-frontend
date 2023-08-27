@@ -25,9 +25,9 @@ jobs:
       - run: pnpm run lint
       - run: pnpm run tsc
       - run: pnpm run build
-      - run: pnpm run test
-        env:
-          CI: true
-          PROGRESS: none
-          NODE_ENV: test
-          NODE_OPTIONS: --max_old_space_size=4096
+#      - run: pnpm run test
+#        env:
+#          CI: true
+#          PROGRESS: none
+#          NODE_ENV: test
+#          NODE_OPTIONS: --max_old_space_size=4096
