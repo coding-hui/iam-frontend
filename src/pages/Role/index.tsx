@@ -50,7 +50,7 @@ const RoleList: React.FC = () => {
     finalOpts.fieldSelector = transformSearchParams(opts, ['disabled']).join(',');
     const roleList = await listRoles(finalOpts);
     return {
-      data: roleList.list,
+      data: roleList.items,
       total: roleList.total,
     };
   };

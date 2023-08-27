@@ -64,7 +64,7 @@ declare namespace API {
   };
 
   type UserList = {
-    list: UserInfo[];
+    items: UserInfo[];
     total: number;
   };
 
@@ -127,7 +127,7 @@ declare namespace API {
   };
 
   type ResourceList = {
-    list: Resource[];
+    items: Resource[];
     total: number;
   };
 
@@ -150,7 +150,7 @@ declare namespace API {
   };
 
   type PolicyList = {
-    list: Policy[];
+    items: Policy[];
     total: number;
   };
 
@@ -163,7 +163,7 @@ declare namespace API {
   };
 
   type RoleList = {
-    list: Role[];
+    items: Role[];
     total: number;
   };
 }

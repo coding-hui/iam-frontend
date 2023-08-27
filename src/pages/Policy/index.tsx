@@ -49,7 +49,7 @@ const PolicyList: React.FC = () => {
     finalOpts.fieldSelector = transformSearchParams(opts, ['type', 'status']).join(',');
     const policies = await listPolicies(finalOpts);
     return {
-      data: policies.list,
+      data: policies.items,
       total: policies.total,
     };
   };

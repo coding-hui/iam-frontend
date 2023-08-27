@@ -65,7 +65,7 @@ const UserList: React.FC = () => {
     finalOpts.fieldSelector = transformSearchParams(opts, ['disabled', 'alias']).join(',');
     const userList = await listUsers(finalOpts);
     return {
-      data: userList.list,
+      data: userList.items,
       total: userList.total,
     };
   };

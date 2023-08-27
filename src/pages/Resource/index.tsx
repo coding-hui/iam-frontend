@@ -65,7 +65,7 @@ const ResourceList: React.FC = () => {
     finalOpts.fieldSelector = transformSearchParams(opts, ['status', 'type', 'method']).join(',');
     const resourceList = await listResources(finalOpts);
     return {
-      data: resourceList.list,
+      data: resourceList.items,
       total: resourceList.total,
     };
   };
