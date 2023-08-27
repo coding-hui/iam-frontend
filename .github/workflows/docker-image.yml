@@ -26,9 +26,12 @@ jobs:
         username: ${{ secrets.DOCKER_USER }}
         # Password or personal access token used to log against the Docker registry
         password: ${{ secrets.DOCKER_PWD }}
-          
-    - name: Build and Push the Docker image
-      run: |
-        docker build . -file Dockerfile --tag wecoding/iam-frontend:$(date +%s)
-        docker push
-        docker rmi wecoding/iam-frontend:$(date +%s)
+
+    - name: Build and push Docker images
+      # You may pin to the exact commit or the version.
+      # uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
+      uses: docker/build-push-action@v4.1.1
+      with:
+        context: .
+        push: true
+        tags: iam-frontend:latest,iam-frontend:v8-$(date +%s)
