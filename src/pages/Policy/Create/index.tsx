@@ -256,11 +256,11 @@ const CreatePolicy: React.FC = () => {
                 }
                 return (
                   <ProForm.Item name="actions">
-                    <Checkbox.Group style={{ width: '100%' }}>
+                    <Checkbox.Group style={{ maxWidth: '620px' }}>
                       <Row>
                         {selectedResource.actions.map((act: API.Action) => {
                           return (
-                            <Col key={act.name} span={8}>
+                            <Col key={act.name} flex="auto" style={{ marginBottom: '10px' }}>
                               <Checkbox value={act.name} key={`${act.name}-act`}>
                                 {act.name}
                                 {act.description ? `(${act.description})` : ''}
