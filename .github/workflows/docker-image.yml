@@ -28,4 +28,7 @@ jobs:
         password: ${{ secrets.DOCKER_PWD }}
           
     - name: Build and Push the Docker image
-      run: -docker build . -file Dockerfile --tag wecoding/iam-frontend:$(date +%s)
+      run: |
+        docker build . -file Dockerfile --tag wecoding/iam-frontend:$(date +%s)
+        docker push
+        docker rmi wecoding/iam-frontend:$(date +%s)
