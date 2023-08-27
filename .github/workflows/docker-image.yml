@@ -34,4 +34,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: iam-frontend:latest,iam-frontend:v8-$(date +%s)
+        tags: iam-frontend:latest
