@@ -34,4 +34,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: iam-frontend:latest
+        tags: wecoding/iam-frontend:latest
