@@ -44,7 +44,7 @@ const SubjectTransfer: React.FC<Props> = (props) => {
     if (!users) {
       return;
     }
-    return users.list.map((item) => {
+    return users.items.map((item) => {
       return {
         key: item.metadata.instanceId,
         title: item.metadata.name,
@@ -57,7 +57,7 @@ const SubjectTransfer: React.FC<Props> = (props) => {
     if (!roles) {
       return;
     }
-    return roles.list.map((item) => {
+    return roles.items.map((item) => {
       return {
         key: item.metadata.instanceId,
         title: item.metadata.name,

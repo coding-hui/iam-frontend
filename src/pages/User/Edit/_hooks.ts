@@ -136,9 +136,9 @@ export default function useUserHook() {
   const fetchUserRoles = async () => {
     if (instanceId) {
       const roles = await getUserRoles(instanceId);
-      setAssignRoles(roles.list);
+      setAssignRoles(roles.items);
       return {
-        data: roles.list,
+        data: roles.items,
         total: roles.total,
       };
     }

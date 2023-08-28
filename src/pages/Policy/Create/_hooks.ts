@@ -127,7 +127,7 @@ export default function usePolicyHook() {
         actions: [{ name: '*' }],
       },
     ];
-    res.list.forEach((item) => {
+    res.items.forEach((item) => {
       resources.push({
         key: item.metadata.instanceId,
         label: item.metadata.name,
