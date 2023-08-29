@@ -18,6 +18,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Print commit ID
+      run: echo "The commit ID is ${{ github.sha }}"
 
     - name: Docker Login
       # You may pin to the exact commit or the version.
@@ -39,7 +41,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: wecoding/iam-frontend:latest
+        tags: wecoding/iam-frontend:latest,wecoding/iam-frontend:v0.8-${{ github.sha }}
 
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
