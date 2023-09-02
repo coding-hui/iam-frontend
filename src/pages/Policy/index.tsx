@@ -127,6 +127,7 @@ const PolicyList: React.FC = () => {
       title: '授权主体',
       dataIndex: 'subjects',
       valueType: 'segmented',
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage {...BASIC_INTL.DESCRIPTION} />,
@@ -177,7 +178,7 @@ const PolicyList: React.FC = () => {
         actionRef={actionRef}
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
-        search={{ labelWidth: 90 }}
+        search={{ labelWidth: 40 }}
         request={handleListPolicies}
         toolBarRender={() => [renderToolBar]}
         rowSelection={

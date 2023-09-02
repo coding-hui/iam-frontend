@@ -184,7 +184,7 @@ const UserList: React.FC = () => {
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
         search={{
-          labelWidth: 90,
+          labelWidth: 40,
         }}
         request={handleListUsers}
         rowSelection={{}}

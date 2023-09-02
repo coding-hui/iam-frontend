@@ -208,7 +208,7 @@ const ResourceList: React.FC = () => {
         actionRef={actionRef}
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
-        search={{ labelWidth: 90 }}
+        search={{ labelWidth: 40 }}
         pagination={{
           defaultPageSize: 10,
           showSizeChanger: true,

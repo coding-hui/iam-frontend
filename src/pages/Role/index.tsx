@@ -160,7 +160,7 @@ const RoleList: React.FC = () => {
         actionRef={actionRef}
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
-        search={{ labelWidth: 90 }}
+        search={{ labelWidth: 40 }}
         request={handleListRoles}
         rowSelection={{}}
         toolBarRender={() => [
