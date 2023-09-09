@@ -56,19 +56,19 @@ export default [
       },
     ],
   },
-  {
-    name: 'authn',
-    path: '/authn',
-    icon: 'VerifiedOutlined',
-    routes: [
-      { path: '/authn/identity-provider', redirect: '/authn/identity-provider/list' },
-      {
-        path: '/authn/identity-provider/list',
-        name: 'identity-provider-list',
-        component: './User',
-      },
-    ],
-  },
+  // {
+  //   name: 'authn',
+  //   path: '/authn',
+  //   icon: 'VerifiedOutlined',
+  //   routes: [
+  //     { path: '/authn/identity-provider', redirect: '/authn/identity-provider/list' },
+  //     {
+  //       path: '/authn/identity-provider/list',
+  //       name: 'identity-provider-list',
+  //       component: './User',
+  //     },
+  //   ],
+  // },
   {
     name: 'resource',
     path: '/resource',
