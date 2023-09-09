@@ -74,6 +74,8 @@ export default {
   'pages.searchTable.description': '备注',
   'pages.searchTable.createdAt': '创建时间',
   'pages.searchTable.updatedAt': '更新时间',
+
+  'pages.common.btn.more': '更多',
   'pages.common.btn.disable': '禁用',
   'pages.common.btn.enable': '启用',
   'pages.common.btn.edit': '编辑',

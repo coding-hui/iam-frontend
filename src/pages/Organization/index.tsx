@@ -1,6 +1,3 @@
-import CreateUserModal from '@/pages/User/components/CreateUserModal';
-import { ListUserOptions, listUsers } from '@/services/user/listUsers';
-import { deleteUser } from '@/services/user/deleteUser';
 import { DeleteOutlined, EllipsisOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
@@ -9,35 +6,29 @@ import { App, Button, Dropdown, message } from 'antd';
 import React, { useRef } from 'react';
 import { BASIC_INTL } from '@/constant';
 import { transformSearchParams } from '@/utils';
+import { deleteOrganization } from '@/services/organization/deleteOrganization';
+import CreateOrganizationModal from '@/pages/Organization/components/CreateOrganizationModal';
+import {
+  listOrganizations,
+  ListOrganizationOptions,
+} from '@/services/organization/listOrganizations';
 
 const INTL = {
   TABLE_TITLE: {
-    id: 'users.table.title',
+    id: 'organization.table.title',
   },
-  ALIAS: {
-    id: 'users.table.alias',
+  DISPLAY_NAME: {
+    id: 'organization.table.displayName',
   },
-  PHONE: {
-    id: 'users.table.phone',
+  FAVICON: {
+    id: 'organization.table.favicon',
   },
-  EMAIL: {
-    id: 'users.table.email',
-  },
-  LAST_LOGIN_TIME: {
-    id: 'users.table.lastLoginTime',
-  },
-  DELETE_USER_CONFIRM_TITLE: {
-    id: 'users.popconfirm.delete.title',
-  },
-  DELETE_USER_CONFIRM_DESC: {
-    id: 'users.popconfirm.delete.description',
-  },
-  DELETE_SUCCESS: {
-    id: 'message.delete.success',
+  WEBSITE_URL: {
+    id: 'organization.table.websiteUrl',
   },
 };
 
-const UserList: React.FC = () => {
+const OrganizationList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const { modal } = App.useApp();
   const intl = useIntl();
@@ -48,33 +39,33 @@ const UserList: React.FC = () => {
     }
   };
 
-  const { run: doDeleteUser } = useRequest(deleteUser, {
+  const { run: doDeleteOrganization } = useRequest(deleteOrganization, {
     manual: true,
     onSuccess: () => {
       reloadTable();
-      message.success(intl.formatMessage(INTL.DELETE_SUCCESS));
+      message.success(intl.formatMessage(BASIC_INTL.DELETE_SUCCESS));
     },
   });
 
-  const handleListUsers = async (opts: ListUserOptions) => {
+  const handleListOrganizations = async (opts: ListOrganizationOptions) => {
     let finalOpts = {
       current: opts.current,
       pageSize: opts.pageSize,
       fieldSelector: '',
     };
-    finalOpts.fieldSelector = transformSearchParams(opts, ['disabled', 'alias']).join(',');
-    const userList = await listUsers(finalOpts);
+    finalOpts.fieldSelector = transformSearchParams(opts, ['disabled', 'displayName']).join(',');
+    const orgList = await listOrganizations(finalOpts);
     return {
-      data: userList.items,
-      total: userList.total,
+      data: orgList.items,
+      total: orgList.total,
     };
   };
 
-  const handleEditUser = (instanceId: string) => {
-    history.push(`/org-management/user/${instanceId}`);
+  const handleEditOrganization = (instanceId: string) => {
+    history.push(`/org-management/org/${instanceId}`);
   };
 
-  const deleteModalConfig = (records: API.UserInfo[]) => {
+  const deleteModalConfig = (records: API.Organization[]) => {
     let title =
       records.length === 1
         ? intl.formatMessage(BASIC_INTL.DELETE_CONFIRM_TITLE, {
@@ -92,19 +83,19 @@ const UserList: React.FC = () => {
       ),
       centered: true,
       onOk: () => {
-        doDeleteUser(records[0].metadata.instanceId);
+        doDeleteOrganization(records[0].metadata.instanceId);
       },
       okText: intl.formatMessage(BASIC_INTL.BTN_DELETE),
       okButtonProps: { danger: true },
     };
   };
 
-  const columns: ProColumns<API.UserInfo>[] = [
+  const columns: ProColumns<API.Organization>[] = [
     {
       title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
       dataIndex: ['metadata', 'instanceId'],
-      render: (_, record: API.UserInfo) => (
-        <a key="instanceId" onClick={() => handleEditUser(record.metadata.instanceId)}>
+      render: (_, record: API.Organization) => (
+        <a key="instanceId" onClick={() => handleEditOrganization(record.metadata.instanceId)}>
           {record.metadata.instanceId}
         </a>
       ),
@@ -114,29 +105,32 @@ const UserList: React.FC = () => {
       dataIndex: ['metadata', 'name'],
     },
     {
-      title: <FormattedMessage {...INTL.ALIAS} />,
-      dataIndex: 'alias',
+      title: <FormattedMessage {...INTL.DISPLAY_NAME} />,
+      dataIndex: 'displayName',
+      order: -100,
     },
     {
-      title: <FormattedMessage {...INTL.PHONE} />,
-      dataIndex: 'phone',
+      title: <FormattedMessage {...INTL.FAVICON} />,
+      dataIndex: 'favicon',
       hideInSearch: true,
     },
     {
-      title: <FormattedMessage {...INTL.EMAIL} />,
-      dataIndex: 'email',
+      title: <FormattedMessage {...INTL.WEBSITE_URL} />,
+      dataIndex: 'websiteUrl',
       hideInSearch: true,
     },
     {
-      title: <FormattedMessage {...INTL.LAST_LOGIN_TIME} />,
-      dataIndex: 'lastLoginTime',
+      title: <FormattedMessage {...BASIC_INTL.CREATED_AT} />,
+      dataIndex: ['metadata', 'createdAt'],
+      width: 160,
       valueType: 'dateTime',
-      search: false,
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage {...BASIC_INTL.STATUS} />,
       dataIndex: 'disabled',
       hideInForm: true,
+      width: 90,
       valueEnum: {
         false: {
           text: <FormattedMessage {...BASIC_INTL.ACTIVED} />,
@@ -152,7 +146,7 @@ const UserList: React.FC = () => {
       title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record: API.UserInfo) => [
+      render: (_, record: API.Organization) => [
         <Dropdown
           key="dropdown"
           trigger={['click']}
@@ -160,7 +154,7 @@ const UserList: React.FC = () => {
           menu={{
             items: [
               {
-                key: 'deleteUser',
+                key: 'deleteOrganization',
                 icon: <DeleteOutlined />,
                 label: intl.formatMessage(BASIC_INTL.BTN_DELETE),
                 onClick: () => {
@@ -178,15 +172,15 @@ const UserList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.UserInfo, ListUserOptions>
+      <ProTable<API.Organization, ListOrganizationOptions>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
         search={{
-          labelWidth: 40,
+          labelWidth: 'auto',
         }}
-        request={handleListUsers}
+        request={handleListOrganizations}
         rowSelection={{}}
         pagination={{
           defaultPageSize: 10,
@@ -194,7 +188,7 @@ const UserList: React.FC = () => {
           pageSizeOptions: [10, 20, 30, 50],
         }}
         toolBarRender={() => [
-          <CreateUserModal
+          <CreateOrganizationModal
             key="create"
             onFinish={async () => {
               reloadTable();
@@ -207,4 +201,4 @@ const UserList: React.FC = () => {
   );
 };
 
-export default UserList;
+export default OrganizationList;

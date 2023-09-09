@@ -10,7 +10,7 @@ import { errorConfig } from './requestErrorConfig';
 import { App } from 'antd';
 
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/user/login';
+const loginPath = '/login';
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state

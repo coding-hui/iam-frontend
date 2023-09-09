@@ -12,15 +12,11 @@
  */
 export default [
   {
-    path: '/user',
+    name: 'login',
+    path: '/login',
     layout: false,
-    routes: [
-      {
-        name: 'login',
-        path: '/user/login',
-        component: './Login',
-      },
-    ],
+    hideInMenu: true,
+    component: './Login',
   },
   {
     path: '/welcome',
@@ -29,22 +25,47 @@ export default [
     component: './Welcome',
   },
   {
-    name: 'user',
-    path: '/user',
-    icon: 'UserAddOutlined',
+    name: 'org-management',
+    path: '/org-management',
+    icon: 'ClusterOutlined',
     routes: [
-      { path: '/user', redirect: '/user/list' },
+      { path: '/org-management', redirect: '/org-management/org' },
       {
-        path: '/user/list',
-        name: 'user-list',
+        path: '/org-management/org',
+        name: 'org.list',
+        component: './Organization',
+      },
+      {
+        path: '/org-management/org/:instanceId',
+        name: 'org.edit',
+        component: './Organization/edit',
+        hideInMenu: true,
+        parentKeys: ['/org-management', '/org-management/org'],
+      },
+      {
+        path: '/org-management/user',
+        name: 'user.list',
         component: './User',
       },
       {
-        path: '/user/:instanceId',
-        name: 'user-edit',
+        path: '/org-management/user/:instanceId',
+        name: 'user.edit',
         component: './User/Edit',
         hideInMenu: true,
-        parentKeys: ['/user', '/user/list'],
+        parentKeys: ['/org-management', '/org-management/user'],
+      },
+    ],
+  },
+  {
+    name: 'authn',
+    path: '/authn',
+    icon: 'VerifiedOutlined',
+    routes: [
+      { path: '/authn/identity-provider', redirect: '/authn/identity-provider/list' },
+      {
+        path: '/authn/identity-provider/list',
+        name: 'identity-provider-list',
+        component: './User',
       },
     ],
   },

@@ -166,7 +166,7 @@ export default function useUserHook() {
     onSuccess: () => {
       message.success(intl.formatMessage(BASIC_INTL.DELETE_SUCCESS));
       setTimeout(() => {
-        history.push(`/user/list`);
+        history.push(`/org-management/user`);
       }, 200);
     },
   });

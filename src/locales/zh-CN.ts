@@ -6,7 +6,6 @@ import pages from './zh-CN/pages';
 import pwa from './zh-CN/pwa';
 import settingDrawer from './zh-CN/settingDrawer';
 import settings from './zh-CN/settings';
-import user from './zh-CN/user';
 import resource from './zh-CN/resource';
 import role from './zh-CN/role';
 import policy from './zh-CN/policy';
@@ -29,7 +28,6 @@ export default {
   ...settings,
   ...pwa,
   ...component,
-  ...user,
   ...message,
   ...resource,
   ...role,

@@ -68,6 +68,20 @@ declare namespace API {
     total: number;
   };
 
+  type Organization = {
+    metadata: ObjectMeta;
+    displayName?: string;
+    websiteUrl?: string;
+    favicon?: string;
+    disabled?: string;
+    description?: string;
+  };
+
+  type OrganizationList = {
+    items: Organization[];
+    total: number;
+  };
+
   type FakeCaptcha = {
     code?: number;
     status?: string;
