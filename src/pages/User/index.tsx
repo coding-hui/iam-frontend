@@ -131,6 +131,7 @@ const UserList: React.FC = () => {
       title: <FormattedMessage {...INTL.LAST_LOGIN_TIME} />,
       dataIndex: 'lastLoginTime',
       valueType: 'dateTime',
+      width: 160,
       search: false,
     },
     {
@@ -152,6 +153,8 @@ const UserList: React.FC = () => {
       title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
       dataIndex: 'option',
       valueType: 'option',
+      width: 60,
+      fixed: 'right',
       render: (_, record: API.UserInfo) => [
         <Dropdown
           key="dropdown"
@@ -183,9 +186,7 @@ const UserList: React.FC = () => {
         actionRef={actionRef}
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
-        search={{
-          labelWidth: 40,
-        }}
+        search={{ labelWidth: 'auto' }}
         request={handleListUsers}
         rowSelection={{}}
         pagination={{

@@ -152,7 +152,7 @@ const ResourceList: React.FC = () => {
       title: <FormattedMessage {...BASIC_INTL.CREATED_AT} />,
       dataIndex: ['metadata', 'createdAt'],
       valueType: 'dateTime',
-      width: 220,
+      width: 160,
       search: false,
     },
     {
@@ -208,7 +208,7 @@ const ResourceList: React.FC = () => {
         actionRef={actionRef}
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
-        search={{ labelWidth: 40 }}
+        search={{ labelWidth: 'auto' }}
         pagination={{
           defaultPageSize: 10,
           showSizeChanger: true,

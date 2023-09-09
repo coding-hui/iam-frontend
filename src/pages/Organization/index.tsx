@@ -146,6 +146,8 @@ const OrganizationList: React.FC = () => {
       title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
       dataIndex: 'option',
       valueType: 'option',
+      width: 60,
+      fixed: 'right',
       render: (_, record: API.Organization) => [
         <Dropdown
           key="dropdown"
@@ -177,9 +179,7 @@ const OrganizationList: React.FC = () => {
         actionRef={actionRef}
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
-        search={{
-          labelWidth: 'auto',
-        }}
+        search={{ labelWidth: 'auto' }}
         request={handleListOrganizations}
         rowSelection={{}}
         pagination={{

@@ -138,7 +138,7 @@ const PolicyList: React.FC = () => {
       title: <FormattedMessage {...BASIC_INTL.CREATED_AT} />,
       dataIndex: ['metadata', 'createdAt'],
       valueType: 'dateTime',
-      width: 220,
+      width: 160,
       search: false,
     },
     {
@@ -178,7 +178,7 @@ const PolicyList: React.FC = () => {
         actionRef={actionRef}
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
-        search={{ labelWidth: 40 }}
+        search={{ labelWidth: 'auto' }}
         request={handleListPolicies}
         toolBarRender={() => [renderToolBar]}
         rowSelection={

@@ -121,14 +121,15 @@ const RoleList: React.FC = () => {
       title: <FormattedMessage {...BASIC_INTL.CREATED_AT} />,
       dataIndex: ['metadata', 'createdAt'],
       valueType: 'dateTime',
-      width: 220,
+      width: 160,
       search: false,
     },
     {
       title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
       dataIndex: 'option',
       valueType: 'option',
-      width: 150,
+      width: 60,
+      fixed: 'right',
       render: (_, record: API.Role) => [
         <Dropdown
           key="dropdown"
@@ -160,7 +161,7 @@ const RoleList: React.FC = () => {
         actionRef={actionRef}
         columns={columns}
         rowKey={(record) => record?.metadata?.instanceId ?? ''}
-        search={{ labelWidth: 40 }}
+        search={{ labelWidth: 'auto' }}
         request={handleListRoles}
         rowSelection={{}}
         toolBarRender={() => [
