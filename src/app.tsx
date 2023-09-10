@@ -21,6 +21,10 @@ export async function getInitialState(): Promise<{
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
+  /**
+   * 控制台打印
+   */
+  console.log('%c欢迎使用 WeCoding 统一身份认证中心', 'font-size: 24px;font-weight: bold');
   const fetchUserInfo = async () => {
     try {
       return await queryCurrentUser({

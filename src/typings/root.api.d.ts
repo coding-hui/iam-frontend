@@ -34,6 +34,7 @@ declare namespace API {
 
   type LoginResult = {
     access_token?: string;
+    refresh_token?: string;
     status: string;
     type?: string;
     currentAuthority?: string;

@@ -24,6 +24,7 @@ import { Divider, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../config/defaultSettings';
+import { Session } from '@/utils/storage';
 
 const ActionIcons = (props: { otherLogin: string }) => {
   const langClassName = useEmotionCss(({ token }) => {
@@ -142,7 +143,7 @@ const Login: React.FC = () => {
       // 登录
       const res = await login({ ...values, type });
       if (res && res.access_token) {
-        localStorage.setItem(TOKEN_KEY, res.access_token);
+        Session.set(TOKEN_KEY, res.access_token);
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',

@@ -1,7 +1,7 @@
-﻿import { TOKEN_KEY } from '@/enums/cacheEnum';
-import type { RequestOptions } from '@@/plugin-request/request';
+﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
+import { Session } from '@/utils/storage';
 
 // 错误处理方案： 错误类型
 enum ErrorShowType {
@@ -87,7 +87,7 @@ export const errorConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-      const token = localStorage.getItem(TOKEN_KEY);
+      const token = Session.getToken();
       if (token) {
         config.headers = {
           ...config.headers,
