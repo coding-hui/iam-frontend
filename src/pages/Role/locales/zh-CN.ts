@@ -1,4 +1,6 @@
 export default {
+  'role.page.content':
+    '角色是一组权限资源的集合，可以为角色授权某些资源与操作权限。当角色授予给用户之后，该用户将会继承这个角色中的所有权限。',
   'role.revoke.user': '移除',
   'role.revoke.user.success': '移除成功',
   'role.assign.user': '分配角色',

@@ -10,6 +10,9 @@ import { deletePolicy } from '@/services/policy/deletePolicy';
 import { transformSearchParams } from '@/utils';
 
 const INTL = {
+  PAGE_CONTENT: {
+    id: 'policy.page.content',
+  },
   TABLE_TITLE: {
     id: 'policy.table.title',
   },
@@ -172,7 +175,7 @@ const PolicyList: React.FC = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer content={intl.formatMessage(INTL.PAGE_CONTENT)}>
       <ProTable<API.Policy, ListPolicyOptions>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}

@@ -1,4 +1,6 @@
 export default {
+  'resource.page.content':
+    '资源是业务系统中具体资源的标识符，可以是一个实体，如用户，也可以是一个菜单、按钮、API。您可以为这些资源制定具体的操作，如添加用户（user:add），实现灵活而精确的资源管理。',
   'resource.table.title': '资源列表',
   'resource.table.add': '新增',
   'resource.table.edit': '编辑',

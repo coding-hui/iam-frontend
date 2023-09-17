@@ -1,4 +1,6 @@
 export default {
+  'policy.page.content':
+    '权限策略将多个资源、操作、授权作用组合在一起，为应用程序提供灵活的访问权限管理和控制功能。',
   'policy.name': '策略名称',
   'policy.name.placeholder': '请输入策略名称',
   'policy.type': '是否为系统策略',

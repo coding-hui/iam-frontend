@@ -11,6 +11,9 @@ import { BASIC_INTL } from '@/constant';
 import { transformSearchParams } from '@/utils';
 
 const INTL = {
+  PAGE_CONTENT: {
+    id: 'users.page.content',
+  },
   TABLE_TITLE: {
     id: 'users.table.title',
   },
@@ -180,7 +183,7 @@ const UserList: React.FC = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer content={intl.formatMessage(INTL.PAGE_CONTENT)}>
       <ProTable<API.UserInfo, ListUserOptions>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}

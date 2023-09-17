@@ -1,4 +1,6 @@
 export default {
+  'organization.page.content':
+    '组织用于将用户和应用的分隔，用户登录到一个组织后可以访问该组织下的应用、资源。',
   'organization.table.title': '组织管理',
   'organization.table.content': '',
   'organization.table.displayName': '显示名称',

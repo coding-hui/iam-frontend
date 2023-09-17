@@ -11,6 +11,9 @@ import CreateRoleModal from '@/pages/Role/components/CreateRoleModal';
 import { transformSearchParams } from '@/utils';
 
 const INTL = {
+  PAGE_CONTENT: {
+    id: 'role.page.content',
+  },
   TABLE_TITLE: {
     id: 'role.table.title',
   },
@@ -155,7 +158,7 @@ const RoleList: React.FC = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer content={intl.formatMessage(INTL.PAGE_CONTENT)}>
       <ProTable<API.Role, ListRoleOptions>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}

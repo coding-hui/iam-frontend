@@ -78,6 +78,7 @@ const CreateUserModal: React.FC<UpdateFormProps> = (props) => {
       }}
       title={intl.formatMessage({ id: INTL.TITLE })}
       form={form}
+      width="736px"
       autoComplete="off"
       trigger={
         <Button type="primary">

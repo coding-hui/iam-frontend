@@ -112,6 +112,7 @@ const CreateResource: React.FC = () => {
               mode="single"
               label={intl.formatMessage(INTL.TYPE)}
               placeholder={intl.formatMessage(INTL.PLACEHOLDER_TYPE)}
+              initialValue={RESOURCE_TYPES_OPTIONS[0].value}
               options={RESOURCE_TYPES_OPTIONS}
               rules={[{ required: true, message: intl.formatMessage(INTL.PLACEHOLDER_TYPE) }]}
               transform={(value) => {

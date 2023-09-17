@@ -14,6 +14,9 @@ import {
 } from '@/services/organization/listOrganizations';
 
 const INTL = {
+  PAGE_CONTENT: {
+    id: 'organization.page.content',
+  },
   TABLE_TITLE: {
     id: 'organization.table.title',
   },
@@ -173,7 +176,7 @@ const OrganizationList: React.FC = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer content={intl.formatMessage(INTL.PAGE_CONTENT)}>
       <ProTable<API.Organization, ListOrganizationOptions>
         headerTitle={intl.formatMessage(INTL.TABLE_TITLE)}
         actionRef={actionRef}

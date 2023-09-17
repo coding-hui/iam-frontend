@@ -11,6 +11,9 @@ import { transformSearchParams } from '@/utils';
 import { RESOURCE_TYPES_OPTIONS } from '@/constant/options';
 
 const INTL = {
+  PAGE_CONTENT: {
+    id: 'resource.page.content',
+  },
   API: {
     id: 'resource.table.api',
   },
@@ -193,7 +196,7 @@ const ResourceList: React.FC = () => {
   );
 
   return (
-    <PageContainer>
+    <PageContainer content={intl.formatMessage(INTL.PAGE_CONTENT)}>
       <ProTable<API.Resource, ListResourceOptions>
         headerTitle={intl.formatMessage({
           ...INTL.TABLE_TITLE,
