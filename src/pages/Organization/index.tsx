@@ -6,12 +6,12 @@ import { App, Button, Dropdown, message } from 'antd';
 import React, { useRef } from 'react';
 import { BASIC_INTL } from '@/constant';
 import { transformSearchParams } from '@/utils';
-import { deleteOrganization } from '@/services/organization/deleteOrganization';
-import CreateOrganizationModal from '@/pages/Organization/components/CreateOrganizationModal';
+import { CreateOrganization } from '@/pages/Organization/components';
 import {
+  deleteOrganization,
   listOrganizations,
   ListOrganizationOptions,
-} from '@/services/organization/listOrganizations';
+} from '@/services/organization';
 
 const INTL = {
   PAGE_CONTENT: {
@@ -191,7 +191,7 @@ const OrganizationList: React.FC = () => {
           pageSizeOptions: [10, 20, 30, 50],
         }}
         toolBarRender={() => [
-          <CreateOrganizationModal
+          <CreateOrganization
             key="create"
             onFinish={async () => {
               reloadTable();

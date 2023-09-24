@@ -9,6 +9,7 @@ export interface CreateUserRequest {
   disabled?: boolean;
   status?: string;
   resetPasswordOnFirstLogin?: boolean;
+  departmentIds?: string[];
 }
 
 const url = '/api/v1/users';

@@ -1,20 +1,21 @@
 import { request } from '@umijs/max';
 
-export interface CreateOrganizationRequest {
+export interface CreateDepartmentRequest {
   name: string;
+  organizationId: string;
+  parentId: string;
+  parentName?: string;
   displayName?: string;
   websiteUrl?: string;
   favicon?: string;
   disabled?: string;
   description?: string;
-  parentId?: string;
-  parentName?: string;
 }
 
-const url = '/api/v1/organizations';
+const url = '/api/v1/departments';
 
-export async function createOrganization(
-  createReq: CreateOrganizationRequest,
+export async function createDepartment(
+  createReq: CreateDepartmentRequest,
   options?: { [key: string]: any },
 ) {
   return request(url, {

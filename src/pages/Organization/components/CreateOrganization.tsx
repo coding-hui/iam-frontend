@@ -5,10 +5,7 @@ import { ModalForm, ProForm, ProFormText, ProFormTextArea } from '@ant-design/pr
 import { useIntl } from '@umijs/max';
 import { Button, Form, message } from 'antd';
 import React from 'react';
-import {
-  createOrganization,
-  CreateOrganizationRequest,
-} from '@/services/organization/createOrganization';
+import { createOrganization, CreateOrganizationRequest } from '@/services/organization';
 
 export type FormValueType = Partial<CreateOrganizationRequest>;
 
@@ -46,7 +43,7 @@ const INTL = {
   },
 };
 
-const CreateOrganizationModal: React.FC<UpdateFormProps> = (props) => {
+const CreateOrganization: React.FC<UpdateFormProps> = (props) => {
   const intl = useIntl();
   const [form] = Form.useForm<CreateOrganizationRequest>();
 
@@ -124,4 +121,4 @@ const CreateOrganizationModal: React.FC<UpdateFormProps> = (props) => {
   );
 };
 
-export default CreateOrganizationModal;
+export default CreateOrganization;

@@ -71,7 +71,7 @@ declare namespace API {
 
   type Organization = {
     metadata: ObjectMeta;
-    displayName?: string;
+    displayName: string;
     websiteUrl?: string;
     favicon?: string;
     disabled?: string;

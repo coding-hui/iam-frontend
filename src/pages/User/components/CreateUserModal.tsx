@@ -11,6 +11,7 @@ import React from 'react';
 export type FormValueType = Partial<CreateUserRequest>;
 
 export type UpdateFormProps = {
+  organization?: { id: string; name: string };
   onFinish: (values: FormValueType) => Promise<boolean>;
 };
 
@@ -36,6 +37,7 @@ const INTL = {
 };
 
 const CreateUserModal: React.FC<UpdateFormProps> = (props) => {
+  const { organization } = props;
   const intl = useIntl();
   const [form] = Form.useForm<CreateUserRequest>();
 
@@ -52,6 +54,9 @@ const CreateUserModal: React.FC<UpdateFormProps> = (props) => {
   const handleAddUser = async (createReq: CreateUserRequest) => {
     const hide = message.loading(intl.formatMessage({ id: INTL.CREATING }));
     try {
+      if (organization) {
+        createReq.departmentIds = [organization.id];
+      }
       await createUser(createReq);
       hide();
       message.success(intl.formatMessage({ id: INTL.CREATE_SUCCESS }));

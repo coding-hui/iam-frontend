@@ -16,7 +16,7 @@ import React from 'react';
 import { FormattedMessage } from '@umijs/max';
 import { BASIC_INTL } from '@/constant';
 import { useIntl } from '@@/exports';
-import useOrganizationHook from '@/pages/Organization/edit/_hooks';
+import useOrganizationHook from '@/pages/Organization/Edit/_hooks';
 
 const INTL = {
   TAB_INFO: {

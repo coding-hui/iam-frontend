@@ -50,6 +50,9 @@ export const BASIC_INTL = {
   CREATING: {
     id: 'message.loading.creating',
   },
+  UPDATING: {
+    id: 'message.loading.updating',
+  },
   CREATE_SUCCESS: {
     id: 'message.create.success',
   },

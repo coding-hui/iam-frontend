@@ -2,11 +2,13 @@ import { history, useIntl, useParams, useRequest } from '@@/exports';
 import { useEffect, useState } from 'react';
 import { App, Form } from 'antd';
 import { BASIC_INTL } from '@/constant';
-import { getOrganization } from '@/services/organization/getOrganization';
-import { enableOrganization } from '@/services/organization/enableOrganization';
-import { disableOrganization } from '@/services/organization/disableOrganization';
-import { deleteOrganization } from '@/services/organization/deleteOrganization';
-import { updateOrganization } from '@/services/organization/updateOrganization';
+import {
+  getOrganization,
+  enableOrganization,
+  disableOrganization,
+  deleteOrganization,
+  updateOrganization,
+} from '@/services/organization';
 
 export default function useOrganizationHook() {
   const intl = useIntl();

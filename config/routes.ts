@@ -38,7 +38,7 @@ export default [
       {
         path: '/org-management/org/:instanceId',
         name: 'org.edit',
-        component: './Organization/edit',
+        component: './Organization/Edit',
         hideInMenu: true,
         parentKeys: ['/org-management', '/org-management/org'],
       },

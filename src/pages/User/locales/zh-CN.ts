@@ -14,6 +14,7 @@ export default {
   'users.table.status.disabled': '禁用',
   'users.table.lastLoginTime': '上次登录时间',
   'users.form.create.title': '新增用户',
+  'users.form.org': '所属组织',
   'users.form.name': '用户名',
   'users.form.alias': '昵称',
   'users.form.email': '邮箱',

@@ -1,5 +1,6 @@
 export default {
   'message.loading.creating': '正在创建',
+  'message.loading.updating': '正在更新',
   'message.loading.deleting': '删除中...',
   'message.create.success': '创建成功',
   'message.update.success': '更新成功',
