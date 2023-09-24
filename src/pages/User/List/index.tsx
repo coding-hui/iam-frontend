@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import CreateUserModal from '@/pages/User/components/CreateUserModal';
 import { ListUserOptions, listUsers } from '@/services/user/listUsers';
 import { deleteUser } from '@/services/user/deleteUser';
@@ -6,11 +6,24 @@ import { DeleteOutlined, EllipsisOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
-import { App, Button, Card, Dropdown, message, Skeleton } from 'antd';
+import {
+  App,
+  Button,
+  Card,
+  Checkbox,
+  Divider,
+  Dropdown,
+  message,
+  Skeleton,
+  Space,
+  Typography,
+} from 'antd';
 import { BASIC_INTL } from '@/constant';
 import { transformSearchParams } from '@/utils';
 
 import useStyle from './style';
+
+const { Text } = Typography;
 
 export type Props = {
   organization?: { id: string; name: string };
@@ -32,6 +45,9 @@ const INTL = {
   LAST_LOGIN_TIME: {
     id: 'users.table.lastLoginTime',
   },
+  ONLY_DIRECT_MEMBERS: {
+    id: 'users.table.onlyDirectMembers',
+  },
 };
 
 const UserList: React.FC<Props> = (props) => {
@@ -42,6 +58,8 @@ const UserList: React.FC<Props> = (props) => {
   const actionRef = useRef<ActionType>();
   const { modal } = App.useApp();
   const intl = useIntl();
+
+  const [onlyDirectMembers, setOnlyDirectMembers] = useState(false);
 
   const reloadTable = () => {
     if (actionRef.current) {
@@ -184,7 +202,7 @@ const UserList: React.FC<Props> = (props) => {
       ) : (
         <ProTable<API.UserInfo, ListUserOptions>
           size="small"
-          params={{ departmentId: organization.id }}
+          params={{ departmentId: organization.id, includeChildrenDepartments: !onlyDirectMembers }}
           className={styles}
           headerTitle={organization.name}
           style={{
@@ -204,6 +222,17 @@ const UserList: React.FC<Props> = (props) => {
             pageSizeOptions: [10, 20, 30, 50],
           }}
           toolBarRender={() => [
+            <Space key={'checkbox'} style={{ alignItems: 'flex-start' }}>
+              <Checkbox
+                checked={onlyDirectMembers}
+                onChange={({ target: { checked } }) => {
+                  setOnlyDirectMembers(checked);
+                  actionRef.current?.reload();
+                }}
+              />
+              <Text ellipsis>{intl.formatMessage(INTL.ONLY_DIRECT_MEMBERS)}</Text>
+            </Space>,
+            <Divider key="divider" type="vertical" />,
             <CreateUserModal
               key="create"
               organization={organization}

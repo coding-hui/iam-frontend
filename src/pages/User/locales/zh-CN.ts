@@ -1,5 +1,6 @@
 export default {
   'users.page.content': '管理组织中的用户，可以直接在 IAM 中进行维护，也可以同步外部身份源。',
+  'users.table.onlyDirectMembers': '只展示部门直属成员',
   'users.table.title': '用户列表',
   'users.table.add': '新增',
   'users.table.edit': '编辑',

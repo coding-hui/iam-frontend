@@ -1,6 +1,7 @@
 import { request } from '@@/exports';
 
 export type ListUserOptions = {
+  includeChildrenDepartments?: boolean;
   departmentId?: string;
 } & API.ListOptions;
 
