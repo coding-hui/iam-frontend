@@ -47,7 +47,7 @@ const MoveTree: React.FC<Props> = (props) => {
       setSelectedKeys,
       handleUpdateDepartment,
     },
-  } = useOrgTreeHook({ currentKey: currentNode.id });
+  } = useOrgTreeHook({ currentKey: currentNode.id, initDeps: [currentNode] });
 
   const handleSubmit = async () => {
     if (selectedKeys && selectedKeys.length > 0) {

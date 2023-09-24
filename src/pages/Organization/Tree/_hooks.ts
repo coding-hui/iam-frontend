@@ -1,4 +1,4 @@
-import { Key, useEffect, useState } from 'react';
+import { DependencyList, Key, useEffect, useState } from 'react';
 import { App } from 'antd';
 import { useActive } from '@/hooks';
 import { BASIC_INTL } from '@/constant';
@@ -13,12 +13,13 @@ import {
 } from '@/services/organization';
 
 export type Props = {
+  initDeps?: DependencyList;
   currentKey?: string;
   onSelect?: (id: string, name: string) => void;
 };
 
 export default function useOrgTreeHook(props: Props) {
-  const { onSelect, currentKey } = props;
+  const { initDeps = [], onSelect, currentKey } = props;
   const intl = useIntl();
   const { message } = App.useApp();
 
@@ -93,7 +94,7 @@ export default function useOrgTreeHook(props: Props) {
   useEffect(() => {
     showInitLoading();
     getRootOrganizationData({});
-  }, []);
+  }, initDeps);
 
   const { run: doDelete } = useRequest(deleteDepartment, {
     manual: true,
