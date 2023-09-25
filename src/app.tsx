@@ -24,6 +24,7 @@ export async function getInitialState(): Promise<{
   /**
    * 控制台打印
    */
+  // @ts-nocheck
   console.log('%c欢迎使用 WeCoding 统一身份认证中心', 'font-size: 24px;font-weight: bold');
   const fetchUserInfo = async () => {
     try {
