@@ -224,7 +224,10 @@ const EditUser: React.FC = () => {
 
   const avatarColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
 
-  const getAvatarColor = (name?: string) => {
+  const getAvatarColor = (name?: string, avatar?: string) => {
+    if (avatar) {
+      return '';
+    }
     if (!name) {
       return avatarColorList[0];
     }
@@ -234,9 +237,10 @@ const EditUser: React.FC = () => {
   const userAvatarTitle = (
     <div>
       <Avatar
+        src={userInfo && userInfo.avatar ? userInfo.avatar : null}
         style={{
-          backgroundColor: getAvatarColor(userInfo?.metadata.name),
-          verticalAlign: 'middle',
+          backgroundColor: getAvatarColor(userInfo?.metadata.name, userInfo?.avatar),
+          verticalAlign: 'bottom',
         }}
         size={56}
         gap={4}
