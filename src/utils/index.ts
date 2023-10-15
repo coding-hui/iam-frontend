@@ -147,3 +147,35 @@ export const transformSearchParams = function (opts: any, searchFields: string[]
   });
   return fieldSelector;
 };
+
+export function getStateFromQueryParams(
+  applicationName: string,
+  providerName: string,
+  method: string = 'login',
+  isShortState: boolean = false,
+) {
+  let query = window.location.search;
+  query = `${query}&application=${encodeURIComponent(
+    applicationName,
+  )}&provider=${encodeURIComponent(providerName)}&method=${method}`;
+  if (method === 'link') {
+    query = `${query}&from=${window.location.pathname}`;
+  }
+
+  if (!isShortState) {
+    return btoa(query);
+  } else {
+    const state = providerName;
+    sessionStorage.setItem(state, query);
+    return state;
+  }
+}
+
+export function getQueryParamsFromState(state: string) {
+  const query = sessionStorage.getItem(state);
+  if (query === null) {
+    return atob(state);
+  } else {
+    return query;
+  }
+}

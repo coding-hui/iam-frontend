@@ -1,3 +1,5 @@
+// import { IdentityProviderType } from "@/enums";
+
 declare namespace API {
   // Standard object's metadata.
   type ObjectMeta = {
@@ -180,5 +182,62 @@ declare namespace API {
   type RoleList = {
     items: Role[];
     total: number;
+  };
+}
+
+declare namespace App {
+  enum OIDCMode {
+    FRONT_CHANNEL = 'FRONT_CHANNEL',
+    BACK_CHANNEL = 'BACK_CHANNEL',
+  }
+
+  type OIDCConfig = {
+    issuerURL: string;
+    authorizationEdpoint: string;
+    responseType: string;
+    mode: OIDCMode;
+    clientID: string;
+    clientSecret: string;
+    scopes: string;
+    redirectURL: string;
+  };
+
+  type OAuthConfig = {
+    endpoint: {
+      authURL: string;
+      tokenURL: string;
+      userInfoURL: string;
+    };
+    scopes: string;
+    clientID: string;
+    clientSecret: string;
+    redirectURL: string;
+    authUrlTemplate: string;
+  };
+
+  type Application = {
+    metadata: API.ObjectMeta;
+    displayName: string;
+    websiteUrl?: string;
+    status?: string;
+    owner?: string;
+    description?: string;
+    icon?: string;
+    homepageUrl?: string;
+
+    identityProviders: IdentityProvider[];
+  };
+
+  type IdentityProvider = {
+    metadata: API.ObjectMeta;
+    type: string;
+    category: string;
+    displayName: string;
+    status?: string;
+    owner?: string;
+    description?: string;
+    callbackURL?: string;
+
+    config: OAuthConfig | OIDCConfig;
   };
 }

@@ -31,18 +31,6 @@ export default [
     routes: [
       { path: '/org-management', redirect: '/org-management/org' },
       {
-        path: '/org-management/org',
-        name: 'org.list',
-        component: './Organization',
-      },
-      {
-        path: '/org-management/org/:instanceId',
-        name: 'org.edit',
-        component: './Organization/Edit',
-        hideInMenu: true,
-        parentKeys: ['/org-management', '/org-management/org'],
-      },
-      {
         path: '/org-management/user',
         name: 'user.list',
         component: './User',
@@ -53,6 +41,18 @@ export default [
         component: './User/Edit',
         hideInMenu: true,
         parentKeys: ['/org-management', '/org-management/user'],
+      },
+      {
+        path: '/org-management/org',
+        name: 'org.list',
+        component: './Organization',
+      },
+      {
+        path: '/org-management/org/:instanceId',
+        name: 'org.edit',
+        component: './Organization/Edit',
+        hideInMenu: true,
+        parentKeys: ['/org-management', '/org-management/org'],
       },
     ],
   },
