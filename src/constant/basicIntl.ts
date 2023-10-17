@@ -2,6 +2,12 @@ export const BASIC_INTL = {
   TITLE_OPTION: {
     id: 'pages.searchTable.titleOption',
   },
+  NAME_TIP: {
+    id: 'pages.common.form.name.tip',
+  },
+  DISPLAY_NAME_TIP: {
+    id: 'pages.common.form.displayName.tip',
+  },
   BTN_MORE: {
     id: 'pages.common.btn.more',
   },

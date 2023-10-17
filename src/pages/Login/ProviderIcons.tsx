@@ -7,6 +7,7 @@ import { useIntl } from '@@/exports';
 import { createStyles } from 'antd-style';
 import { getStateFromQueryParams } from '@/utils';
 import { GiteeIcon } from '@/components/Icon/GiteeIcon';
+import { CodingIcon } from '@/components/Icon/CodingIcon';
 
 export type Props = {
   appConf?: App.Application;
@@ -88,6 +89,20 @@ const AuthInfo: Record<
         idp.config.clientID
       }&redirect_uri=${getRedirectUri(appConf, idp)}&scope=${
         AuthInfo.Gitee.scope
+      }&response_type=code&state=${state}`;
+    },
+  },
+  Coding: {
+    scope: 'user%20user:email',
+    endpoint: 'https://{your-team}.coding.net/oauth_authorize.html',
+    icon: <CodingIcon className={`${prefixCls}-icon`} />,
+    renderAuthUrl: (appConf: App.Application, idp: App.IdentityProvider): string => {
+      const state = getStateFromQueryParams(appConf.metadata.name, idp.metadata.name);
+      const oauthConf = idp.config as App.OAuthConfig;
+      return `https://${oauthConf.team}.coding.net/oauth_authorize.html?client_id=${
+        idp.config.clientID
+      }&redirect_uri=${getRedirectUri(appConf, idp)}&scope=${
+        AuthInfo.Coding.scope
       }&response_type=code&state=${state}`;
     },
   },

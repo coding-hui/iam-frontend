@@ -213,6 +213,9 @@ declare namespace App {
     clientSecret: string;
     redirectURL: string;
     authUrlTemplate: string;
+
+    // coding team name
+    team?: string;
   };
 
   type Application = {
@@ -239,5 +242,10 @@ declare namespace App {
     callbackURL?: string;
 
     config: OAuthConfig | OIDCConfig;
+  };
+
+  type IdentityProviderList = {
+    items: IdentityProvider[];
+    total: number;
   };
 }

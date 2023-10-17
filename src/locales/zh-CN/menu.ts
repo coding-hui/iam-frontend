@@ -30,8 +30,11 @@ export default {
   'menu.org-management.user.list': '用户管理',
   'menu.org-management.user.edit': '编辑用户',
 
-  'menu.authn': '认证管理',
-  'menu.authn.identity-provider-list': '身份提供商',
+  'menu.authn': '身份认证',
+  'menu.authn.identity-source.social.list': '社会化认证源',
+  'menu.authn.identity-source.social.create': '创建社会化认证源',
+  'menu.authn.identity-source.social.edit': '编辑社会化认证源',
+  'menu.authn.identity-source.enterprise': '企业认证源',
 
   'menu.resource': '资源权限',
   'menu.resource.resource-list': '资源管理',

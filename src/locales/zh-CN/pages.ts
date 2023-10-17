@@ -19,4 +19,7 @@ export default {
   'pages.common.btn.edit': '编辑',
   'pages.common.btn.delete': '删除',
   'pages.common.btn.add': '新增',
+
+  'pages.common.form.name.tip': '唯一的、字符串式的ID',
+  'pages.common.form.displayName.tip': '公开显示的、用户易读的名称',
 };
