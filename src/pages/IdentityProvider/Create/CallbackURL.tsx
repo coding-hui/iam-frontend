@@ -1,7 +1,10 @@
 import React from 'react';
+import { Typography } from 'antd';
 import { useIntl } from '@umijs/max';
 import { getRedirectURL } from '@/services/system/oauth';
 import { ProFormDependency, ProFormText } from '@ant-design/pro-components';
+
+const { Paragraph } = Typography;
 
 const INTL = {
   NAME: {
@@ -24,8 +27,22 @@ export const CallbackURL = () => {
             width="xl"
             label={intl.formatMessage(INTL.AUTH_URL)}
             name={['config', 'redirectURL']}
-            allowClear={false}
+            readonly
+            fieldProps={{ autoComplete: 'off' }}
             initialValue={redirectURL}
+            proFieldProps={{
+              render: () => {
+                return (
+                  <Paragraph copyable={{ text: redirectURL }} style={{ marginBottom: '0' }}>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: `<span>${redirectURL}</span>`,
+                      }}
+                    />
+                  </Paragraph>
+                );
+              },
+            }}
           ></ProFormText>
         );
       }}

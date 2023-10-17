@@ -25,6 +25,7 @@ export default {
   'policy.type.allowAll': '全部操作',
   'policy.type.specific': '特定操作',
   'policy.form.title.basicInfo': '基本信息',
+  'policy.form.title.loginConfig': '登录配置',
   'policy.form.title.subjectInfo': '授权主体',
   'policy.form.placeholder.api': '请输入请求接口',
   'policy.form.placeholder.method': '请输入请求方法',

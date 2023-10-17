@@ -22,6 +22,9 @@ const INTL = {
   BASIC_INFO: {
     id: 'policy.form.title.basicInfo',
   },
+  LOGIN_CONFIG: {
+    id: 'policy.form.title.loginConfig',
+  },
   NAME: {
     id: 'idp.form.name',
   },
@@ -151,6 +154,11 @@ const CreatePolicy: React.FC = () => {
               return null;
             }}
           </ProFormDependency>
+          <ProForm.Group
+            align="center"
+            title={intl.formatMessage(INTL.LOGIN_CONFIG)}
+            titleStyle={{ marginBottom: '14px' }}
+          ></ProForm.Group>
         </ProForm>
       </ProCard>
     </PageContainer>
