@@ -5,6 +5,7 @@ import {
   ProForm,
   ProFormDependency,
   ProFormSelect,
+  ProFormSwitch,
   ProFormText,
 } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
@@ -158,7 +159,9 @@ const CreatePolicy: React.FC = () => {
             align="center"
             title={intl.formatMessage(INTL.LOGIN_CONFIG)}
             titleStyle={{ marginBottom: '14px' }}
-          ></ProForm.Group>
+          >
+            <ProFormSwitch label={'是否自动注册'} />
+          </ProForm.Group>
         </ProForm>
       </ProCard>
     </PageContainer>
