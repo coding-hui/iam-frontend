@@ -1,6 +1,8 @@
 export enum PageEnum {
   // basic login path
   BASE_LOGIN = '/login',
+  // session expired
+  SESSION_EXPIRED = '/session-expired',
   // basic home path
   BASE_HOME = '/dashboard',
   // error page path

@@ -1,3 +1,6 @@
+import { history, matchPath } from '@umijs/max';
+import { PageEnum } from '@/enums';
+
 const toString = Object.prototype.toString;
 
 export function is(val: unknown, type: string) {
@@ -98,3 +101,21 @@ export function isUrl(path: string): boolean {
     /^(((^https?:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?(\/#\/)?(?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
   return reg.test(path);
 }
+
+export const isLoginPath = () => {
+  return matchPath(
+    {
+      path: PageEnum.BASE_LOGIN,
+    },
+    history.location.pathname,
+  );
+};
+
+export const isSessionExpiredPath = () => {
+  return matchPath(
+    {
+      path: PageEnum.SESSION_EXPIRED,
+    },
+    history.location.pathname,
+  );
+};

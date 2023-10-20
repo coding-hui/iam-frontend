@@ -1,6 +1,7 @@
-import { Footer, Question, SelectLang, AvatarDropdown, AvatarName } from '@/components';
+import { AvatarDropdown, AvatarName, Footer, Question, SelectLang } from '@/components';
 import { currentUser as queryCurrentUser } from '@/services/system/login';
 import { LinkOutlined } from '@ant-design/icons';
+import queryString from 'query-string';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { PageLoading, SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
@@ -8,9 +9,23 @@ import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import { App } from 'antd';
+import { isLoginPath, isSessionExpiredPath } from '@/utils/is';
+import { PageEnum } from '@/enums';
 
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/login';
+
+const goLogin = () => {
+  const query = queryString.parse(history.location.search);
+  const { redirect } = query as { redirect: string };
+  history.replace({
+    pathname: PageEnum.BASE_LOGIN,
+    search:
+      redirect &&
+      queryString.stringify({
+        redirect: redirect,
+      }),
+  });
+};
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -27,27 +42,11 @@ export async function getInitialState(): Promise<{
   // @ts-nocheck
   console.log('%c欢迎使用 WeCoding 统一身份认证中心', 'font-size: 24px;font-weight: bold');
   const fetchUserInfo = async () => {
-    try {
-      return await queryCurrentUser({
-        skipErrorHandler: true,
-      });
-    } catch (error) {
-      history.push(loginPath);
-    }
-    return undefined;
+    return await queryCurrentUser().catch(() => undefined);
   };
-  // 如果不是登录页面，执行
-  const { location } = history;
-  if (location.pathname !== loginPath) {
-    const currentUser = await fetchUserInfo();
-    return {
-      fetchUserInfo,
-      currentUser,
-      settings: defaultSettings as Partial<LayoutSettings>,
-    };
-  }
   return {
     fetchUserInfo,
+    currentUser: isLoginPath() ? undefined : await fetchUserInfo(),
     settings: defaultSettings as Partial<LayoutSettings>,
   };
 }
@@ -68,10 +67,17 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
-      const { location } = history;
+      let gotoLogin: boolean = false;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
+      if (!initialState || !initialState?.currentUser) {
+        gotoLogin = true;
+      }
+      if (gotoLogin && (isLoginPath() || isSessionExpiredPath())) {
+        return;
+      }
+      if (gotoLogin) {
+        goLogin();
+        return;
       }
     },
     layoutBgImgList: [
