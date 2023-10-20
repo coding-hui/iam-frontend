@@ -21,10 +21,10 @@ export const CallbackURL = () => {
   return (
     <ProFormDependency name={['name']}>
       {({ name }) => {
-        const redirectURL = getRedirectURL(name ? name : `{${intl.formatMessage(INTL.NAME)}}`);
+        const redirectURL = getRedirectURL(`${name ? name : `{${intl.formatMessage(INTL.NAME)}}`}`);
         return (
           <ProFormText
-            width="xl"
+            width={300}
             label={intl.formatMessage(INTL.AUTH_URL)}
             name={['config', 'redirectURL']}
             readonly
@@ -33,7 +33,11 @@ export const CallbackURL = () => {
             proFieldProps={{
               render: () => {
                 return (
-                  <Paragraph copyable={{ text: redirectURL }} style={{ marginBottom: '0' }}>
+                  <Paragraph
+                    editable={{ triggerType: ['text'] }}
+                    copyable={{ text: redirectURL }}
+                    style={{ marginBottom: '0' }}
+                  >
                     <span
                       dangerouslySetInnerHTML={{
                         __html: `<span>${redirectURL}</span>`,

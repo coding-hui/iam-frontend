@@ -12,6 +12,7 @@ import {
   UpdateIdentityProviderRequest,
 } from '@/services/idp';
 import { IdentityProviderType, ProviderCategory } from '@/enums';
+import { getRedirectURL } from '@/services/system/oauth';
 
 export type FormType = UpdateIdentityProviderRequest & CreateIdentityProviderRequest;
 
@@ -81,7 +82,10 @@ export default function useIdentityProviderHook() {
   const handleSubmit = async () => {
     const values = await formRef.current?.validateFieldsReturnFormatValue?.();
     if (values) {
-      return instanceId ? doUpdateIdp(instanceId, values) : doCreateIdp(values);
+      if (values.config.redirectURL && !isEdit) {
+        values.config.redirectURL = getRedirectURL(values.name);
+      }
+      return isEdit ? doUpdateIdp(instanceId, values) : doCreateIdp(values);
     }
   };
 
