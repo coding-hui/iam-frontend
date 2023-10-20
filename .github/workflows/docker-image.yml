@@ -17,8 +17,8 @@ on:
 
 env:
   # Use docker.io for Docker Hub if empty
-  REGISTRY: ''
-  IMAGE_NAME: wecoding/iam-frontend
+  REGISTRY: ${{ vars.REGISTRY }}
+  IMAGE_NAME: iam-frontend
 
 jobs:
 
