@@ -11,7 +11,7 @@ export async function currentUser(options?: { [key: string]: any }) {
 
 export async function outLogin(options?: { [key: string]: any }) {
   return request<Record<string, any>>('/api/v1/logout', {
-    method: 'DELETE',
+    method: 'GET',
     ...(options || {}),
   });
 }
