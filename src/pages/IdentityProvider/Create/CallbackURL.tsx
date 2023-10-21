@@ -33,11 +33,7 @@ export const CallbackURL = () => {
             proFieldProps={{
               render: () => {
                 return (
-                  <Paragraph
-                    editable={{ triggerType: ['text'] }}
-                    copyable={{ text: redirectURL }}
-                    style={{ marginBottom: '0' }}
-                  >
+                  <Paragraph copyable={{ text: redirectURL }} style={{ marginBottom: '0' }}>
                     <span
                       dangerouslySetInnerHTML={{
                         __html: `<span>${redirectURL}</span>`,
