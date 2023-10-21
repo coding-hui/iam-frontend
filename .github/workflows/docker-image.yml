@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: images/iam-frontend
+  IMAGE_NAME: devops-wecoding-docker.pkg.coding.net/wecoding/images/iam-frontend
 
 jobs:
 
