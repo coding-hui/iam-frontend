@@ -30,6 +30,11 @@ export default {
   'menu.org-management.user.list': '用户管理',
   'menu.org-management.user.edit': '编辑用户',
 
+  'menu.app-management': '应用',
+  'menu.app-management.app.list': '应用中心',
+  'menu.app-management.app.create': '创建应用',
+  'menu.app-management.app.edit': '编辑应用',
+
   'menu.authn': '身份认证',
   'menu.authn.identity-source.social.list': '社会化认证源',
   'menu.authn.identity-source.social.create': '创建社会化认证源',

@@ -97,6 +97,17 @@ declare namespace API {
     type?: string;
   };
 
+  type ApiResult<T> = {
+    /** 业务状态码 */
+    code: string | number;
+    /** 是否成功 */
+    success: boolean;
+    /** 消息结果 */
+    msg: string;
+    /** 结果 */
+    data: PageInfo<T> & T & T[];
+  } & Record<string, any>;
+
   type ErrorResponse = {
     /** 业务约定的错误码 */
     errorCode: string;
@@ -225,10 +236,15 @@ declare namespace App {
     status?: string;
     owner?: string;
     description?: string;
-    icon?: string;
+    logo?: string;
     homepageUrl?: string;
 
     identityProviders: IdentityProvider[];
+  };
+
+  type ApplicationList = {
+    items: Application[];
+    total: number;
   };
 
   type IdentityProvider = {

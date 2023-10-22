@@ -19,3 +19,9 @@ export enum PolicyType {
   SYSTEM = 'CUSTOM',
   DEFAULT = 'DEFAULT',
 }
+
+export enum AppType {
+  WEB = 'WEB',
+  API = 'API',
+  MOBILE = 'MOBILE',
+}

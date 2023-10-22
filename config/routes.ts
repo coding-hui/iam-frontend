@@ -57,6 +57,25 @@ export default [
     ],
   },
   {
+    name: 'app-management',
+    path: '/app-management',
+    icon: 'RobotOutlined',
+    routes: [
+      { path: '/app-management', redirect: '/app-management/app' },
+      {
+        path: '/app-management/app',
+        name: 'app.list',
+        component: './Application',
+      },
+      {
+        path: '/app-management/app/edit/:instanceId',
+        name: 'app.edit',
+        component: './Application/Edit',
+        hideInMenu: true,
+      },
+    ],
+  },
+  {
     name: 'authn',
     path: '/authn',
     icon: 'NodeIndexOutlined',
