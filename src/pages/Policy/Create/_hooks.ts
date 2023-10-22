@@ -6,6 +6,7 @@ import { updatePolicy, UpdatePolicyRequest } from '@/services/policy/updatePolic
 import { getPolicyInfo } from '@/services/policy/getPolicyInfo';
 import { listResources } from '@/services/resource/listResources';
 import { App } from 'antd';
+import { PolicyType } from '@/enums';
 
 const INTL = {
   CREATE_SUCCESS: {
@@ -182,7 +183,7 @@ export default function usePolicyHook() {
       let policy = {
         name: values.name,
         description: values.description,
-        type: values.type,
+        type: values.type ? values.type : PolicyType.CUSTOM,
         subjects: values.subjects,
         status: '0',
         statements: values.statements?.map((item) => {

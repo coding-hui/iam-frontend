@@ -13,3 +13,9 @@ export enum ProviderCategory {
   OAuth = 'OAuth',
   Generic = 'Generic',
 }
+
+export enum PolicyType {
+  CUSTOM = 'CUSTOM',
+  SYSTEM = 'CUSTOM',
+  DEFAULT = 'DEFAULT',
+}
