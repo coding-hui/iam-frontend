@@ -7,6 +7,7 @@ import {
   ProFormSelect,
   ProFormSwitch,
   ProFormText,
+  ProFormTextArea,
 } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
 import { BASIC_INTL } from '@/constant';
@@ -155,6 +156,15 @@ const CreatePolicy: React.FC = () => {
               return null;
             }}
           </ProFormDependency>
+          <ProForm.Group align="center">
+            <ProFormTextArea
+              width="lg"
+              name="description"
+              fieldProps={{ autoComplete: 'off' }}
+              label={intl.formatMessage(INTL.DESCRIPTION)}
+              placeholder={intl.formatMessage(INTL.DESCRIPTION_PLACEHOLDER)}
+            />
+          </ProForm.Group>
           <ProForm.Group
             align="center"
             title={intl.formatMessage(INTL.LOGIN_CONFIG)}

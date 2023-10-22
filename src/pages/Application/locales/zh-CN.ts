@@ -1,7 +1,7 @@
 export default {
   'app.page.content':
     '创建您的应用程序，使用 IAM 提供身份认证，支持密码、社会化身份源等多种认证方式。',
-  'app.table.title': '认证源列表',
+  'app.table.title': '应用列表',
   'app.table.content': '',
   'app.table.displayName': '显示名称',
   'app.table.logo': '图标',
