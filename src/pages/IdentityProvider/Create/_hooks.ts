@@ -82,7 +82,7 @@ export default function useIdentityProviderHook() {
   const handleSubmit = async () => {
     const values = await formRef.current?.validateFieldsReturnFormatValue?.();
     if (values) {
-      if (values.config.redirectURL && !isEdit) {
+      if (values.config.redirectURL) {
         values.config.redirectURL = getRedirectURL(values.name);
       }
       return isEdit ? doUpdateIdp(instanceId, values) : doCreateIdp(values);
