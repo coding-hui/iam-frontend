@@ -142,16 +142,16 @@ const CreatePolicy: React.FC = () => {
           <ProFormDependency name={['type']}>
             {({ type }) => {
               if (type === IdentityProviderType.Gitee) {
-                return <Gitee key={type} />;
+                return <Gitee key={type} form={formRef.current} />;
               }
               if (type === IdentityProviderType.GitHub) {
-                return <GitHub key={type} />;
+                return <GitHub key={type} form={formRef.current} />;
               }
               if (type === IdentityProviderType.WeChatMiniProgram) {
                 return <WeChatMiniProgram key={type} />;
               }
               if (type === IdentityProviderType.Coding) {
-                return <Coding key={type} />;
+                return <Coding key={type} form={formRef.current} />;
               }
               return null;
             }}

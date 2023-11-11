@@ -1,10 +1,10 @@
-import React from 'react';
-import { Typography } from 'antd';
+import React, { useEffect } from 'react';
+import { Form } from 'antd';
 import { useIntl } from '@umijs/max';
 import { getRedirectURL } from '@/services/system/oauth';
-import { ProFormDependency, ProFormText } from '@ant-design/pro-components';
+import { ProFormText } from '@ant-design/pro-components';
 
-const { Paragraph } = Typography;
+import { FormProps } from './_hooks';
 
 const INTL = {
   NAME: {
@@ -15,38 +15,27 @@ const INTL = {
   },
 };
 
-export const CallbackURL = () => {
+export const CallbackURL = (props: FormProps) => {
   const intl = useIntl();
+  const { form } = props;
+  const name = Form.useWatch('name', form);
+  const redirectURL = getRedirectURL(`${name ? name : `{${intl.formatMessage(INTL.NAME)}}`}`);
+
+  useEffect(() => {
+    const oldVal = form?.getFieldValue(['config', 'redirectURL']);
+    if (oldVal && oldVal.endsWith('}')) {
+      form?.setFieldValue(['config', 'redirectURL'], redirectURL);
+    }
+  }, [name]);
 
   return (
-    <ProFormDependency name={['name']}>
-      {({ name }) => {
-        const redirectURL = getRedirectURL(`${name ? name : `{${intl.formatMessage(INTL.NAME)}}`}`);
-        return (
-          <ProFormText
-            width={300}
-            label={intl.formatMessage(INTL.AUTH_URL)}
-            name={['config', 'redirectURL']}
-            readonly
-            fieldProps={{ autoComplete: 'off' }}
-            initialValue={redirectURL}
-            proFieldProps={{
-              render: () => {
-                return (
-                  <Paragraph copyable={{ text: redirectURL }} style={{ marginBottom: '0' }}>
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: `<span>${redirectURL}</span>`,
-                      }}
-                    />
-                  </Paragraph>
-                );
-              },
-            }}
-          ></ProFormText>
-        );
-      }}
-    </ProFormDependency>
+    <ProFormText
+      width="lg"
+      label={intl.formatMessage(INTL.AUTH_URL)}
+      name={['config', 'redirectURL']}
+      fieldProps={{ autoComplete: 'off' }}
+      initialValue={redirectURL}
+    ></ProFormText>
   );
 };
 

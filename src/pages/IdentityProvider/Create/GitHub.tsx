@@ -3,6 +3,7 @@ import { useIntl } from '@umijs/max';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 
 import CallbackURL from './CallbackURL';
+import { FormProps } from './_hooks';
 
 const INTL = {
   CLIENT_ID: {
@@ -25,7 +26,7 @@ const INTL = {
   },
 };
 
-export const GitHub = () => {
+export const GitHub: React.FC<FormProps> = (props: FormProps) => {
   const intl = useIntl();
 
   return (
@@ -59,7 +60,7 @@ export const GitHub = () => {
         />
       </ProForm.Group>
       <ProForm.Group align="center">
-        <CallbackURL />
+        <CallbackURL form={props.form} />
       </ProForm.Group>
     </>
   );

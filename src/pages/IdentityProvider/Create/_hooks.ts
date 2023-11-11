@@ -12,9 +12,12 @@ import {
   UpdateIdentityProviderRequest,
 } from '@/services/idp';
 import { IdentityProviderType, ProviderCategory } from '@/enums';
-import { getRedirectURL } from '@/services/system/oauth';
 
 export type FormType = UpdateIdentityProviderRequest & CreateIdentityProviderRequest;
+
+export type FormProps = {
+  form?: ProFormInstance<FormType>;
+};
 
 export default function useIdentityProviderHook() {
   const intl = useIntl();
@@ -82,9 +85,6 @@ export default function useIdentityProviderHook() {
   const handleSubmit = async () => {
     const values = await formRef.current?.validateFieldsReturnFormatValue?.();
     if (values) {
-      if (values.config.redirectURL) {
-        values.config.redirectURL = getRedirectURL(values.name);
-      }
       return isEdit ? doUpdateIdp(instanceId, values) : doCreateIdp(values);
     }
   };

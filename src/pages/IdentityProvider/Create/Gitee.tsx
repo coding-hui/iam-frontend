@@ -4,6 +4,7 @@ import { Checkbox, Col, Row } from 'antd';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 
 import CallbackURL from './CallbackURL';
+import { FormProps } from './_hooks';
 
 const INTL = {
   CLIENT_ID: {
@@ -29,7 +30,7 @@ const INTL = {
   },
 };
 
-export const Gitee = () => {
+export const Gitee: React.FC<FormProps> = (props: FormProps) => {
   const intl = useIntl();
 
   const giteeScopes = [
@@ -95,7 +96,7 @@ export const Gitee = () => {
         </ProForm.Item>
       </ProForm.Group>
       <ProForm.Group align="center">
-        <CallbackURL />
+        <CallbackURL form={props.form} />
       </ProForm.Group>
     </>
   );
