@@ -9,6 +9,7 @@ import React, { useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import HeaderDropdown from '../HeaderDropdown';
 import { Session } from '@/utils/storage';
+import { PageEnum } from '@/enums';
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -27,14 +28,15 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
    */
   const loginOut = async () => {
     await outLogin();
+    Session.clear();
     const { search, pathname } = window.location;
     const urlParams = new URL(window.location.href).searchParams;
     /** 此方法会跳转到 redirect 参数所在的位置 */
     const redirect = urlParams.get('redirect');
     // Note: There may be security issues, please note
-    if (window.location.pathname !== '/login' && !redirect) {
+    if (window.location.pathname !== PageEnum.BASE_LOGIN && !redirect) {
       history.replace({
-        pathname: '/login',
+        pathname: PageEnum.BASE_LOGIN,
         search: stringify({
           redirect: pathname + search,
         }),

@@ -10,7 +10,8 @@ import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import { App } from 'antd';
 import { isLoginPath, isSessionExpiredPath } from '@/utils/is';
-import { PageEnum } from '@/enums';
+import { PageEnum, TOKEN_KEY } from '@/enums';
+import { Session } from '@/utils/storage';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -19,6 +20,19 @@ const goLogin = () => {
   const { redirect } = query as { redirect: string };
   history.replace({
     pathname: PageEnum.BASE_LOGIN,
+    search:
+      redirect &&
+      queryString.stringify({
+        redirect: redirect,
+      }),
+  });
+};
+
+const goHome = () => {
+  const query = queryString.parse(history.location.search);
+  const { redirect } = query as { redirect: string };
+  history.push({
+    pathname: PageEnum.BASE_HOME,
     search:
       redirect &&
       queryString.stringify({
@@ -44,6 +58,9 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     return await queryCurrentUser().catch(() => undefined);
   };
+  if (Session.get(TOKEN_KEY)) {
+    goHome();
+  }
   return {
     fetchUserInfo,
     currentUser: isLoginPath() ? undefined : await fetchUserInfo(),
