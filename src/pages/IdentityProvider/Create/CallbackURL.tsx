@@ -22,10 +22,11 @@ export const CallbackURL = (props: FormProps) => {
   const redirectURL = getRedirectURL(`${name ? name : `{${intl.formatMessage(INTL.NAME)}}`}`);
 
   useEffect(() => {
-    const oldVal = form?.getFieldValue(['config', 'redirectURL']);
-    if (oldVal && oldVal.endsWith('}')) {
-      form?.setFieldValue(['config', 'redirectURL'], redirectURL);
-    }
+    // const oldVal = form?.getFieldValue(['config', 'redirectURL']);
+    // if (oldVal && oldVal.endsWith('}')) {
+    //   form?.setFieldValue(['config', 'redirectURL'], redirectURL);
+    // }
+    form?.setFieldValue(['config', 'redirectURL'], redirectURL);
   }, [name]);
 
   return (
