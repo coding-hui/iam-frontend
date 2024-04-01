@@ -114,14 +114,14 @@ export const ProviderIcons = (props: Props) => {
   const { appConf, afterLoginSuccess } = props;
 
   const handleOauthLogin = (authUrl: string) => {
-    const w = window.screen.availWidth * 0.4;
-    const h = window.screen.availHeight * 0.6;
+    const w = window.screen.availWidth * 0.26;
+    const h = window.screen.availHeight * 0.46;
     const left = (window.screen.availWidth - w) / 2;
     const top = (window.screen.availHeight - h) / 2;
     window.open(
       authUrl,
       'newwindow',
-      `height=${h},width=${w},top=${top},left=${left},toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no'`,
+      `height=${h},width=${w},top=${top},left=${left},toolbar=no,menubar=no,scrollbars=yes,resizable=no,location=no,status=no'`,
     );
     window.onmessage = async (e) => {
       const { success, data } = e.data;
