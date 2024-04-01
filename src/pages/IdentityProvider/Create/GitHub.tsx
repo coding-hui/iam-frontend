@@ -2,6 +2,7 @@ import React from 'react';
 import { useIntl } from '@umijs/max';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 
+import { getDefaultCallbackURL } from '@/services/system/oauth';
 import CallbackURL from './CallbackURL';
 import { FormProps } from './_hooks';
 
@@ -57,6 +58,7 @@ export const GitHub: React.FC<FormProps> = (props: FormProps) => {
         <ProFormText
           width="lg"
           name="callbackURL"
+          initialValue={getDefaultCallbackURL()}
           fieldProps={{ autoComplete: 'off' }}
           label={intl.formatMessage(INTL.CALLBACK_URL)}
           tooltip={intl.formatMessage(INTL.CALLBACK_URL_TIPS)}

@@ -5,6 +5,7 @@ import { ProForm, ProFormText } from '@ant-design/pro-components';
 
 import CallbackURL from './CallbackURL';
 import { FormProps } from './_hooks';
+import { getDefaultCallbackURL } from '@/services/system/oauth';
 
 const INTL = {
   CLIENT_ID: {
@@ -76,6 +77,7 @@ export const Gitee: React.FC<FormProps> = (props: FormProps) => {
           width="lg"
           name="callbackURL"
           fieldProps={{ autoComplete: 'off' }}
+          initialValue={getDefaultCallbackURL()}
           label={intl.formatMessage(INTL.CALLBACK_URL)}
           tooltip={intl.formatMessage(INTL.CALLBACK_URL_TIPS)}
           placeholder={intl.formatMessage(INTL.CALLBACK_URL_PLACEHOLDER)}

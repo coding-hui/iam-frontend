@@ -5,6 +5,7 @@ import { ProForm, ProFormText } from '@ant-design/pro-components';
 
 import CallbackURL from './CallbackURL';
 import { FormProps } from './_hooks';
+import { getDefaultCallbackURL } from '@/services/system/oauth';
 
 const INTL = {
   CLIENT_ID: {
@@ -90,6 +91,7 @@ export const Coding: React.FC<FormProps> = (props: FormProps) => {
         <ProFormText
           width="lg"
           name="callbackURL"
+          initialValue={getDefaultCallbackURL()}
           fieldProps={{ autoComplete: 'off' }}
           label={intl.formatMessage(INTL.CALLBACK_URL)}
           tooltip={intl.formatMessage(INTL.CALLBACK_URL_TIPS)}
