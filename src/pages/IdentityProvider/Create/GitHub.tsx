@@ -15,6 +15,9 @@ const INTL = {
   CALLBACK_URL: {
     id: 'idp.form.callbackURL',
   },
+  CALLBACK_URL_TIPS: {
+    id: 'idp.form.callbackURL.tips',
+  },
   CALLBACK_URL_PLACEHOLDER: {
     id: 'idp.form.callbackURL.placeholder',
   },
@@ -56,6 +59,7 @@ export const GitHub: React.FC<FormProps> = (props: FormProps) => {
           name="callbackURL"
           fieldProps={{ autoComplete: 'off' }}
           label={intl.formatMessage(INTL.CALLBACK_URL)}
+          tooltip={intl.formatMessage(INTL.CALLBACK_URL_TIPS)}
           placeholder={intl.formatMessage(INTL.CALLBACK_URL_PLACEHOLDER)}
         />
       </ProForm.Group>

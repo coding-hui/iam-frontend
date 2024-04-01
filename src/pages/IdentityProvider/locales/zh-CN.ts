@@ -24,6 +24,7 @@ export default {
   'idp.form.clientID': 'Client ID',
   'idp.form.clientSecret': 'Client secret',
   'idp.form.callbackURL': 'Callback URL',
+  'idp.form.callbackURL.tips': '登录成功之后跳转地址',
   'idp.form.authURL': '回调地址',
   'idp.form.scopes': 'Scopes',
   'idp.form.category': '分类',
