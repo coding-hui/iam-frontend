@@ -20,13 +20,12 @@ export const CallbackURL = (props: FormProps) => {
   const { form } = props;
   const name = Form.useWatch('name', form);
   const redirectURL = getRedirectURL(`${name ? name : `{${intl.formatMessage(INTL.NAME)}}`}`);
+  const oldRedirectURL = form?.current?.getFieldValue(['config', 'redirectURL']);
 
   useEffect(() => {
-    // const oldVal = form?.getFieldValue(['config', 'redirectURL']);
-    // if (oldVal && oldVal.endsWith('}')) {
-    //   form?.setFieldValue(['config', 'redirectURL'], redirectURL);
-    // }
-    form?.setFieldValue(['config', 'redirectURL'], redirectURL);
+    if (!form?.current.getFieldValue(['metadata', 'instanceId'])) {
+      form.current?.setFieldValue(['config', 'redirectURL'], redirectURL);
+    }
   }, [name]);
 
   return (
@@ -35,7 +34,7 @@ export const CallbackURL = (props: FormProps) => {
       label={intl.formatMessage(INTL.AUTH_URL)}
       name={['config', 'redirectURL']}
       fieldProps={{ autoComplete: 'off' }}
-      initialValue={redirectURL}
+      initialValue={oldRedirectURL ? oldRedirectURL : redirectURL}
     ></ProFormText>
   );
 };

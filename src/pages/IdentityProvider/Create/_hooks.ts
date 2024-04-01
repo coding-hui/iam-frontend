@@ -16,7 +16,7 @@ import { IdentityProviderType, ProviderCategory } from '@/enums';
 export type FormType = UpdateIdentityProviderRequest & CreateIdentityProviderRequest;
 
 export type FormProps = {
-  form?: ProFormInstance<FormType>;
+  form?: any;
 };
 
 export default function useIdentityProviderHook() {
