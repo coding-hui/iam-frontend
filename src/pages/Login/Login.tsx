@@ -58,7 +58,7 @@ const Login: React.FC = () => {
           <ProCard className={`${prefixCls}-login-card`}>
             <LoginForm
               className={`${prefixCls}-login-form`}
-              title="WeCoding"
+              title="WECODING"
               subTitle={intl.formatMessage(INTL.LOGIN_CARD_SUB_TITLE)}
               initialValues={{
                 autoLogin: true,

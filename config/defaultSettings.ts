@@ -15,7 +15,7 @@ const Settings: ProLayoutProps & {
   fixedHeader: true,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'WeCoding IAM',
+  title: 'WECODING IAM',
   pwa: true,
   splitMenus: false,
   siderMenuType: 'group',

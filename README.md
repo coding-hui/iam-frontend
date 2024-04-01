@@ -1,6 +1,6 @@
 Language : 🇺🇸 | [🇨🇳](./README.zh-CN.md)
 
-<h1 align="center">WeCoding IAM</h1>
+<h1 align="center">WECODING IAM</h1>
 
 <div align="center">
 

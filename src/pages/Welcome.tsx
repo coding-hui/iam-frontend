@@ -114,7 +114,7 @@ const Welcome: React.FC = () => {
               color: token.colorTextHeading,
             }}
           >
-            欢迎使用 WeCoding 统一身份认证中心
+            欢迎使用 WECODING 统一身份认证中心
           </div>
           <p
             style={{

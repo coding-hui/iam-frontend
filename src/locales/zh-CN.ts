@@ -9,7 +9,7 @@ export default {
   'layout.user.link.help': '帮助',
   'layout.user.link.privacy': '隐私',
   'layout.user.link.terms': '条款',
-  'app.copyright.produced': 'WeCoding. All Rights Reserved.',
+  'app.copyright.produced': 'WECODING. All Rights Reserved.',
   'app.copyright.website': '在线预览',
   'app.copyright.helpDoc': '帮助文档',
   'app.preview.down.block': '下载此页面到本地项目',

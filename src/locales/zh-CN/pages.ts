@@ -1,5 +1,5 @@
 export default {
-  'pages.layouts.userLayout.title': '欢迎使用 WeCoding 统一身份认证中心',
+  'pages.layouts.userLayout.title': '欢迎使用 WECODING 统一身份认证中心',
 
   'pages.searchTable.titleOption': '操作',
   'pages.searchTable.no': '序号',
