@@ -8,6 +8,7 @@ import { createStyles } from 'antd-style';
 import { getStateFromQueryParams } from '@/utils';
 import { GiteeIcon } from '@/components/Icon/GiteeIcon';
 import { CodingIcon } from '@/components/Icon/CodingIcon';
+import { GoogleIcon } from '@/components/Icon/GoogleIcon';
 
 export type Props = {
   appConf?: App.Application;
@@ -104,6 +105,18 @@ const AuthInfo: Record<
       }&redirect_uri=${getRedirectUri(appConf, idp)}&scope=${
         AuthInfo.Coding.scope
       }&response_type=code&state=${state}`;
+    },
+  },
+  Google: {
+    scope: 'openid%20email%20profile',
+    endpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
+    icon: <GoogleIcon className={`${prefixCls}-icon`} />,
+    renderAuthUrl: (appConf: App.Application, idp: App.IdentityProvider): string => {
+      const state = getStateFromQueryParams(appConf.metadata.name, idp.metadata.name);
+      return `${AuthInfo.Google.endpoint}?client_id=${idp.config.clientID}&redirect_uri=${getRedirectUri(
+        appConf,
+        idp,
+      )}&scope=${AuthInfo.Google.scope}&response_type=code&state=${state}&access_type=offline&prompt=consent`;
     },
   },
 };
