@@ -113,10 +113,13 @@ const AuthInfo: Record<
     icon: <GoogleIcon className={`${prefixCls}-icon`} />,
     renderAuthUrl: (appConf: App.Application, idp: App.IdentityProvider): string => {
       const state = getStateFromQueryParams(appConf.metadata.name, idp.metadata.name);
+      // Use configured scopes or fallback to default
+      const scopes = idp.config.scopes || ['openid', 'email', 'profile'];
+      const scope = scopes.join('%20');
       return `${AuthInfo.Google.endpoint}?client_id=${idp.config.clientID}&redirect_uri=${getRedirectUri(
         appConf,
         idp,
-      )}&scope=${AuthInfo.Google.scope}&response_type=code&state=${state}&access_type=offline&prompt=consent`;
+      )}&scope=${scope}&response_type=code&state=${state}&access_type=offline&prompt=consent`;
     },
   },
 };

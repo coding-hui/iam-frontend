@@ -1,5 +1,6 @@
 import React from 'react';
 import { useIntl } from '@umijs/max';
+import { Checkbox, Col, Row } from 'antd';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 
 import { getDefaultCallbackURL } from '@/services/system/oauth';
@@ -9,6 +10,9 @@ import { FormProps } from './_hooks';
 const INTL = {
   CLIENT_ID: {
     id: 'idp.form.clientID',
+  },
+  SCOPES: {
+    id: 'idp.form.scopes',
   },
   CLIENT_SECRET: {
     id: 'idp.form.clientSecret',
@@ -29,6 +33,15 @@ const INTL = {
     id: 'idp.form.clientSecret.placeholder',
   },
 };
+
+// Common Google OAuth scopes with descriptions
+const googleScopes = [
+  { name: 'openid', desc: 'Authenticate using OpenID Connect' },
+  { name: 'email', desc: 'View your email address' },
+  { name: 'profile', desc: 'View your basic profile info' },
+  { name: 'https://www.googleapis.com/auth/userinfo.email', desc: 'View your email address' },
+  { name: 'https://www.googleapis.com/auth/userinfo.profile', desc: 'View your basic profile info' },
+];
 
 export const Google: React.FC<FormProps> = (props: FormProps) => {
   const intl = useIntl();
@@ -64,6 +77,28 @@ export const Google: React.FC<FormProps> = (props: FormProps) => {
           tooltip={intl.formatMessage(INTL.CALLBACK_URL_TIPS)}
           placeholder={intl.formatMessage(INTL.CALLBACK_URL_PLACEHOLDER)}
         />
+      </ProForm.Group>
+      <ProForm.Group align="center">
+        <ProForm.Item 
+          name={['config', 'scopes']} 
+          label={intl.formatMessage(INTL.SCOPES)}
+          initialValue={['openid', 'email', 'profile']}
+        >
+          <Checkbox.Group style={{ maxWidth: 912 }}>
+            <Row gutter={[4, 8]}>
+              {googleScopes.map((scope) => {
+                return (
+                  <Col span={12} key={`${scope.name}-scope`}>
+                    <Checkbox value={scope.name}>
+                      {scope.name}
+                      {scope.desc ? ` (${scope.desc})` : ''}
+                    </Checkbox>
+                  </Col>
+                );
+              })}
+            </Row>
+          </Checkbox.Group>
+        </ProForm.Item>
       </ProForm.Group>
       <ProForm.Group align="center">
         <CallbackURL form={props.form} />
