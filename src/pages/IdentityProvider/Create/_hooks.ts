@@ -35,6 +35,7 @@ export default function useIdentityProviderHook() {
       IdentityProviderType.WeChat,
       IdentityProviderType.GitHub,
       IdentityProviderType.Coding,
+      IdentityProviderType.Google,
     ],
     [ProviderCategory.Generic]: [IdentityProviderType.WeChatMiniProgram],
   };
