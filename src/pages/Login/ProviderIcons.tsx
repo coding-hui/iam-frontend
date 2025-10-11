@@ -32,14 +32,13 @@ const useStyle = createStyles(({ token }) => {
       [`.${prefixCls}`]: {
         ['&-icon']: {
           margin: '0 8px',
-          color: 'rgba(0, 0, 0, 0.2)',
           fontSize: '28px',
-          verticalAlign: 'middle',
           cursor: 'pointer',
-          transition: 'color 0.3s',
-          '&:hover': {
-            color: token.colorPrimaryActive,
-          },
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '28px',
+          height: '28px',
         },
       },
     },
@@ -70,7 +69,11 @@ const AuthInfo: Record<
   GitHub: {
     scope: 'user:email+read:user',
     endpoint: 'https://github.com/login/oauth/authorize',
-    icon: <GithubOutlined className={`${prefixCls}-icon`} />,
+    icon: (
+      <div className={`${prefixCls}-icon`}>
+        <GithubOutlined style={{ fontSize: '28px', color: '#000' }} />
+      </div>
+    ),
     renderAuthUrl: (appConf: App.Application, idp: App.IdentityProvider): string => {
       const state = getStateFromQueryParams(appConf.metadata.name, idp.metadata.name);
       return `${AuthInfo.GitHub.endpoint}?client_id=${
@@ -83,7 +86,11 @@ const AuthInfo: Record<
   Gitee: {
     scope: 'user_info%20emails',
     endpoint: 'https://gitee.com/oauth/authorize',
-    icon: <GiteeIcon className={`${prefixCls}-icon`} />,
+    icon: (
+      <div className={`${prefixCls}-icon`}>
+        <GiteeIcon />
+      </div>
+    ),
     renderAuthUrl: (appConf: App.Application, idp: App.IdentityProvider): string => {
       const state = getStateFromQueryParams(appConf.metadata.name, idp.metadata.name);
       return `${AuthInfo.Gitee.endpoint}?client_id=${
@@ -96,7 +103,11 @@ const AuthInfo: Record<
   Coding: {
     scope: 'user%20user:email',
     endpoint: 'https://{your-team}.coding.net/oauth_authorize.html',
-    icon: <CodingIcon className={`${prefixCls}-icon`} />,
+    icon: (
+      <div className={`${prefixCls}-icon`}>
+        <CodingIcon />
+      </div>
+    ),
     renderAuthUrl: (appConf: App.Application, idp: App.IdentityProvider): string => {
       const state = getStateFromQueryParams(appConf.metadata.name, idp.metadata.name);
       const oauthConf = idp.config as App.OAuthConfig;
@@ -110,7 +121,11 @@ const AuthInfo: Record<
   Google: {
     scope: 'openid%20email%20profile',
     endpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
-    icon: <GoogleIcon className={`${prefixCls}-icon`} />,
+    icon: (
+      <div className={`${prefixCls}-icon`}>
+        <GoogleIcon />
+      </div>
+    ),
     renderAuthUrl: (appConf: App.Application, idp: App.IdentityProvider): string => {
       const state = getStateFromQueryParams(appConf.metadata.name, idp.metadata.name);
       // Use configured scopes or fallback to default
