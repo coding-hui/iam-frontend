@@ -1,5 +1,5 @@
 # 定义 BASE_IMAGE 参数并设置默认值
-ARG BASE_IMAGE=node:16.20.2-alpine
+ARG BASE_IMAGE=node:22.20.0-alpine
 
 # 第一阶段：构建项目
 FROM ${BASE_IMAGE} as builder
