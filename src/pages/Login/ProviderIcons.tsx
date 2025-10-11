@@ -26,7 +26,7 @@ const getRedirectUri = (appConf: App.Application, idp: App.IdentityProvider) => 
   return redirectURL;
 };
 
-const useStyle = createStyles(({ token }) => {
+const useStyle = createStyles(() => {
   return {
     main: {
       [`.${prefixCls}`]: {

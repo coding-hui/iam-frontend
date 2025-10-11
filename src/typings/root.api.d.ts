@@ -209,7 +209,7 @@ declare namespace App {
     mode: OIDCMode;
     clientID: string;
     clientSecret: string;
-    scopes: string;
+    scopes: string[];
     redirectURL: string;
   };
 
@@ -219,7 +219,7 @@ declare namespace App {
       tokenURL: string;
       userInfoURL: string;
     };
-    scopes: string;
+    scopes: string[];
     clientID: string;
     clientSecret: string;
     redirectURL: string;
