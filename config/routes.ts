@@ -19,6 +19,12 @@ export default [
     component: './Login',
   },
   {
+    path: '/oauth/callback',
+    layout: false,
+    hideInMenu: true,
+    component: './OAuth/Callback',
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'PieChartOutlined',
