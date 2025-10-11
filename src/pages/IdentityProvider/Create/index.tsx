@@ -17,6 +17,7 @@ import { Gitee } from './Gitee';
 import { GitHub } from './GitHub';
 import { WeChatMiniProgram } from './WeChatMiniProgram';
 import { Coding } from './Coding';
+import { Google } from './Google';
 
 import useIdentityProviderHook from './_hooks';
 
@@ -152,6 +153,9 @@ const CreatePolicy: React.FC = () => {
               }
               if (type === IdentityProviderType.Coding) {
                 return <Coding key={type} form={formRef} />;
+              }
+              if (type === IdentityProviderType.Google) {
+                return <Google key={type} form={formRef} />;
               }
               return null;
             }}

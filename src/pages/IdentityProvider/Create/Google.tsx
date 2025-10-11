@@ -1,0 +1,73 @@
+import React from 'react';
+import { useIntl } from '@umijs/max';
+import { ProForm, ProFormText } from '@ant-design/pro-components';
+
+import { getDefaultCallbackURL } from '@/services/system/oauth';
+import CallbackURL from './CallbackURL';
+import { FormProps } from './_hooks';
+
+const INTL = {
+  CLIENT_ID: {
+    id: 'idp.form.clientID',
+  },
+  CLIENT_SECRET: {
+    id: 'idp.form.clientSecret',
+  },
+  CALLBACK_URL: {
+    id: 'idp.form.callbackURL',
+  },
+  CALLBACK_URL_TIPS: {
+    id: 'idp.form.callbackURL.tips',
+  },
+  CALLBACK_URL_PLACEHOLDER: {
+    id: 'idp.form.callbackURL.placeholder',
+  },
+  CLIENT_ID_PLACEHOLDER: {
+    id: 'idp.form.clientID.placeholder',
+  },
+  CLIENT_SECRET_PLACEHOLDER: {
+    id: 'idp.form.clientSecret.placeholder',
+  },
+};
+
+export const Google: React.FC<FormProps> = (props: FormProps) => {
+  const intl = useIntl();
+
+  return (
+    <>
+      <ProForm.Group align="center">
+        <ProFormText
+          width="lg"
+          required
+          name={['config', 'clientID']}
+          fieldProps={{ autoComplete: 'off' }}
+          label={intl.formatMessage(INTL.CLIENT_ID)}
+          placeholder={intl.formatMessage(INTL.CLIENT_ID_PLACEHOLDER)}
+          rules={[{ required: true }]}
+        />
+        <ProFormText.Password
+          width="lg"
+          name={['config', 'clientSecret']}
+          fieldProps={{ autoComplete: 'off' }}
+          label={intl.formatMessage(INTL.CLIENT_SECRET)}
+          placeholder={intl.formatMessage(INTL.CLIENT_SECRET_PLACEHOLDER)}
+          rules={[{ required: true }]}
+        />
+      </ProForm.Group>
+      <ProForm.Group align="center">
+        <ProFormText
+          width="lg"
+          name="callbackURL"
+          initialValue={getDefaultCallbackURL()}
+          fieldProps={{ autoComplete: 'off' }}
+          label={intl.formatMessage(INTL.CALLBACK_URL)}
+          tooltip={intl.formatMessage(INTL.CALLBACK_URL_TIPS)}
+          placeholder={intl.formatMessage(INTL.CALLBACK_URL_PLACEHOLDER)}
+        />
+      </ProForm.Group>
+      <ProForm.Group align="center">
+        <CallbackURL form={props.form} />
+      </ProForm.Group>
+    </>
+  );
+};

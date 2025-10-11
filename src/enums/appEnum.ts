@@ -7,6 +7,7 @@ export enum IdentityProviderType {
   WeChat = 'WeChat',
   LDAP = 'LDAP',
   WeChatMiniProgram = 'WeChatMiniProgram',
+  Google = 'Google',
 }
 
 export enum ProviderCategory {
