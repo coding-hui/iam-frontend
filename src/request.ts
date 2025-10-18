@@ -1,6 +1,6 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
-import { message, notification } from 'antd';
+import { message, notification } from '@/components/EscapeAntd';
 import { Session } from '@/utils/storage';
 
 // 错误处理方案： 错误类型

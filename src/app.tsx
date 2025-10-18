@@ -1,4 +1,4 @@
-import { AvatarDropdown, AvatarName, Footer, Question, SelectLang } from '@/components';
+import { AvatarDropdown, AvatarName, Footer, Question, SelectLang, EscapeAntd } from '@/components';
 import { currentUser as queryCurrentUser } from '@/services/system/login';
 import { LinkOutlined } from '@ant-design/icons';
 import queryString from 'query-string';
@@ -8,7 +8,7 @@ import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './request';
-import { App } from 'antd';
+import { App, ConfigProvider } from 'antd';
 import { isLoginPath, isSessionExpiredPath } from '@/utils/is';
 import { PageEnum, TOKEN_KEY } from '@/enums';
 import { Session } from '@/utils/storage';
@@ -132,22 +132,25 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     childrenRender: (children) => {
       if (initialState?.loading) return <PageLoading />;
       return (
-        <App>
-          {children}
-          {isDev && (
-            <SettingDrawer
-              disableUrlParams
-              enableDarkTheme
-              settings={initialState?.settings}
-              onSettingChange={(settings) => {
-                setInitialState((preInitialState) => ({
-                  ...preInitialState,
-                  settings,
-                }));
-              }}
-            />
-          )}
-        </App>
+        <ConfigProvider theme={{}}>
+          <App>
+            <EscapeAntd />
+            {children}
+            {isDev && (
+              <SettingDrawer
+                disableUrlParams
+                enableDarkTheme
+                settings={initialState?.settings}
+                onSettingChange={(settings) => {
+                  setInitialState((preInitialState) => ({
+                    ...preInitialState,
+                    settings,
+                  }));
+                }}
+              />
+            )}
+          </App>
+        </ConfigProvider>
       );
     },
     ...initialState?.settings,
