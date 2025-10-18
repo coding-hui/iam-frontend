@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from '@umijs/max';
 import { Session } from '@/utils/storage';
 import { TOKEN_KEY } from '@/enums/cacheEnum';
-import { App, Spin } from 'antd';
+import { message, Spin } from 'antd';
 import { useIntl } from '@@/exports';
 
 const INTL = {
@@ -17,14 +17,14 @@ const INTL = {
 const Callback: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { message } = App.useApp();
   const intl = useIntl();
 
   useEffect(() => {
-    const handleCallback =  () => {
+    const handleCallback = () => {
       // Parse the query parameters from the URL
       const searchParams = new URLSearchParams(location.search);
       const accessToken = searchParams.get('access_token');
+      
       if (accessToken) {
         // Store the token
         Session.set(TOKEN_KEY, accessToken);
@@ -39,7 +39,7 @@ const Callback: React.FC = () => {
     };
 
     handleCallback();
-  }, [location, navigate, message, intl]);
+  }, [location, navigate, intl]);
 
   return (
     <div style={{
