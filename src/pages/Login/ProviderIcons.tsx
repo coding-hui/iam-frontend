@@ -18,7 +18,7 @@ export type Props = {
 const prefixCls = 'iam-provider';
 
 const getRedirectUri = (appConf: App.Application, idp: App.IdentityProvider) => {
-  let redirectURL = `${window.location.origin}/callback`;
+  let redirectURL = `${window.location.origin}/auth/callback`;
   const config = idp.config as App.OAuthConfig;
   if (config.redirectURL && config.redirectURL !== '') {
     redirectURL = config.redirectURL;
@@ -145,24 +145,8 @@ export const ProviderIcons = (props: Props) => {
   const { appConf, afterLoginSuccess } = props;
 
   const handleOauthLogin = (authUrl: string) => {
-    const w = window.screen.availWidth * 0.26;
-    const h = window.screen.availHeight * 0.46;
-    const left = (window.screen.availWidth - w) / 2;
-    const top = (window.screen.availHeight - h) / 2;
-    window.open(
-      authUrl,
-      'newwindow',
-      `height=${h},width=${w},top=${top},left=${left},toolbar=no,menubar=no,scrollbars=yes,resizable=no,location=no,status=no'`,
-    );
-    window.onmessage = async (e) => {
-      const { success, data } = e.data;
-      if (success) {
-        Session.set(TOKEN_KEY, data.access_token);
-        message.success(intl.formatMessage(INTL.LOGIN_SUCCES));
-        return afterLoginSuccess(data.access_token);
-      }
-      message.error(intl.formatMessage(INTL.LOGIN_FAILURE));
-    };
+    // Simply redirect the current window to the OAuth provider
+    window.location.href = authUrl;
   };
 
   if (!appConf || !appConf.identityProviders || appConf.identityProviders.length <= 0) {
