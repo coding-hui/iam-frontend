@@ -20,7 +20,7 @@ export default [
   },
   {
     name: 'callback',
-    path: '/callback',
+    path: '/auth/callback',
     layout: false,
     hideInMenu: true,
     component: './Login/Callback',
