@@ -19,6 +19,13 @@ export default [
     component: './Login',
   },
   {
+    name: 'callback',
+    path: '/callback',
+    layout: false,
+    hideInMenu: true,
+    component: './Login/Callback',
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'PieChartOutlined',
