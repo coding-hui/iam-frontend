@@ -7,7 +7,7 @@ import { PageLoading, SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
-import { errorConfig } from './requestErrorConfig';
+import { errorConfig } from './request';
 import { App } from 'antd';
 import { isLoginPath, isSessionExpiredPath } from '@/utils/is';
 import { PageEnum, TOKEN_KEY } from '@/enums';

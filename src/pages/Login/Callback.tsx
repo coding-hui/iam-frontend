@@ -42,12 +42,14 @@ const Callback: React.FC = () => {
   }, [location, navigate, intl, messageApi]);
 
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh'
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+      }}
+    >
       {contextHolder}
       <Spin size="large" tip="Processing login..." />
     </div>

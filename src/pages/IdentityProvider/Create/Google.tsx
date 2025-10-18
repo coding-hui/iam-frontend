@@ -40,7 +40,10 @@ const googleScopes = [
   { name: 'email', desc: 'View your email address' },
   { name: 'profile', desc: 'View your basic profile info' },
   { name: 'https://www.googleapis.com/auth/userinfo.email', desc: 'View your email address' },
-  { name: 'https://www.googleapis.com/auth/userinfo.profile', desc: 'View your basic profile info' },
+  {
+    name: 'https://www.googleapis.com/auth/userinfo.profile',
+    desc: 'View your basic profile info',
+  },
 ];
 
 export const Google: React.FC<FormProps> = (props: FormProps) => {
@@ -79,8 +82,8 @@ export const Google: React.FC<FormProps> = (props: FormProps) => {
         />
       </ProForm.Group>
       <ProForm.Group align="center">
-        <ProForm.Item 
-          name={['config', 'scopes']} 
+        <ProForm.Item
+          name={['config', 'scopes']}
           label={intl.formatMessage(INTL.SCOPES)}
           initialValue={['openid', 'email', 'profile']}
         >

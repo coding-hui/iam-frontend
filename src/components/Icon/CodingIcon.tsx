@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStyles } from 'antd-style';
 
-const useStyle = createStyles(({ token }) => {
+const useStyle = createStyles(({}) => {
   return {
     codingIcon: {
       width: '28px',
@@ -20,7 +20,7 @@ interface CodingIconProps {
 
 export const CodingIcon: React.FC<CodingIconProps> = ({ className }) => {
   const { styles } = useStyle();
-  
+
   return (
     <div className={`${styles.codingIcon} ${className || ''}`}>
       <svg

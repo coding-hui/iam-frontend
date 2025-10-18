@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Session } from '@/utils/storage';
-import { TOKEN_KEY } from '@/enums/cacheEnum';
-import { Divider, message, Tooltip } from 'antd';
+import { Divider, Tooltip } from 'antd';
 import { GithubOutlined } from '@ant-design/icons';
 import { useIntl } from '@@/exports';
 import { createStyles } from 'antd-style';
@@ -131,7 +129,9 @@ const AuthInfo: Record<
       // Use configured scopes or fallback to default
       const scopes = idp.config.scopes || ['openid', 'email', 'profile'];
       const scope = scopes.join('%20');
-      return `${AuthInfo.Google.endpoint}?client_id=${idp.config.clientID}&redirect_uri=${getRedirectUri(
+      return `${AuthInfo.Google.endpoint}?client_id=${
+        idp.config.clientID
+      }&redirect_uri=${getRedirectUri(
         appConf,
         idp,
       )}&scope=${scope}&response_type=code&state=${state}&access_type=offline&prompt=consent`;
@@ -142,7 +142,7 @@ const AuthInfo: Record<
 export const ProviderIcons = (props: Props) => {
   const intl = useIntl();
   const { styles } = useStyle();
-  const { appConf, afterLoginSuccess } = props;
+  const { appConf } = props;
 
   const handleOauthLogin = (authUrl: string) => {
     // Simply redirect the current window to the OAuth provider

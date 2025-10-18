@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStyles } from 'antd-style';
 
-const useStyle = createStyles(({ token }) => {
+const useStyle = createStyles(({}) => {
   return {
     giteeIcon: {
       width: '28px',
@@ -20,7 +20,7 @@ interface GiteeIconProps {
 
 export const GiteeIcon: React.FC<GiteeIconProps> = ({ className }) => {
   const { styles } = useStyle();
-  
+
   return (
     <div className={`${styles.giteeIcon} ${className || ''}`}>
       <svg
