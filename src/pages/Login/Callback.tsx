@@ -24,7 +24,6 @@ const Callback: React.FC = () => {
       // Parse the query parameters from the URL
       const searchParams = new URLSearchParams(location.search);
       const accessToken = searchParams.get('access_token');
-      
       if (accessToken) {
         // Store the token
         Session.set(TOKEN_KEY, accessToken);
