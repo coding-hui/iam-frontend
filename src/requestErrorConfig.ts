@@ -1,6 +1,5 @@
-﻿import type { RequestOptions } from '@@/plugin-request/request';
+import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
-import { message, notification } from 'antd';
 import { Session } from '@/utils/storage';
 
 // 错误处理方案： 错误类型
@@ -45,41 +44,20 @@ export const errorConfig: RequestConfig = {
         const errorInfo: ResponseStructure | undefined = error.info;
         if (errorInfo) {
           const { errorMessage, errorCode } = errorInfo;
-          switch (errorInfo.showType) {
-            case ErrorShowType.SILENT:
-              // do nothing
-              break;
-            case ErrorShowType.WARN_MESSAGE:
-              message.warning(errorMessage);
-              break;
-            case ErrorShowType.ERROR_MESSAGE:
-              message.error(errorMessage);
-              break;
-            case ErrorShowType.NOTIFICATION:
-              notification.open({
-                description: errorMessage,
-                message: errorCode,
-              });
-              break;
-            case ErrorShowType.REDIRECT:
-              // TODO: redirect
-              break;
-            default:
-              message.error(errorMessage);
-          }
+          // We can't use message and notification here as they are static and won't respect context
+          // Errors will need to be handled in components
+          console.error(`Business Error: ${errorCode} - ${errorMessage}`);
         }
       } else if (error.response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        message.error(`${error.response.data.msg}`);
+        console.error('Response Error:', error.response.data.msg);
       } else if (error.request) {
         // 请求已经成功发起，但没有收到响应
-        // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
-        // 而在node.js中是 http.ClientRequest 的实例
-        message.error('None response! Please retry.');
+        console.error('No response received:', error.request);
       } else {
         // 发送请求时出了点问题
-        message.error('Request error, please retry.');
+        console.error('Request setup error:', error.message);
       }
     },
   },
@@ -103,14 +81,12 @@ export const errorConfig: RequestConfig = {
     (response) => {
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
-
-      console.log(data, 'resp')
-      message.error('请求失败！');
-
+      
+      // Remove direct message usage
       if (data?.success === false) {
-        message.error('请求失败！');
+        console.error('Request failed:', data);
       }
-      return data;
+      return response;
     },
   ],
 };
