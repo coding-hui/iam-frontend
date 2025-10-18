@@ -104,9 +104,6 @@ export const errorConfig: RequestConfig = {
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
 
-      console.log(data, 'resp')
-      message.error('请求失败！');
-
       if (data?.success === false) {
         message.error('请求失败！');
       }
