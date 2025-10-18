@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from '@umijs/max';
 import { Session } from '@/utils/storage';
 import { TOKEN_KEY } from '@/enums/cacheEnum';
 import { App, Spin } from 'antd';
@@ -21,16 +21,14 @@ const Callback: React.FC = () => {
   const intl = useIntl();
 
   useEffect(() => {
-    const handleCallback = async () => {
+    const handleCallback =  () => {
       // Parse the query parameters from the URL
       const searchParams = new URLSearchParams(location.search);
       const accessToken = searchParams.get('access_token');
-      
       if (accessToken) {
         // Store the token
         Session.set(TOKEN_KEY, accessToken);
         message.success(intl.formatMessage(INTL.LOGIN_SUCCESS));
-        
         // Redirect to home page
         navigate('/', { replace: true });
       } else {
@@ -44,11 +42,11 @@ const Callback: React.FC = () => {
   }, [location, navigate, message, intl]);
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      height: '100vh' 
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh'
     }}>
       <Spin size="large" tip="Processing login..." />
     </div>
