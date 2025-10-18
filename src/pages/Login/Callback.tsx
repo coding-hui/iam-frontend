@@ -18,6 +18,7 @@ const Callback: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const intl = useIntl();
+  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
     const handleCallback = () => {
@@ -27,18 +28,18 @@ const Callback: React.FC = () => {
       if (accessToken) {
         // Store the token
         Session.set(TOKEN_KEY, accessToken);
-        message.success(intl.formatMessage(INTL.LOGIN_SUCCESS));
+        messageApi.success(intl.formatMessage(INTL.LOGIN_SUCCESS));
         // Redirect to home page
         navigate('/', { replace: true });
       } else {
-        message.error(intl.formatMessage(INTL.LOGIN_FAILURE));
+        messageApi.error(intl.formatMessage(INTL.LOGIN_FAILURE));
         // Optionally redirect to login page if no token is found
         navigate('/login', { replace: true });
       }
     };
 
     handleCallback();
-  }, [location, navigate, intl]);
+  }, [location, navigate, intl, messageApi]);
 
   return (
     <div style={{
@@ -47,6 +48,7 @@ const Callback: React.FC = () => {
       alignItems: 'center',
       height: '100vh'
     }}>
+      {contextHolder}
       <Spin size="large" tip="Processing login..." />
     </div>
   );
