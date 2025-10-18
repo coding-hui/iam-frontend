@@ -20,7 +20,7 @@ const prefixCls = 'iam-provider';
 const getRedirectUri = (appConf: App.Application, idp: App.IdentityProvider) => {
   let redirectURL = `${window.location.origin}/callback`;
   const config = idp.config as App.OAuthConfig;
-  if (config.redirectURL !== '') {
+  if (config.redirectURL && config.redirectURL !== '') {
     redirectURL = config.redirectURL;
   }
   return redirectURL;
