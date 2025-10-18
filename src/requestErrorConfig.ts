@@ -1,6 +1,6 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
-import { message as antdMessage, notification } from 'antd';
+import { message, notification } from 'antd';
 import { Session } from '@/utils/storage';
 
 // 错误处理方案： 错误类型
@@ -19,28 +19,6 @@ interface ResponseStructure {
   errorMessage?: string;
   showType?: ErrorShowType;
 }
-
-// 创建全局 message 实例
-const [messageApi, contextHolder] = antdMessage.useMessage();
-let message: any = {
-  error: (content: string) => {
-    // 如果 messageApi 已经挂载，使用它
-    if (messageApi && messageApi.error) {
-      messageApi.error(content);
-    } else {
-      // 否则使用默认的 antdMessage
-      antdMessage.error(content);
-    }
-  },
-  warning: (content: string) => {
-    if (messageApi && messageApi.warning) {
-      messageApi.warning(content);
-    } else {
-      antdMessage.warning(content);
-    }
-  },
-  // 可以根据需要添加其他方法
-};
 
 /**
  * @doc https://umijs.org/docs/max/request#配置
@@ -93,7 +71,7 @@ export const errorConfig: RequestConfig = {
       } else if (error.response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        message.error(`${error.response.data.msg || error.response.data.errorMessage || 'Request failed'}`);
+        message.error(`${error.response.data.msg}`);
       } else if (error.request) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
@@ -129,10 +107,7 @@ export const errorConfig: RequestConfig = {
       if (data?.success === false) {
         message.error('请求失败！');
       }
-      return response;
+      return data;
     },
   ],
 };
-
-// Export the context holder to be used in the app
-export { contextHolder };
