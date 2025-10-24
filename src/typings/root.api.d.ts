@@ -97,6 +97,24 @@ declare namespace API {
     type?: string;
   };
 
+  type ExternalUserInfo = {
+    username?: string;
+    email?: string;
+    avatar?: string;
+  };
+
+  type BindExternalAccountParams = {
+    username: string;
+    password: string;
+    provider: string;
+    externalUID: string;
+    externalInfo: ExternalUserInfo;
+  };
+
+  type UnbindExternalAccountParams = {
+    provider: string;
+  };
+
   type ApiResult<T> = {
     /** 业务状态码 */
     code: string | number;
@@ -192,6 +210,32 @@ declare namespace API {
 
   type RoleList = {
     items: Role[];
+    total: number;
+  };
+
+  type CreateApiKeyRequest = {
+    name: string;
+    expiresAt?: string;
+  };
+
+  type UpdateApiKeyRequest = {
+    name: string;
+    expiresAt?: string;
+  };
+
+  type ApiKey = {
+    metadata: ObjectMeta;
+    key: string;
+    secret?: string;
+    status: number;
+    description?: string;
+    expiresAt?: string;
+    lastUsedAt?: string;
+    usageCount: number;
+  };
+
+  type ApiKeyList = {
+    items: ApiKey[];
     total: number;
   };
 }

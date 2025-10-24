@@ -50,6 +50,7 @@ export default {
   'menu.resource.policy-edit': '编辑策略',
   'menu.resource.role-list': '角色管理',
   'menu.resource.role-edit': '编辑角色',
+  'menu.resource.apikey.list': 'API Keys',
 
   'menu.system': '系统设置',
 };

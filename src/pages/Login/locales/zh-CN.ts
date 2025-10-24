@@ -22,4 +22,10 @@ export default {
   'pages.login.loginWith': '其他登录方式 :',
   'pages.login.registerAccount': '注册账户',
   'pages.login.otherLogin': '其他登录方式',
+  'pages.bindAccount.title': '绑定现有账号',
+  'pages.bindAccount.description': '请使用现有账号信息完成绑定',
+  'pages.bindAccount.bindButton': '绑定账号',
+  'pages.bindAccount.skipButton': '跳过绑定',
+  'pages.bindAccount.success': '账号绑定成功！',
+  'pages.bindAccount.failed': '账号绑定失败，请重试！',
 };

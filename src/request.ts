@@ -68,7 +68,7 @@ export const errorConfig: RequestConfig = {
               message.error(errorMessage);
           }
         }
-      } else if (error.response) {
+      } else if (error.response.data.msg) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
         message.error(`${error.response.data.msg}`);

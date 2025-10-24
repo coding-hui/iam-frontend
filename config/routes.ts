@@ -26,6 +26,13 @@ export default [
     component: './Login/Callback',
   },
   {
+    name: 'bind-account',
+    path: '/auth/bind-account',
+    layout: false,
+    hideInMenu: true,
+    component: './Login/BindAccount',
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'PieChartOutlined',
@@ -159,6 +166,11 @@ export default [
         name: 'role-edit',
         component: './Role/Edit',
         hideInMenu: true,
+      },
+      {
+        path: '/resource/apikey',
+        name: 'apikey.list',
+        component: './ApiKey',
       },
     ],
   },

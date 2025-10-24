@@ -3,6 +3,7 @@ import message from './zh-CN/message';
 import pages from './zh-CN/pages';
 import pwa from './zh-CN/pwa';
 import settings from './zh-CN/settings';
+import apikey from '@/pages/ApiKey/locales/zh-CN';
 
 export default {
   'navBar.lang': '语言',
@@ -20,4 +21,5 @@ export default {
   ...settings,
   ...pwa,
   ...message,
+  ...apikey,
 };

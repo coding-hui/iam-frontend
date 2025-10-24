@@ -43,3 +43,41 @@ export async function getFakeCaptcha(
     ...(options || {}),
   });
 }
+
+/**
+ * Bind external account to existing user
+ * @param body Bind external account parameters
+ * @param options Request options
+ */
+export async function bindExternalAccount(
+  body: API.BindExternalAccountParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.LoginResult>('/api/v1/auth/bind-external', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/**
+ * Unbind external account from user
+ * @param body Unbind external account parameters
+ * @param options Request options
+ */
+export async function unbindExternalAccount(
+  body: API.UnbindExternalAccountParams,
+  options?: { [key: string]: any },
+) {
+  return request<Record<string, any>>('/api/v1/auth/unbind-external', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
