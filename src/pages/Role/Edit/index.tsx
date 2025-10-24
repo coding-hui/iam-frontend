@@ -1,4 +1,3 @@
-import { CheckCircleOutlined, DeleteOutlined, DownOutlined, StopOutlined } from '@ant-design/icons';
 import {
   ActionType,
   BetaSchemaForm,
@@ -9,7 +8,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { useParams, useRequest, FormattedMessage, useIntl } from '@umijs/max';
-import { App, Button, Dropdown, Form } from 'antd';
+import { App, Form } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { getRoleInfo } from '@/services/role/getRoleInfo';
 import { updateRole } from '@/services/role/updateRole';
@@ -38,16 +37,32 @@ const INTL = {
   ASSIGN_ROLE_SUCCESS: {
     id: 'role.assign.user.success',
   },
-};
-
-const ROLE_TABS = {
-  INFO: {
-    tab: '角色信息',
-    key: 'info',
+  ENABLE_ROLE: {
+    id: 'role.edit.dropdown.enable',
   },
-  ASSIGN: {
-    tab: '角色分配',
-    key: 'assign',
+  DISABLE_ROLE: {
+    id: 'role.edit.dropdown.disable',
+  },
+  DELETE_ROLE: {
+    id: 'role.edit.dropdown.delete',
+  },
+  MORE: {
+    id: 'role.edit.dropdown.more',
+  },
+  TAB_INFO: {
+    id: 'role.edit.tab.info',
+  },
+  TAB_ASSIGN: {
+    id: 'role.edit.tab.assign',
+  },
+  OWNER: {
+    id: 'role.edit.owner',
+  },
+  CARD_INFO: {
+    id: 'role.edit.card.info',
+  },
+  TABLE_ASSIGNED_USERS: {
+    id: 'role.edit.table.assignedUsers',
   },
 };
 
@@ -59,6 +74,17 @@ const EditRole: React.FC = () => {
   const [assignUsers, setAssignUsers] = useState<API.UserInfo[]>();
   const { instanceId } = useParams();
   const [roleInfoForm] = Form.useForm();
+
+  const ROLE_TABS = {
+    INFO: {
+      tab: intl.formatMessage(INTL.TAB_INFO),
+      key: 'info',
+    },
+    ASSIGN: {
+      tab: intl.formatMessage(INTL.TAB_ASSIGN),
+      key: 'assign',
+    },
+  };
 
   const isInfoTab = () => {
     return currentTab === ROLE_TABS.INFO.key;
@@ -153,7 +179,7 @@ const EditRole: React.FC = () => {
 
   const roleInfoColumns: ProFormColumnsType<API.Role>[] = [
     {
-      title: '名称',
+      title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
       width: 'md',
       readonly: true,
@@ -163,7 +189,7 @@ const EditRole: React.FC = () => {
       },
     },
     {
-      title: '归属人',
+      title: intl.formatMessage(INTL.OWNER),
       dataIndex: 'owner',
       width: 'md',
       colProps: {
@@ -172,7 +198,7 @@ const EditRole: React.FC = () => {
       },
     },
     {
-      title: '状态',
+      title: <FormattedMessage {...BASIC_INTL.STATUS} />,
       dataIndex: 'disabled',
       width: 'md',
       readonly: true,
@@ -192,7 +218,7 @@ const EditRole: React.FC = () => {
       },
     },
     {
-      title: '描述',
+      title: <FormattedMessage {...BASIC_INTL.DESCRIPTION} />,
       dataIndex: 'description',
       width: 'md',
       colProps: {
@@ -262,39 +288,39 @@ const EditRole: React.FC = () => {
       tabList={[ROLE_TABS.INFO, ROLE_TABS.ASSIGN]}
       header={{
         title: roleInfo?.metadata.name,
-        extra: [
-          <Dropdown
-            key="dropdown"
-            trigger={['click']}
-            menu={{
-              items: [
-                {
-                  icon: roleInfo?.disabled === true ? <CheckCircleOutlined /> : <StopOutlined />,
-                  label: roleInfo?.disabled === false ? '启用角色' : '禁用角色',
-                  key: '1',
-                },
-                {
-                  icon: <DeleteOutlined />,
-                  label: '删除角色',
-                  key: '2',
-                },
-              ],
-            }}
-          >
-            <Button key="4" style={{ padding: '0 8px' }}>
-              更多
-              <DownOutlined />
-            </Button>
-          </Dropdown>,
-          <Button key="3" type="primary">
-            重置密码
-          </Button>,
-        ],
+        // extra: [
+        //   <Dropdown
+        //     key="dropdown"
+        //     trigger={['click']}
+        //     menu={{
+        //       items: [
+        //         {
+        //           icon: roleInfo?.disabled === true ? <CheckCircleOutlined /> : <StopOutlined />,
+        //           label:
+        //             roleInfo?.disabled === false
+        //               ? intl.formatMessage(INTL.ENABLE_ROLE)
+        //               : intl.formatMessage(INTL.DISABLE_ROLE),
+        //           key: '1',
+        //         },
+        //         {
+        //           icon: <DeleteOutlined />,
+        //           label: intl.formatMessage(INTL.DELETE_ROLE),
+        //           key: '2',
+        //         },
+        //       ],
+        //     }}
+        //   >
+        //     <Button key="4" style={{ padding: '0 8px' }}>
+        //       {intl.formatMessage(INTL.MORE)}
+        //       <DownOutlined />
+        //     </Button>
+        //   </Dropdown>,
+        // ],
       }}
     >
       <ProCard direction="column" ghost gutter={[0, 16]}>
         {isInfoTab() ? (
-          <ProCard loading={loading} title="角色信息">
+          <ProCard loading={loading} title={intl.formatMessage(INTL.CARD_INFO)}>
             <BetaSchemaForm<API.Role>
               form={roleInfoForm}
               layoutType="Form"
@@ -307,7 +333,7 @@ const EditRole: React.FC = () => {
           </ProCard>
         ) : (
           <ProTable
-            headerTitle="已分配用户"
+            headerTitle={intl.formatMessage(INTL.TABLE_ASSIGNED_USERS)}
             loading={revokeRoleLoading || assignRoleLoading || loading}
             actionRef={assignTableActionRef}
             search={false}

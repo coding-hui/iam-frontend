@@ -26,15 +26,15 @@ const INTL = {
 
 const USER_TABS = {
   INFO: {
-    tab: '用户信息',
+    tab: 'pages.common.userInfo',
     key: 'info',
   },
   ROLES: {
-    tab: '角色权限',
+    tab: 'pages.common.rolePermissions',
     key: 'roles',
   },
   LOG: {
-    tab: '访问日志',
+    tab: 'pages.common.accessLog',
     key: 'log',
     disabled: true,
   },

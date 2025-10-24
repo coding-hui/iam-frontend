@@ -127,7 +127,7 @@ const PolicyList: React.FC = () => {
       },
     },
     {
-      title: '授权主体',
+      title: <FormattedMessage {...BASIC_INTL.SUBJECTS} />,
       dataIndex: 'subjects',
       valueType: 'segmented',
       hideInSearch: true,
@@ -148,7 +148,7 @@ const PolicyList: React.FC = () => {
       title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
       dataIndex: 'option',
       valueType: 'option',
-      width: 60,
+      width: 70,
       fixed: 'right',
       render: (_, record: API.Policy) => [
         <Dropdown

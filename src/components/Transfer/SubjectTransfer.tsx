@@ -7,6 +7,7 @@ import { useActive } from '@/hooks';
 import { listRoles } from '@/services/role/listRoles';
 import { TRANSFER_TYPE, TransferType } from '@/components/Transfer/typings';
 import { TransferDirection } from 'antd/es/transfer';
+import { useIntl } from '@umijs/max';
 
 interface Props {
   modal?: false;
@@ -22,14 +23,15 @@ interface Props {
 }
 
 const SubjectTransfer: React.FC<Props> = (props) => {
+  const intl = useIntl();
   const {
-    okText = '分配角色',
+    okText = intl.formatMessage({ id: 'transfer.assignRole' }),
+    modalTitle = intl.formatMessage({ id: 'transfer.assignRole' }),
     targetUsers,
     doGetTargetUsers,
     targetRoles,
     doGetTargetRoles,
     modalWidth = 730,
-    modalTitle = '分配角色',
     types = [TRANSFER_TYPE.USER, TRANSFER_TYPE.ROLE],
     onOk,
   } = props;
@@ -170,11 +172,16 @@ const SubjectTransfer: React.FC<Props> = (props) => {
       <Transfer
         dataSource={convertUserToRecordType(users)}
         showSearch
-        titles={['用户列表', '已选用户']}
+        titles={[
+          intl.formatMessage({ id: 'transfer.userList' }),
+          intl.formatMessage({ id: 'transfer.selectedUsers' }),
+        ]}
         targetKeys={userTargetKeys}
         selectedKeys={userSelectedKeys}
         onSearch={handleSearchUser}
+        // @ts-ignore
         onChange={handleUserTransferChange}
+        // @ts-ignore
         onSelectChange={handleUserTransferSelectChange}
         render={(item) => item.title}
         listStyle={{
@@ -191,11 +198,16 @@ const SubjectTransfer: React.FC<Props> = (props) => {
       <Transfer
         dataSource={convertRoleToRecordType(roles)}
         showSearch
-        titles={['角色列表', '已选角色']}
+        titles={[
+          intl.formatMessage({ id: 'transfer.roleList' }),
+          intl.formatMessage({ id: 'transfer.selectedRoles' }),
+        ]}
         targetKeys={roleTargetKeys}
         selectedKeys={roleSelectedKeys}
+        // @ts-ignore
         onChange={handleRoleTransferChange}
         onSearch={handleSearchRole}
+        // @ts-ignore
         onSelectChange={handleRoleTransferSelectChange}
         render={(item) => item.title}
         listStyle={{
@@ -218,12 +230,12 @@ const SubjectTransfer: React.FC<Props> = (props) => {
 
   const tabOptions = [
     {
-      label: `用户`,
+      label: intl.formatMessage({ id: 'transfer.user' }),
       key: TRANSFER_TYPE.USER,
       children: renderUserTransfer,
     },
     {
-      label: `角色`,
+      label: intl.formatMessage({ id: 'transfer.role' }),
       key: TRANSFER_TYPE.ROLE,
       children: renderRoleTransfer,
     },

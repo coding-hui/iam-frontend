@@ -13,7 +13,7 @@ import {
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl, useRequest } from '@umijs/max';
-import { App, Button, Dropdown, message } from 'antd';
+import { App, Button, Dropdown } from 'antd';
 import { BASIC_INTL } from '@/constant';
 import { transformSearchParams } from '@/utils';
 
@@ -46,7 +46,7 @@ const ApiKeyList: React.FC<Props> = () => {
   const { styles } = useStyle();
 
   const actionRef = useRef<ActionType>();
-  const { modal } = App.useApp();
+  const { modal, message } = App.useApp();
   const intl = useIntl();
 
   const reloadTable = () => {

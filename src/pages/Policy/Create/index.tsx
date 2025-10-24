@@ -71,6 +71,18 @@ const INTL = {
   PLACEHOLDER_SUBJECTS: {
     id: 'policy.subjects.placeholder',
   },
+  SELECT_SUBJECT: {
+    id: 'policy.select.subject',
+  },
+  ADD_RULE: {
+    id: 'policy.add.rule',
+  },
+  ALLOW_ALL: {
+    id: 'policy.type.allowAll',
+  },
+  SPECIFIC: {
+    id: 'policy.type.specific',
+  },
 };
 
 const CreatePolicy: React.FC = () => {
@@ -145,7 +157,7 @@ const CreatePolicy: React.FC = () => {
                   doGetTargetUsers={() => getSelectUsers()}
                   doGetTargetRoles={() => getSelectRoles()}
                   onOk={(values) => handleSelectSubjects(values)}
-                  okText="选择主体"
+                  okText={intl.formatMessage(INTL.SELECT_SUBJECT)}
                 />
               }
             />
@@ -155,7 +167,7 @@ const CreatePolicy: React.FC = () => {
             min={1}
             creatorButtonProps={{
               position: 'bottom',
-              creatorButtonText: '添加授权规则',
+              creatorButtonText: intl.formatMessage(INTL.ADD_RULE),
             }}
             creatorRecord={{
               effect: POLICY_EFFECT.ALLOW,
@@ -179,7 +191,10 @@ const CreatePolicy: React.FC = () => {
             <ProForm.Group titleStyle={{ marginBottom: '14px' }} align="center">
               <ProFormRadio.Group
                 name="effect"
-                valueEnum={POLICY_EFFECT_VALUE_ENUM}
+                valueEnum={{
+                  allow: intl.formatMessage({ id: POLICY_EFFECT_VALUE_ENUM.allow }),
+                  reject: intl.formatMessage({ id: POLICY_EFFECT_VALUE_ENUM.reject }),
+                }}
                 initialValue={POLICY_EFFECT.ALLOW}
                 label={intl.formatMessage(INTL.EFFECT)}
                 placeholder={intl.formatMessage(INTL.PLACEHOLDER_EFFECT)}
@@ -205,7 +220,7 @@ const CreatePolicy: React.FC = () => {
                       <ProFormText
                         width="sm"
                         name="resourceIdentifier"
-                        label="资源标识符"
+                        label={intl.formatMessage(INTL.RESOURCES)}
                         initialValue="*"
                         addonBefore={`${selectedResource.name}:`}
                         placeholder={intl.formatMessage(INTL.PLACEHOLDER_NAME)}
@@ -230,11 +245,11 @@ const CreatePolicy: React.FC = () => {
                       initialValue={false}
                       options={[
                         {
-                          label: '全部操作',
+                          label: intl.formatMessage(INTL.ALLOW_ALL),
                           value: true,
                         },
                         {
-                          label: '特定操作',
+                          label: intl.formatMessage(INTL.SPECIFIC),
                           value: false,
                         },
                       ]}

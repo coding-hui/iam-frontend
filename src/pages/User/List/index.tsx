@@ -152,6 +152,7 @@ const UserList: React.FC<Props> = (props) => {
       title: <FormattedMessage {...BASIC_INTL.STATUS} />,
       dataIndex: 'disabled',
       hideInForm: true,
+      width: 90,
       valueEnum: {
         false: {
           text: <FormattedMessage {...BASIC_INTL.ACTIVED} />,
@@ -167,7 +168,7 @@ const UserList: React.FC<Props> = (props) => {
       title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
       dataIndex: 'option',
       valueType: 'option',
-      width: 60,
+      width: 70,
       fixed: 'right',
       render: (_, record: API.UserInfo) => [
         <Dropdown

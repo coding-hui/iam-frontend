@@ -26,6 +26,36 @@ export const BASIC_INTL = {
   BTN_ENABLE: {
     id: 'pages.common.btn.enable',
   },
+  MORE: {
+    id: 'pages.common.more',
+  },
+  NICKNAME: {
+    id: 'pages.common.nickname',
+  },
+  PHONE: {
+    id: 'pages.common.phone',
+  },
+  EMAIL: {
+    id: 'pages.common.email',
+  },
+  ACCOUNT_STATUS: {
+    id: 'pages.common.accountStatus',
+  },
+  LAST_LOGIN_TIME: {
+    id: 'pages.common.lastLoginTime',
+  },
+  USER_INFO: {
+    id: 'pages.common.userInfo',
+  },
+  ACCOUNT_INFO: {
+    id: 'pages.common.accountInfo',
+  },
+  ASSIGNED_ROLES: {
+    id: 'pages.common.assignedRoles',
+  },
+  RESET_PASSWORD: {
+    id: 'pages.common.resetPassword',
+  },
   NO: {
     id: 'pages.searchTable.no',
   },
@@ -52,6 +82,9 @@ export const BASIC_INTL = {
   },
   CREATED_AT: {
     id: 'pages.searchTable.createdAt',
+  },
+  SUBJECTS: {
+    id: 'pages.searchTable.subjects',
   },
   CREATING: {
     id: 'message.loading.creating',

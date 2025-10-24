@@ -15,6 +15,8 @@ export default {
   'app.form.basicInfo.title': '基本信息',
   'app.form.loginAndRegister.title': '默认登录方式',
   'app.form.socialLogin.title': '社交登录方式',
+  'app.edit.basicConfig': '基本配置',
+  'app.edit.loginConfig': '登录配置',
 
   'app.form.name': '名称',
   'app.form.logo': '应用图标',

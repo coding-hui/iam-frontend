@@ -60,6 +60,9 @@ const INTL = {
   AUTH_URL: {
     id: 'idp.form.authURL',
   },
+  AUTO_REGISTER: {
+    id: 'idp.form.autoRegister',
+  },
 };
 
 const CreatePolicy: React.FC = () => {
@@ -170,7 +173,7 @@ const CreatePolicy: React.FC = () => {
             title={intl.formatMessage(INTL.LOGIN_CONFIG)}
             titleStyle={{ marginBottom: '14px' }}
           >
-            <ProFormSwitch label={'是否自动注册'} />
+            <ProFormSwitch label={intl.formatMessage(INTL.AUTO_REGISTER)} />
           </ProForm.Group>
         </ProForm>
       </ProCard>

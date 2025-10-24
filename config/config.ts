@@ -95,7 +95,7 @@ export default defineConfig({
    * @doc https://umijs.org/docs/max/i18n
    */
   locale: {
-    default: 'zh-CN',
+    default: 'zh-US',
     antd: true,
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
@@ -133,13 +133,7 @@ export default defineConfig({
    * @description 基于 openapi 的规范生成serve 和mock，能减少很多样板代码
    * @doc https://pro.ant.design/zh-cn/docs/openapi/
    */
-  openAPI: [
-    {
-      requestLibPath: "import { request } from '@umijs/max'",
-      schemaPath: `http://localhost:8001/swagger/doc.json`,
-      projectName: 'swagger',
-    },
-  ],
+  openAPI: [],
   mfsu: {
     strategy: 'normal',
   },

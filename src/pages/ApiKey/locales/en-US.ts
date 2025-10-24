@@ -49,4 +49,22 @@ export default {
   'apikeys.delete.warning':
     'This action cannot be undone. Are you sure you want to delete this API Key?',
   'apikeys.expiresAt.never': 'Never Expires',
+  'apikeys.expires.never': 'Never Expires',
+  'apikeys.copy.success': 'Copied successfully',
+  'apikeys.copy.failed': 'Copy failed',
+  'apikeys.save.tip':
+    'Please save this API Key securely. It cannot be viewed again after creation.',
+  'apikeys.button.close': 'Close',
+  'apikeys.button.copied': 'Copied',
+  'apikeys.button.copy': 'Copy',
+  'apikeys.form.name.placeholder': 'Please enter API Key name',
+  'apikeys.form.name.tooltip':
+    'Used to identify the purpose of this API Key, recommended to use a descriptive name',
+  'apikeys.form.name.lengthError': 'Name length should be between 2-50 characters',
+  'apikeys.form.name.patternError':
+    'Name can only contain letters, numbers, hyphens, underscores, and spaces',
+  'apikeys.form.expiresAt.tooltip':
+    'Setting an expiration time enhances security. If not set, this API Key will never expire',
+  'apikeys.expires.custom': 'Custom',
+  'apikeys.form.expiresAt.placeholder': 'Please select expiration date',
 };

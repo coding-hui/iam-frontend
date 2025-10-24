@@ -14,6 +14,6 @@ export const POLICY_EFFECT = {
 };
 
 export const POLICY_EFFECT_VALUE_ENUM = {
-  allow: '允许',
-  reject: '拒绝',
+  allow: 'policy.effect.allow',
+  reject: 'policy.effect.reject',
 };

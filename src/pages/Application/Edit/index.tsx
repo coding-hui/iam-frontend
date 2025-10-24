@@ -6,16 +6,17 @@ import useStyle from './style';
 import { Avatar } from 'antd';
 import classNames from 'classnames';
 import LoginConfig from '@/pages/Application/Edit/components/LoginConfig';
+import { FormattedMessage } from '@umijs/max';
 
 const prefixCls = 'app-edit';
 
 const TABS = {
   INFO: {
-    tab: '基本配置',
+    tab: 'app.edit.basicConfig',
     key: 'basic',
   },
   LOGIN: {
-    tab: '登录配置',
+    tab: 'app.edit.loginConfig',
     key: 'login',
   },
 };
@@ -64,11 +65,11 @@ const EditApp: React.FC = () => {
       tabList={[
         {
           key: TABS.INFO.key,
-          tab: TABS.INFO.tab,
+          tab: <FormattedMessage id={TABS.INFO.tab} />,
         },
         {
           key: TABS.LOGIN.key,
-          tab: TABS.LOGIN.tab,
+          tab: <FormattedMessage id={TABS.LOGIN.tab} />,
         },
       ]}
     >

@@ -131,7 +131,7 @@ const RoleList: React.FC = () => {
       title: <FormattedMessage {...BASIC_INTL.TITLE_OPTION} />,
       dataIndex: 'option',
       valueType: 'option',
-      width: 60,
+      width: 70,
       fixed: 'right',
       render: (_, record: API.Role) => [
         <Dropdown

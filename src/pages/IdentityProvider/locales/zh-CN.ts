@@ -33,6 +33,7 @@ export default {
   'idp.form.codingTeam': '团队域名前缀',
 
   'idp.form.codingTeam.placeholder': '请输入团队域名前缀',
+  'idp.form.autoRegister': '是否自动注册',
   'idp.form.appID.placeholder': '请输入 AppID',
   'idp.form.appSecret.placeholder': '请输入 AppSecret',
   'idp.form.name.placeholder': '请输入名称',

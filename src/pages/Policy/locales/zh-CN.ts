@@ -7,6 +7,8 @@ export default {
   'policy.type.placeholder': '请选择策略类型',
   'policy.effect': '授权作用',
   'policy.effect.placeholder': '请选择是否允许操作',
+  'policy.effect.allow': '允许',
+  'policy.effect.reject': '拒绝',
   'policy.actions': '操作',
   'policy.actions.placeholder': '授权规则',
   'policy.rules': '授权规则',
@@ -34,4 +36,7 @@ export default {
   'policy.popconfirm.delete.description': '确定要删除该角色？',
   'policy.message.create.success': '创建策略成功',
   'policy.message.update.success': '更新策略成功',
+  'policy.select.subject': '选择主体',
+  'policy.add.rule': '添加授权规则',
+  'policy.allResources': '全部资源',
 };

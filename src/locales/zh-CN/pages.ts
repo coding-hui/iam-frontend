@@ -12,6 +12,7 @@ export default {
   'pages.searchTable.description': '备注',
   'pages.searchTable.createdAt': '创建时间',
   'pages.searchTable.updatedAt': '更新时间',
+  'pages.searchTable.subjects': '授权主体',
 
   'pages.common.btn.more': '更多',
   'pages.common.btn.disable': '禁用',
@@ -20,6 +21,37 @@ export default {
   'pages.common.btn.delete': '删除',
   'pages.common.btn.add': '新增',
 
+  'pages.common.more': '更多',
+  'pages.common.nickname': '昵称',
+  'pages.common.phone': '手机号',
+  'pages.common.email': '邮箱',
+  'pages.common.accountStatus': '账号状态',
+  'pages.common.lastLoginTime': '上次登录时间',
+  'pages.common.userInfo': '用户信息',
+  'pages.common.accountInfo': '账号信息',
+  'pages.common.rolePermissions': '角色权限',
+  'pages.common.accessLog': '访问日志',
+  'pages.common.assignedRoles': '拥有角色',
+  'pages.common.resetPassword': '重置密码',
+
   'pages.common.form.name.tip': '唯一的、字符串式的ID',
   'pages.common.form.displayName.tip': '公开显示的、用户易读的名称',
+
+  'pages.welcome.title': '欢迎使用 WECODING 统一身份认证中心',
+  'pages.welcome.description':
+    'WeCoding IAM 为企业提供了一个综合的解决方案，简化了员工身份管理、应用访问和安全性管理，帮助企业实现高效、安全的数字身份管控。',
+  'pages.welcome.gettingStarted.title': '入门文档',
+  'pages.welcome.gettingStarted.desc': '了解基本概念，快速使用平台',
+  'pages.welcome.identitySource.title': '配置身份源',
+  'pages.welcome.identitySource.desc': '将现有身份信息，导入平台统一管理',
+  'pages.welcome.identityProvider.title': '配置身份提供商',
+  'pages.welcome.identityProvider.desc': '集成身份提供商，快速接入三方平台登录',
+  'pages.welcome.permissions.title': '权限配置',
+  'pages.welcome.permissions.desc':
+    '配置接口、菜单、按钮等资源的校验策略，可以分配给用户、用户组、角色',
+  'pages.welcome.systemConfig.title': '系统配置',
+  'pages.welcome.systemConfig.desc': '进行系统基础配置，如邮件服务器、存储方式',
+  'pages.welcome.securityConfig.title': '安全配置',
+  'pages.welcome.securityConfig.desc': '进行系统安全配置，如密码策略、会话策略',
+  'pages.welcome.learnMore': '了解更多',
 };

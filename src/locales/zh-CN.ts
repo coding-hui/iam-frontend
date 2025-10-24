@@ -4,6 +4,9 @@ import pages from './zh-CN/pages';
 import pwa from './zh-CN/pwa';
 import settings from './zh-CN/settings';
 import apikey from '@/pages/ApiKey/locales/zh-CN';
+import application from '@/pages/Application/locales/zh-CN';
+import policy from '@/pages/Policy/locales/zh-CN';
+import transfer from '@/components/Transfer/locales/zh-CN';
 
 export default {
   'navBar.lang': '语言',
@@ -22,4 +25,7 @@ export default {
   ...pwa,
   ...message,
   ...apikey,
+  ...application,
+  ...policy,
+  ...transfer,
 };

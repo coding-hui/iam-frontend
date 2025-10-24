@@ -1,56 +1,72 @@
 export default {
+  // Basic pages
   'menu.welcome': 'Welcome',
-  'menu.more-blocks': 'More Blocks',
   'menu.home': 'Home',
   'menu.login': 'Login',
   'menu.register': 'Register',
   'menu.register-result': 'Register Result',
+
+  // Dashboard
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.analysis': 'Analysis',
   'menu.dashboard.monitor': 'Monitor',
   'menu.dashboard.workplace': 'Workplace',
+
+  // Exception pages
+  'menu.exception': 'Exception',
   'menu.exception.403': '403',
   'menu.exception.404': '404',
   'menu.exception.500': '500',
-  'menu.result.fail': 'Fail',
-  'menu.exception': 'Exception',
-  'menu.exception.not-permission': '403',
-  'menu.exception.not-find': '404',
-  'menu.exception.server-error': '500',
+  'menu.exception.not-permission': 'No Permission',
+  'menu.exception.not-find': 'Not Found',
+  'menu.exception.server-error': 'Server Error',
   'menu.exception.trigger': 'Trigger Error',
+  'menu.result.fail': 'Failed',
+
+  // Account
   'menu.account': 'Account',
   'menu.account.center': 'Account Center',
-  'menu.account.settings': 'Account Settings',
-  'menu.account.trigger': 'Trigger Error',
+  'menu.account.settings': 'Settings',
+  'menu.account.trigger': 'Trigger',
   'menu.account.logout': 'Logout',
 
+  // Organization Management
   'menu.org-management': 'Organization',
-  'menu.org-management.org.list': 'Organization Management',
-  'menu.org-management.org.edit': 'Edit Organization',
-  'menu.org-management.user.list': 'User Management',
+  'menu.org-management.org.list': 'Organizations',
+  'menu.org-management.org.edit': 'Edit Org',
+  'menu.org-management.user': 'Users',
+  'menu.org-management.user.list': 'Users',
   'menu.org-management.user.edit': 'Edit User',
 
-  'menu.app-management': 'Applications',
-  'menu.app-management.app.list': 'Application Center',
-  'menu.app-management.app.create': 'Create Application',
-  'menu.app-management.app.edit': 'Edit Application',
+  // Application Management
+  'menu.app-management': 'Application',
+  'menu.app-management.app.list': 'Applications',
+  'menu.app-management.app.create': 'Create App',
+  'menu.app-management.app.edit': 'Edit App',
 
+  // Authentication Management
   'menu.authn': 'Authentication',
-  'menu.authn.identity-source.social.list': 'Social Identity Providers',
-  'menu.authn.identity-source.social.create': 'Create Social Identity Provider',
-  'menu.authn.identity-source.social.edit': 'Edit Social Identity Provider',
-  'menu.authn.identity-source.enterprise': 'Enterprise Identity Providers',
+  'menu.authn.identity-source': 'Identity Providers',
+  'menu.authn.identity-source.social.list': 'Social Providers',
+  'menu.authn.identity-source.social.create': 'Create Social',
+  'menu.authn.identity-source.social.edit': 'Edit Social',
+  'menu.authn.identity-source.enterprise': 'Enterprise',
 
-  'menu.resource': 'Resource Permissions',
-  'menu.resource.resource-list': 'Resource Management',
+  // Resource Permissions
+  'menu.resource': 'Permissions',
+  'menu.resource.resource-list': 'Resources',
   'menu.resource.resource-create': 'Create Resource',
   'menu.resource.resource-edit': 'Edit Resource',
-  'menu.resource.policy-list': 'Permission Policies',
+  'menu.resource.policy-list': 'Policies',
   'menu.resource.policy-create': 'Create Policy',
   'menu.resource.policy-edit': 'Edit Policy',
-  'menu.resource.role-list': 'Role Management',
+  'menu.resource.role-list': 'Roles',
   'menu.resource.role-edit': 'Edit Role',
   'menu.resource.apikey.list': 'API Keys',
 
-  'menu.system': 'System Settings',
+  // System Settings (reserved)
+  'menu.system': 'System',
+
+  // Others (for compatibility)
+  'menu.more-blocks': 'More Blocks',
 };

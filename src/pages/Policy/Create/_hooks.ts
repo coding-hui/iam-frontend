@@ -19,7 +19,7 @@ const INTL = {
 
 const ALL_RESOURCE = {
   key: '*',
-  label: '全部资源',
+  label: 'policy.allResources',
   name: '*',
   value: '*',
   actions: [],
@@ -122,7 +122,7 @@ export default function usePolicyHook() {
     const resources = [
       {
         key: '*',
-        label: '全部资源',
+        label: intl.formatMessage({ id: 'policy.allResources' }),
         name: '*',
         value: '*',
         actions: [{ name: '*' }],

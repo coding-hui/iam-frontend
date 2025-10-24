@@ -1,9 +1,12 @@
 import menu from './en-US/menu';
-import message from './zh-CN/message';
-import pages from './zh-CN/pages';
-import pwa from './zh-CN/pwa';
-import settings from './zh-CN/settings';
+import message from './en-US/message';
+import pages from './en-US/pages';
+import pwa from './en-US/pwa';
+import settings from './en-US/settings';
 import apikey from '@/pages/ApiKey/locales/en-US';
+import application from '@/pages/Application/locales/en-US';
+import policy from '@/pages/Policy/locales/en-US';
+import transfer from '@/components/Transfer/locales/en-US';
 
 export default {
   'navBar.lang': 'Language',
@@ -22,4 +25,7 @@ export default {
   ...pwa,
   ...message,
   ...apikey,
+  ...application,
+  ...policy,
+  ...transfer,
 };

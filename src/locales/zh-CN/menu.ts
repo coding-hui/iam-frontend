@@ -1,24 +1,30 @@
 export default {
-  'menu.welcome': '首页',
-  'menu.more-blocks': '更多区块',
+  // 基础页面
+  'menu.welcome': '欢迎页',
   'menu.home': '首页',
   'menu.login': '登录',
   'menu.register': '注册',
   'menu.register-result': '注册结果',
-  'menu.dashboard': 'Dashboard',
+
+  // 仪表板
+  'menu.dashboard': '仪表板',
   'menu.dashboard.analysis': '分析页',
   'menu.dashboard.monitor': '监控页',
   'menu.dashboard.workplace': '工作台',
-  'menu.exception.403': '403',
-  'menu.exception.404': '404',
-  'menu.exception.500': '500',
-  'menu.result.fail': '失败页',
-  'menu.exception': '异常页',
-  'menu.exception.not-permission': '403',
-  'menu.exception.not-find': '404',
-  'menu.exception.server-error': '500',
+
+  // 异常页面
+  'menu.exception': '异常页面',
+  'menu.exception.403': '403 无权限',
+  'menu.exception.404': '404 未找到',
+  'menu.exception.500': '500 服务器错误',
+  'menu.exception.not-permission': '无权限访问',
+  'menu.exception.not-find': '页面不存在',
+  'menu.exception.server-error': '服务器错误',
   'menu.exception.trigger': '触发错误',
-  'menu.account': '个人页',
+  'menu.result.fail': '操作失败',
+
+  // 个人中心
+  'menu.account': '个人中心',
   'menu.account.center': '个人中心',
   'menu.account.settings': '个人设置',
   'menu.account.trigger': '触发报错',

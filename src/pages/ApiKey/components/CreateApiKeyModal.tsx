@@ -2,7 +2,7 @@ import React, { useState, Fragment } from 'react';
 import { createApiKey } from '@/services/apikey/createApiKey';
 import { PlusOutlined, CopyOutlined, CheckOutlined, CalendarOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormText, ProFormDatePicker } from '@ant-design/pro-components';
-import { Button, Modal, Form, Typography, Radio, message } from 'antd';
+import { Button, Modal, Form, Typography, Radio, App } from 'antd';
 import { useIntl, FormattedMessage } from '@umijs/max';
 import { BASIC_INTL } from '@/constant';
 
@@ -23,12 +23,52 @@ const INTL = {
   EXPIRES_AT: {
     id: 'apikeys.form.expiresAt',
   },
+  COPY_SUCCESS: {
+    id: 'apikeys.copy.success',
+  },
+  COPY_FAILED: {
+    id: 'apikeys.copy.failed',
+  },
+  SAVE_TIP: {
+    id: 'apikeys.save.tip',
+  },
+  CLOSE: {
+    id: 'apikeys.button.close',
+  },
+  COPIED: {
+    id: 'apikeys.button.copied',
+  },
+  COPY: {
+    id: 'apikeys.button.copy',
+  },
+  NAME_PLACEHOLDER: {
+    id: 'apikeys.form.name.placeholder',
+  },
+  NAME_TOOLTIP: {
+    id: 'apikeys.form.name.tooltip',
+  },
+  EXPIRES_AT_TOOLTIP: {
+    id: 'apikeys.form.expiresAt.tooltip',
+  },
+  NEVER_EXPIRE: {
+    id: 'apikeys.expires.never',
+  },
+  CUSTOM: {
+    id: 'apikeys.expires.custom',
+  },
+  EXPIRES_AT_PLACEHOLDER: {
+    id: 'apikeys.form.expiresAt.placeholder',
+  },
+  SUCCESS_TITLE: {
+    id: 'apikeys.create.success.title',
+  },
 };
 
 const CreateApiKeyModal: React.FC<Props> = (props) => {
   const { onFinish } = props;
   const intl = useIntl();
   const [form] = Form.useForm();
+  const { message } = App.useApp();
   const [copiedKey, setCopiedKey] = useState(false);
   const [expiresAtOption, setExpiresAtOption] = useState<string>('custom');
   const [successResult, setSuccessResult] = useState<API.ApiKey | null>(null);
@@ -38,19 +78,17 @@ const CreateApiKeyModal: React.FC<Props> = (props) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      message.success('复制成功');
+      message.success(intl.formatMessage(INTL.COPY_SUCCESS));
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      message.error('复制失败');
+      message.error(intl.formatMessage(INTL.COPY_FAILED));
     }
   };
 
   const SuccessContent = ({ result }: { result: API.ApiKey }) => (
     <div>
       <div style={{ marginBottom: 16 }}>
-        <Typography.Text type="secondary">
-          请妥善保存此 API Key，创建后将无法再次查看
-        </Typography.Text>
+        <Typography.Text type="secondary">{intl.formatMessage(INTL.SAVE_TIP)}</Typography.Text>
       </div>
 
       <div
@@ -83,14 +121,14 @@ const CreateApiKeyModal: React.FC<Props> = (props) => {
             form.resetFields();
           }}
         >
-          关闭
+          {intl.formatMessage(INTL.CLOSE)}
         </Button>
         <Button
           type="primary"
           icon={copiedKey ? <CheckOutlined /> : <CopyOutlined />}
           onClick={() => handleCopy(result.key || '', setCopiedKey)}
         >
-          {copiedKey ? '已复制' : '复制'}
+          {copiedKey ? intl.formatMessage(INTL.COPIED) : intl.formatMessage(INTL.COPY)}
         </Button>
       </div>
     </div>
@@ -123,26 +161,8 @@ const CreateApiKeyModal: React.FC<Props> = (props) => {
               const date = new Date(values.expiresAt);
               date.setHours(23, 59, 59, 999);
               expiresAtRFC3339 = date.toISOString();
-            } else if (expiresAtOption !== 'never') {
-              // For preset options, calculate the date
-              const now = new Date();
-              switch (expiresAtOption) {
-                case '7days':
-                  now.setDate(now.getDate() + 7);
-                  break;
-                case '30days':
-                  now.setDate(now.getDate() + 30);
-                  break;
-                case '90days':
-                  now.setDate(now.getDate() + 90);
-                  break;
-                case '1year':
-                  now.setFullYear(now.getFullYear() + 1);
-                  break;
-              }
-              now.setHours(23, 59, 59, 999);
-              expiresAtRFC3339 = now.toISOString();
             }
+            // For 'never' option, expiresAtRFC3339 remains undefined
 
             const requestData: API.CreateApiKeyRequest = {
               name: values.name,
@@ -186,21 +206,21 @@ const CreateApiKeyModal: React.FC<Props> = (props) => {
         <ProFormText
           name="name"
           label={intl.formatMessage(INTL.NAME)}
-          placeholder="请输入 API Key 名称"
-          tooltip="用于识别此 API Key 的用途，建议使用描述性的名称"
+          placeholder={intl.formatMessage(INTL.NAME_PLACEHOLDER)}
+          tooltip={intl.formatMessage(INTL.NAME_TOOLTIP)}
           rules={[
             {
               required: true,
-              message: '请输入 API Key 名称',
+              message: intl.formatMessage(INTL.NAME_PLACEHOLDER),
             },
             {
               min: 2,
               max: 50,
-              message: '名称长度应在 2-50 个字符之间',
+              message: intl.formatMessage({ id: 'apikeys.form.name.lengthError' }),
             },
             {
               pattern: /^[a-zA-Z0-9\-_\s]+$/,
-              message: '名称只能包含字母、数字、连字符、下划线和空格',
+              message: intl.formatMessage({ id: 'apikeys.form.name.patternError' }),
             },
           ]}
           fieldProps={{
@@ -211,7 +231,7 @@ const CreateApiKeyModal: React.FC<Props> = (props) => {
 
         <Form.Item
           label={intl.formatMessage(INTL.EXPIRES_AT)}
-          tooltip="设置过期时间可以增强安全性，如果不设置，此 API Key 将永久有效"
+          tooltip={intl.formatMessage(INTL.EXPIRES_AT_TOOLTIP)}
         >
           <div style={{ marginBottom: 16 }}>
             <Radio.Group
@@ -223,23 +243,15 @@ const CreateApiKeyModal: React.FC<Props> = (props) => {
                   form.setFieldValue('expiresAt', null);
                 }
               }}
-              optionType="button"
-              buttonStyle="solid"
-              size="middle"
-              options={[
-                { label: '永不过期', value: 'never' },
-                { label: '7天', value: '7days' },
-                { label: '30天', value: '30days' },
-                { label: '90天', value: '90days' },
-                { label: '1年', value: '1year' },
-                { label: '自定义', value: 'custom' },
-              ]}
-            />
+            >
+              <Radio value="never">{intl.formatMessage(INTL.NEVER_EXPIRE)}</Radio>
+              <Radio value="custom">{intl.formatMessage(INTL.CUSTOM)}</Radio>
+            </Radio.Group>
           </div>
           {expiresAtOption === 'custom' && (
             <ProFormDatePicker
               name="expiresAt"
-              placeholder="请选择过期日期"
+              placeholder={intl.formatMessage(INTL.EXPIRES_AT_PLACEHOLDER)}
               fieldProps={{
                 format: 'YYYY-MM-DD',
                 disabledDate: (current: any) => {
@@ -258,7 +270,7 @@ const CreateApiKeyModal: React.FC<Props> = (props) => {
       </ModalForm>
 
       <Modal
-        title="API Key 创建成功"
+        title={intl.formatMessage(INTL.SUCCESS_TITLE)}
         open={!!successResult}
         width={480}
         footer={null}

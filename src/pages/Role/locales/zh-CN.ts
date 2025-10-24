@@ -13,4 +13,13 @@ export default {
   'role.form.placeholder.description': '请输入角色描述信息',
   'role.popconfirm.delete.title': '删除角色',
   'role.popconfirm.delete.description': '确定要删除该角色？',
+  'role.edit.tab.info': '基本信息',
+  'role.edit.tab.assign': '分配用户',
+  'role.edit.owner': '归属人',
+  'role.edit.dropdown.enable': '启用角色',
+  'role.edit.dropdown.disable': '禁用角色',
+  'role.edit.dropdown.delete': '删除角色',
+  'role.edit.dropdown.more': '更多',
+  'role.edit.card.info': '角色信息',
+  'role.edit.table.assignedUsers': '已分配用户',
 };

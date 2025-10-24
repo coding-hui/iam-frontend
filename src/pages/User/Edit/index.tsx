@@ -74,7 +74,7 @@ const EditUser: React.FC = () => {
 
   const userInfoColumns: ProFormColumnsType<API.UserInfo>[] = [
     {
-      title: '用户名',
+      title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
       width: 'md',
       colProps: {
@@ -83,7 +83,7 @@ const EditUser: React.FC = () => {
       },
     },
     {
-      title: '昵称',
+      title: <FormattedMessage {...BASIC_INTL.NICKNAME} />,
       dataIndex: 'alias',
       width: 'md',
       colProps: {
@@ -92,7 +92,7 @@ const EditUser: React.FC = () => {
       },
     },
     {
-      title: '手机号',
+      title: <FormattedMessage {...BASIC_INTL.PHONE} />,
       dataIndex: 'phone',
       width: 'md',
       colProps: {
@@ -101,7 +101,7 @@ const EditUser: React.FC = () => {
       },
     },
     {
-      title: '邮箱',
+      title: <FormattedMessage {...BASIC_INTL.EMAIL} />,
       dataIndex: 'email',
       width: 'md',
       colProps: {
@@ -113,7 +113,7 @@ const EditUser: React.FC = () => {
 
   const accountInfoColumns: ProFormColumnsType<API.UserInfo>[] = [
     {
-      title: '账号状态',
+      title: <FormattedMessage {...BASIC_INTL.ACCOUNT_STATUS} />,
       dataIndex: 'disabled',
       width: 'md',
       readonly: true,
@@ -133,7 +133,7 @@ const EditUser: React.FC = () => {
       },
     },
     {
-      title: '上次登录时间',
+      title: <FormattedMessage {...BASIC_INTL.LAST_LOGIN_TIME} />,
       dataIndex: 'lastLoginTime',
       valueType: 'dateTime',
       width: 'md',
@@ -144,7 +144,7 @@ const EditUser: React.FC = () => {
       },
     },
     {
-      title: '创建时间',
+      title: <FormattedMessage {...BASIC_INTL.CREATED_AT} />,
       dataIndex: ['metadata', 'createdAt'],
       valueType: 'dateTime',
       readonly: true,
@@ -331,7 +331,11 @@ const EditUser: React.FC = () => {
       fixedHeader
       tabActiveKey={currentTab}
       onTabChange={(tab) => handleTabChange(tab)}
-      tabList={[userTabs.INFO, userTabs.ROLES, userTabs.LOG]}
+      tabList={[
+        { ...userTabs.INFO, tab: <FormattedMessage id={userTabs.INFO.tab} /> },
+        { ...userTabs.ROLES, tab: <FormattedMessage id={userTabs.ROLES.tab} /> },
+        { ...userTabs.LOG, tab: <FormattedMessage id={userTabs.LOG.tab} /> },
+      ]}
       header={{
         title: userAvatarTitle,
         subTitle: userSubTitleInfo,
@@ -343,7 +347,9 @@ const EditUser: React.FC = () => {
               items: [
                 {
                   icon: userInfo?.disabled ? <CheckCircleOutlined /> : <StopOutlined />,
-                  label: userInfo?.disabled ? '启用账号' : '禁用账号',
+                  label: userInfo?.disabled
+                    ? intl.formatMessage(BASIC_INTL.BTN_ENABLE)
+                    : intl.formatMessage(BASIC_INTL.BTN_DISABLE),
                   key: '1',
                   onClick: () => {
                     modal.confirm(changeUserStateModalConfig());
@@ -351,7 +357,7 @@ const EditUser: React.FC = () => {
                 },
                 {
                   icon: <DeleteOutlined />,
-                  label: '删除账号',
+                  label: intl.formatMessage(BASIC_INTL.BTN_DELETE),
                   key: '2',
                   onClick: () => {
                     modal.confirm(deleteModalConfig());
@@ -361,7 +367,7 @@ const EditUser: React.FC = () => {
             }}
           >
             <Button key="4" style={{ padding: '0 8px' }}>
-              更多
+              <FormattedMessage {...BASIC_INTL.MORE} />
               <DownOutlined />
             </Button>
           </Dropdown>,
@@ -372,7 +378,7 @@ const EditUser: React.FC = () => {
               modal.confirm(restartPwdModalConfig());
             }}
           >
-            重置密码
+            <FormattedMessage {...BASIC_INTL.RESET_PASSWORD} />
           </Button>,
         ],
       }}
@@ -380,7 +386,7 @@ const EditUser: React.FC = () => {
       <ProCard direction="column" ghost gutter={[0, 16]}>
         {isInfoTab() ? (
           <>
-            <ProCard loading={loading} title="用户信息">
+            <ProCard loading={loading} title={<FormattedMessage {...BASIC_INTL.USER_INFO} />}>
               <BetaSchemaForm<API.UserInfo>
                 form={userInfoForm}
                 layoutType="Form"
@@ -391,7 +397,7 @@ const EditUser: React.FC = () => {
                 columns={userInfoColumns}
               />
             </ProCard>
-            <ProCard loading={loading} title="账号信息">
+            <ProCard loading={loading} title={<FormattedMessage {...BASIC_INTL.ACCOUNT_INFO} />}>
               <BetaSchemaForm<API.UserInfo>
                 form={accountInfoForm}
                 layoutType="Form"
@@ -404,7 +410,7 @@ const EditUser: React.FC = () => {
           </>
         ) : (
           <ProTable
-            headerTitle="拥有角色"
+            headerTitle={<FormattedMessage {...BASIC_INTL.ASSIGNED_ROLES} />}
             actionRef={roleTableActionRef}
             search={false}
             columns={roleColumns}
