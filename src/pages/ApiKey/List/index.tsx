@@ -15,6 +15,7 @@ import { ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl, useRequest } from '@umijs/max';
 import { App, Button, Dropdown } from 'antd';
 import { BASIC_INTL } from '@/constant';
+import { isNullOrUnDef } from '@/utils/is';
 import { transformSearchParams } from '@/utils';
 
 import useStyle from './style';
@@ -163,11 +164,12 @@ const ApiKeyList: React.FC<Props> = () => {
     {
       title: <FormattedMessage {...INTL.EXPIRES_AT} />,
       dataIndex: 'expiresAt',
-      valueType: 'date',
       width: 120,
-      renderText: (text: string) => {
-        if (!text) return intl.formatMessage({ id: 'apikeys.expiresAt.never' });
-        const date = new Date(text);
+      renderText: (_, record: API.ApiKey) => {
+        if (isNullOrUnDef(record?.expiresAt)) {
+          return '-';
+        }
+        const date = new Date(record?.expiresAt);
         return date.toLocaleDateString(intl.locale);
       },
     },
