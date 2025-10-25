@@ -1,5 +1,5 @@
 import { PageContainer } from '@ant-design/pro-components';
-import { useModel } from '@umijs/max';
+import { useModel, useIntl } from '@umijs/max';
 import { Card, theme } from 'antd';
 import React from 'react';
 
@@ -14,8 +14,8 @@ const InfoCard: React.FC<{
   desc: string;
   href: string;
 }> = ({ title, href, index, desc }) => {
+  const intl = useIntl();
   const { useToken } = theme;
-
   const { token } = useToken();
 
   return (
@@ -69,7 +69,7 @@ const InfoCard: React.FC<{
         style={{
           fontSize: '14px',
           color: token.colorTextSecondary,
-          textAlign: 'justify',
+          textAlign: 'start',
           lineHeight: '22px',
           marginBottom: 8,
         }}
@@ -77,22 +77,23 @@ const InfoCard: React.FC<{
         {desc}
       </div>
       <a href={href} target="_blank" rel="noreferrer">
-        了解更多 {'>'}
+        {intl.formatMessage({ id: 'pages.welcome.learnMore' })}
+        {' >'}
       </a>
     </div>
   );
 };
 
 const Welcome: React.FC = () => {
+  const intl = useIntl();
   const { token } = theme.useToken();
   const { initialState } = useModel('@@initialState');
+
   return (
     <PageContainer>
       <Card
         style={{
           borderRadius: 8,
-        }}
-        bodyStyle={{
           backgroundImage:
             initialState?.settings?.navTheme === 'realDark'
               ? 'background-image: linear-gradient(75deg, #1A1B1F 0%, #191C1F 100%)'
@@ -114,7 +115,7 @@ const Welcome: React.FC = () => {
               color: token.colorTextHeading,
             }}
           >
-            欢迎使用 WECODING 统一身份认证中心
+            {intl.formatMessage({ id: 'pages.welcome.title' })}
           </div>
           <p
             style={{
@@ -126,8 +127,7 @@ const Welcome: React.FC = () => {
               width: '65%',
             }}
           >
-            WeCoding IAM
-            为企业提供了一个综合的解决方案，简化了员工身份管理、应用访问和安全性管理，帮助企业实现高效、安全的数字身份管控。
+            {intl.formatMessage({ id: 'pages.welcome.description' })}
           </p>
           <div
             style={{
@@ -140,20 +140,20 @@ const Welcome: React.FC = () => {
             <InfoCard
               index={1}
               href="https://umijs.org/docs/introduce/introduce"
-              title="入门文档"
-              desc="了解基本概念，快速使用平台"
+              title={intl.formatMessage({ id: 'pages.welcome.gettingStarted.title' })}
+              desc={intl.formatMessage({ id: 'pages.welcome.gettingStarted.desc' })}
             />
             <InfoCard
               index={2}
-              title="配置身份源"
+              title={intl.formatMessage({ id: 'pages.welcome.identitySource.title' })}
               href="https://ant.design"
-              desc="将现有身份信息，导入平台统一管理"
+              desc={intl.formatMessage({ id: 'pages.welcome.identitySource.desc' })}
             />
             <InfoCard
               index={3}
-              title="配置身份提供商"
+              title={intl.formatMessage({ id: 'pages.welcome.identityProvider.title' })}
               href="https://procomponents.ant.design"
-              desc="集成身份提供商，快速接入三方平台登录"
+              desc={intl.formatMessage({ id: 'pages.welcome.identityProvider.desc' })}
             />
           </div>
           <div
@@ -165,21 +165,21 @@ const Welcome: React.FC = () => {
           >
             <InfoCard
               index={4}
-              title="权限配置"
+              title={intl.formatMessage({ id: 'pages.welcome.permissions.title' })}
               href="https://procomponents.ant.design"
-              desc="配置接口、菜单、按钮等资源的校验策略，可以分配给用户、用户组、角色"
+              desc={intl.formatMessage({ id: 'pages.welcome.permissions.desc' })}
             />
             <InfoCard
               index={5}
-              title="系统配置"
+              title={intl.formatMessage({ id: 'pages.welcome.systemConfig.title' })}
               href="https://procomponents.ant.design"
-              desc="进行系统基础配置，如邮件服务器、存储方式"
+              desc={intl.formatMessage({ id: 'pages.welcome.systemConfig.desc' })}
             />
             <InfoCard
               index={6}
-              title="安全配置"
+              title={intl.formatMessage({ id: 'pages.welcome.securityConfig.title' })}
               href="https://procomponents.ant.design"
-              desc="进行系统安全配置，如密码策略、会话策略"
+              desc={intl.formatMessage({ id: 'pages.welcome.securityConfig.desc' })}
             />
           </div>
         </div>
