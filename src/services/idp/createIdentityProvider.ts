@@ -11,7 +11,7 @@ export interface CreateIdentityProviderRequest {
   config: Record<string, any>;
 }
 
-const url = '/api/v1/identity_providers';
+const url = '/api/v1/identity-providers';
 
 export async function createIdentityProvider(
   createReq: CreateIdentityProviderRequest,

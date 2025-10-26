@@ -15,7 +15,7 @@ export async function updateIdentityProvider(
   createReq: UpdateIdentityProviderRequest,
   options?: { [key: string]: any },
 ) {
-  return request(`/api/v1/identity_providers/${instanceId}`, {
+  return request(`/api/v1/identity-providers/${instanceId}`, {
     method: 'PUT',
     data: createReq,
     ...(options || {}),
