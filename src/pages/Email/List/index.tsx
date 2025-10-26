@@ -62,7 +62,7 @@ const EmailList: React.FC = () => {
       pageSize: opts.pageSize,
       fieldSelector: '',
     };
-    finalOpts.fieldSelector = transformSearchParams(opts, ['subject']).join(',');
+    finalOpts.fieldSelector = transformSearchParams(opts, ['subject', 'categoryId']).join(',');
     const list = await listEmailTemplates(finalOpts);
     return {
       data: list.items,
@@ -142,7 +142,10 @@ const EmailList: React.FC = () => {
       valueType: 'select',
       request: async () => {
         const res = await listEmailTemplateCategories({ current: 1, pageSize: 100 });
-        return (res.items || []).map((c) => ({ label: c.metadata.name, value: c.metadata.name }));
+        return (res.items || []).map((c) => ({
+          label: c.metadata.name,
+          value: c.metadata.instanceId,
+        }));
       },
     },
     {
