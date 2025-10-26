@@ -155,6 +155,12 @@ const EmailList: React.FC = () => {
       width: 140,
     },
     {
+      title: <FormattedMessage {...BASIC_INTL.OWNER} />,
+      dataIndex: 'owner',
+      hideInSearch: true,
+      width: 120,
+    },
+    {
       title: <FormattedMessage {...BASIC_INTL.CREATED_AT} />,
       dataIndex: ['metadata', 'createdAt'],
       width: 160,

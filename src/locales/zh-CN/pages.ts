@@ -12,6 +12,7 @@ export default {
   'pages.searchTable.description': '备注',
   'pages.searchTable.createdAt': '创建时间',
   'pages.searchTable.updatedAt': '更新时间',
+  'pages.searchTable.owner': '创建者',
   'pages.searchTable.subjects': '授权主体',
 
   'pages.common.btn.more': '更多',

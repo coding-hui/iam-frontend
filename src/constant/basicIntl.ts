@@ -83,6 +83,9 @@ export const BASIC_INTL = {
   CREATED_AT: {
     id: 'pages.searchTable.createdAt',
   },
+  OWNER: {
+    id: 'pages.searchTable.owner',
+  },
   SUBJECTS: {
     id: 'pages.searchTable.subjects',
   },

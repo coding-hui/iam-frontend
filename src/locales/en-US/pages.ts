@@ -12,6 +12,7 @@ export default {
   'pages.searchTable.description': 'Description',
   'pages.searchTable.createdAt': 'Created At',
   'pages.searchTable.updatedAt': 'Updated At',
+  'pages.searchTable.owner': 'Owner',
   'pages.searchTable.subjects': 'Subjects',
 
   'pages.common.btn.more': 'More',
