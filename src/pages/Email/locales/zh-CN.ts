@@ -24,11 +24,13 @@ export default {
   'email.form.validator.name.required': '请输入模板名称',
   'email.form.validator.category.required': '请选择模板分类',
   'email.form.validator.content.required': '请输入邮件内容',
+  'email.form.validator.subject.required': '请输入邮件主题',
   'email.form.placeholder.category': '请选择模板分类',
   'email.form.basicInfo': '基础信息',
   'email.form.contentInfo': '内容',
   'email.edit.card.title': '邮件模板编辑',
   'email.operation.update.failed': '更新失败',
+  'email.operation.create.failed': '创建失败',
   'email.form.validation.title': '表单验证详情',
 
   'email.status.active': '激活',

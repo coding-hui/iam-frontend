@@ -1,42 +1,92 @@
-import React, { useEffect, useRef } from 'react';
-import { PageContainer } from '@ant-design/pro-components';
-import { App, theme } from 'antd';
+import React, { useEffect, useMemo, useState } from 'react';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { PageContainer, ProForm, ProFormText, FooterToolbar } from '@ant-design/pro-components';
+import { App, Form, Card, Col, Row, Popover } from 'antd';
 import { history, useIntl, useParams, useRequest } from '@umijs/max';
-import { ProForm, ProFormText, ProCard } from '@ant-design/pro-components';
 import { BASIC_INTL } from '@/constant';
 import { getEmailTemplate } from '@/services/email/getEmailTemplate';
 import { updateEmailTemplate } from '@/services/email/updateEmailTemplate';
-
-import { createEmailTemplate } from '@/services/email/createEmailTemplate';
+import {
+  createEmailTemplate,
+  CreateEmailTemplateRequest,
+} from '@/services/email/createEmailTemplate';
 import { listEmailTemplates } from '@/services/email/listEmailTemplates';
+import { listEmailTemplateCategories } from '@/services/email/listEmailTemplateCategories';
+import { UpdateEmailTemplateRequest } from '@/services/email/updateEmailTemplate';
 import MDEditor from '@uiw/react-md-editor';
 import rehypeRaw from 'rehype-raw';
 import { marked } from 'marked';
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 
-const INTL = {
+type InternalNamePath = (string | number)[];
+
+interface ErrorField {
+  name: InternalNamePath;
+  errors: string[];
+}
+
+interface FormErrorInfo {
+  errorFields: ErrorField[];
+  outOfDate: boolean;
+  values: Record<string, unknown>;
+}
+
+// 表单值类型定义
+type EmailTemplateFormValues = {
+  name: string;
+  subject: string;
+  content: string;
+  displayName?: string;
+  categoryId?: string;
+  description?: string;
+  status?: string;
+};
+
+const EMAIL_INTL = {
+  PAGE_CONTENT: { id: 'email.page.content' },
+  BASIC_INFO: { id: 'email.form.basicInfo' },
+  CONTENT_INFO: { id: 'email.form.contentInfo' },
   NAME: { id: 'email.form.name' },
   DISPLAY_NAME: { id: 'email.form.displayName' },
   SUBJECT: { id: 'email.form.subject' },
   CONTENT: { id: 'email.form.content' },
-  PLACEHOLDER_CONTENT: { id: 'email.form.placeholder.content' },
+  CATEGORY: { id: 'email.form.category' },
+  DESCRIPTION: { id: 'email.form.description' },
   PLACEHOLDER_NAME: { id: 'email.form.placeholder.name' },
   PLACEHOLDER_DISPLAY_NAME: { id: 'email.form.placeholder.displayName' },
   PLACEHOLDER_SUBJECT: { id: 'email.form.placeholder.subject' },
+  PLACEHOLDER_CONTENT: { id: 'email.form.placeholder.content' },
+  PLACEHOLDER_DESCRIPTION: { id: 'email.form.placeholder.description' },
+  PLACEHOLDER_CATEGORY: { id: 'email.form.placeholder.category' },
   REQUIRED: { id: 'email.form.validator.required' },
-  PAGE_TITLE_CREATE: { id: 'email.form.create.title' },
-  PAGE_TITLE_EDIT: { id: 'email.form.edit.title' },
+  CARD_TITLE_CREATE: { id: 'email.form.create.title' },
+  CARD_TITLE_EDIT: { id: 'email.form.edit.title' },
+  NAME_REQUIRED: { id: 'email.form.validator.name.required' },
+  CATEGORY_REQUIRED: { id: 'email.form.validator.category.required' },
+  CONTENT_REQUIRED: { id: 'email.form.validator.content.required' },
+  SUBJECT_REQUIRED: { id: 'email.form.validator.subject.required' },
+  CREATE_FAILED: { id: 'email.operation.create.failed' },
+  UPDATE_FAILED: { id: 'email.operation.update.failed' },
+  VALIDATION_TITLE: { id: 'email.form.validation.title' },
 };
 
 const EmailFormPage: React.FC = () => {
   const intl = useIntl();
   const { message } = App.useApp();
   const { instanceId, name } = useParams<{ instanceId?: string; name?: string }>();
-  const formRef = useRef<any>();
-  const { token } = theme.useToken();
+  const [form] = Form.useForm();
+  const [error, setError] = useState<ErrorField[]>([]);
 
   const isEdit = !!name || !!instanceId;
+
+  const fieldLabels = useMemo(() => {
+    return {
+      name: intl.formatMessage(EMAIL_INTL.NAME),
+      subject: intl.formatMessage(EMAIL_INTL.SUBJECT),
+      content: intl.formatMessage(EMAIL_INTL.CONTENT),
+    };
+  }, [intl]);
 
   const {
     data: template,
@@ -44,6 +94,10 @@ const EmailFormPage: React.FC = () => {
     loading: loadingGet,
   } = useRequest(getEmailTemplate, {
     manual: true,
+    formatResult: (template) => template,
+    onSuccess: (template) => {
+      form.setFieldsValue(template);
+    },
     onError: () => {
       // 静默处理，避免全局错误弹窗
     },
@@ -60,10 +114,20 @@ const EmailFormPage: React.FC = () => {
     },
   });
 
+  const { data: categories, run: runListCategories } = useRequest(listEmailTemplateCategories, {
+    manual: true,
+    formatResult: (categories) => categories,
+  });
+
   useEffect(() => {
-    if (!isEdit) return;
+    if (!isEdit) {
+      // 对于创建页面，也需要加载分类列表
+      runListCategories({});
+      return;
+    }
     if (name) {
       runGet(name, { skipErrorHandler: true });
+      runListCategories({});
       return;
     }
     if (instanceId) {
@@ -71,26 +135,18 @@ const EmailFormPage: React.FC = () => {
         { current: 1, pageSize: 1, fieldSelector: `metadata.instanceId=${instanceId}` },
         { skipErrorHandler: true },
       );
+      runListCategories({});
     }
-  }, [isEdit, name, instanceId]);
-
-  useEffect(() => {
-    if (template && formRef.current) {
-      const t = template as API.EmailTemplate;
-      formRef.current?.setFieldsValue({
-        name: t.metadata?.name,
-        displayName: t.displayName,
-        subject: t.subject,
-        content: t.content,
-      });
-    }
-  }, [template]);
+  }, [isEdit, name, instanceId, runGet, runQueryByInstanceId, runListCategories]);
 
   const { run: doCreate, loading: loadingCreate } = useRequest(createEmailTemplate, {
     manual: true,
     onSuccess: async () => {
       await message.success(intl.formatMessage(BASIC_INTL.CREATE_SUCCESS));
       history.push('/app-management/mail-template');
+    },
+    onError: (error: Error) => {
+      message.error(error.message || intl.formatMessage(EMAIL_INTL.CREATE_FAILED));
     },
   });
 
@@ -99,96 +155,234 @@ const EmailFormPage: React.FC = () => {
     onSuccess: async () => {
       await message.success(intl.formatMessage(BASIC_INTL.UPDATE_SUCCESS));
     },
+    onError: (error: Error) => {
+      message.error(error.message || intl.formatMessage(EMAIL_INTL.UPDATE_FAILED));
+    },
   });
 
-  const handleSubmit = async (values: any) => {
-    if (typeof values?.content === 'string') {
-      values.content = marked.parse(values.content);
+  // 获取 Custom 分类的 ID
+  const customCategoryId = useMemo(() => {
+    const customCategory = (categories as API.EmailTemplateCategoryList)?.items?.find(
+      (cat: API.EmailTemplateCategory) => {
+        const categoryName = cat.metadata?.name?.toLowerCase();
+        return categoryName === 'custom';
+      },
+    );
+    return customCategory?.metadata?.instanceId;
+  }, [categories]);
+
+  const getErrorInfo = (errors: ErrorField[]): React.ReactNode => {
+    const errorCount = errors.filter((item) => item.errors.length > 0).length;
+    if (!errors || errorCount === 0) {
+      return null;
     }
-    if (isEdit) {
-      const targetName = name ?? formRef.current?.getFieldValue('name');
-      if (targetName) {
-        await doUpdate(targetName, values);
-        return;
+    const scrollToField = (fieldKey: string) => {
+      const labelNode = document.querySelector(`label[for="${fieldKey}"]`);
+      if (labelNode) {
+        labelNode.scrollIntoView(true);
       }
+    };
+    const errorList = errors.map((err) => {
+      if (!err || err.errors.length === 0) {
+        return null;
+      }
+      const key = err.name[0] as string;
+      const fieldLabel = fieldLabels[key as keyof typeof fieldLabels];
+      return (
+        <li
+          key={key}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '4px 0',
+            cursor: 'pointer',
+          }}
+          onClick={() => scrollToField(key)}
+        >
+          <CloseCircleOutlined style={{ color: '#ff4d4f', marginRight: 8 }} />
+          <div style={{ flex: 1 }}>{err.errors[0]}</div>
+          <div style={{ color: '#999', fontSize: '12px' }}>{fieldLabel}</div>
+        </li>
+      );
+    });
+    return (
+      <span style={{ color: '#ff4d4f', display: 'flex', alignItems: 'center' }}>
+        <Popover
+          title={intl.formatMessage(EMAIL_INTL.VALIDATION_TITLE)}
+          content={<ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>{errorList}</ul>}
+          trigger="click"
+          getPopupContainer={(trigger: HTMLElement) => {
+            if (trigger?.parentNode) {
+              return trigger.parentNode as HTMLElement;
+            }
+            return trigger;
+          }}
+        >
+          <CloseCircleOutlined style={{ marginRight: 4 }} />
+        </Popover>
+        {errorCount}
+      </span>
+    );
+  };
+
+  const onFinish = async (values: EmailTemplateFormValues) => {
+    setError([]);
+    try {
+      // 创建一个副本来避免修改原始 values
+      const processedValues = { ...values };
+
+      // 将 Markdown 转换为 HTML（包含内嵌 HTML 原样保留）
+      if (typeof processedValues.content === 'string') {
+        const parsedContent = marked.parse(processedValues.content);
+        processedValues.content =
+          typeof parsedContent === 'string' ? parsedContent : await parsedContent;
+      }
+
+      // 对于创建操作，自动设置默认值
+      if (!isEdit) {
+        if (customCategoryId) {
+          processedValues.categoryId = customCategoryId;
+        }
+        // 设置默认状态为 active
+        processedValues.status = 'active';
+        // 如果没有 displayName，使用 name 作为默认值
+        if (!processedValues.displayName) {
+          processedValues.displayName = processedValues.name;
+        }
+
+        // 确保所有必需字段都存在
+        const createData: CreateEmailTemplateRequest = {
+          name: processedValues.name,
+          displayName: processedValues.displayName,
+          subject: processedValues.subject,
+          content: processedValues.content,
+          categoryId: processedValues.categoryId,
+          description: processedValues.description,
+          status: processedValues.status,
+        };
+
+        await doCreate(createData);
+      } else {
+        const targetName = name ?? form.getFieldValue(['metadata', 'name']);
+        if (targetName) {
+          const updateData: UpdateEmailTemplateRequest = {
+            displayName: processedValues.displayName,
+            subject: processedValues.subject,
+            content: processedValues.content,
+            categoryId: processedValues.categoryId,
+            description: processedValues.description,
+            status: processedValues.status,
+          };
+          await doUpdate(targetName, updateData);
+        }
+      }
+    } catch {
+      // Error handled in onError callback
     }
-    await doCreate(values);
+  };
+
+  const onFinishFailed = (errorInfo: FormErrorInfo) => {
+    setError(errorInfo.errorFields);
   };
 
   return (
-    <PageContainer
-      fixedHeader
-      header={{
-        title: isEdit
-          ? intl.formatMessage(INTL.PAGE_TITLE_EDIT)
-          : intl.formatMessage(INTL.PAGE_TITLE_CREATE),
+    <ProForm
+      layout="vertical"
+      requiredMark
+      variant="filled"
+      submitter={{
+        render: (_props, dom) => {
+          return (
+            <FooterToolbar>
+              {getErrorInfo(error)}
+              {dom}
+            </FooterToolbar>
+          );
+        },
       }}
-      style={{ background: token.colorBgLayout }}
+      form={form}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      loading={loadingGet || loadingCreate || loadingUpdate}
     >
-      <ProCard
-        bordered={false}
-        style={{ background: token.colorBgContainer }}
-        bodyStyle={{ padding: 24 }}
-      >
-        <div style={{ maxWidth: 720, margin: '0 auto' }}>
-          <ProForm
-            key={(template as any)?.metadata?.name || (isEdit ? 'edit' : 'create')}
-            formRef={formRef}
-            loading={loadingGet || loadingCreate || loadingUpdate}
-            onFinish={handleSubmit}
-            layout="vertical"
-            grid
-            rowProps={{ gutter: 16 }}
-            colProps={{ span: 12 }}
-            submitter={{ resetButtonProps: { style: { display: 'none' } } }}
-            initialValues={
-              template
-                ? {
-                    name: (template as any)?.metadata?.name,
-                    subject: (template as any)?.subject,
-                    content: (template as any)?.content,
-                  }
-                : undefined
-            }
+      <PageContainer content={intl.formatMessage(EMAIL_INTL.PAGE_CONTENT)}>
+        <Card
+          title={
+            isEdit
+              ? intl.formatMessage(EMAIL_INTL.CARD_TITLE_EDIT)
+              : intl.formatMessage(EMAIL_INTL.CARD_TITLE_CREATE)
+          }
+          variant="borderless"
+        >
+          <div
+            style={{
+              maxWidth: '1200px',
+              margin: '0 auto',
+              padding: '0 24px',
+            }}
           >
-            <ProFormText
-              name="name"
-              label={intl.formatMessage(INTL.NAME)}
-              placeholder={intl.formatMessage(INTL.PLACEHOLDER_NAME)}
-              tooltip={intl.formatMessage(BASIC_INTL.NAME_TIP)}
-              rules={[{ required: !isEdit, message: intl.formatMessage(INTL.REQUIRED) }]}
-              disabled={isEdit}
-              colProps={{ span: 12 }}
-              fieldProps={{ style: { width: '100%' } }}
-            />
-
-            <ProFormText
-              name="subject"
-              label={intl.formatMessage(INTL.SUBJECT)}
-              placeholder={intl.formatMessage(INTL.PLACEHOLDER_SUBJECT)}
-              rules={[{ required: true, message: intl.formatMessage(INTL.REQUIRED) }]}
-              colProps={{ span: 12 }}
-              fieldProps={{ style: { width: '100%' } }}
-            />
-            <ProForm.Item
-              name="content"
-              label={intl.formatMessage(INTL.CONTENT)}
-              rules={[{ required: true, message: intl.formatMessage(INTL.REQUIRED) }]}
-              valuePropName="value"
-              colProps={{ span: 24 }}
-            >
-              <MDEditor
-                key={(template as any)?.metadata?.name || (isEdit ? 'edit' : 'create')}
-                height={360}
-                preview="edit"
-                previewOptions={{ rehypePlugins: [rehypeRaw] }}
-                textareaProps={{ placeholder: intl.formatMessage(INTL.PLACEHOLDER_CONTENT) }}
-              />
-            </ProForm.Item>
-          </ProForm>
-        </div>
-      </ProCard>
-    </PageContainer>
+            <Row gutter={16}>
+              <Col lg={12} md={12} sm={24}>
+                <ProFormText
+                  label={fieldLabels.name}
+                  disabled={isEdit}
+                  name={isEdit ? ['metadata', 'name'] : 'name'}
+                  rules={[
+                    {
+                      required: true,
+                      message: intl.formatMessage(EMAIL_INTL.NAME_REQUIRED),
+                    },
+                  ]}
+                  placeholder={intl.formatMessage(EMAIL_INTL.PLACEHOLDER_NAME)}
+                  tooltip={intl.formatMessage(BASIC_INTL.NAME_TIP)}
+                />
+              </Col>
+              <Col lg={12} md={12} sm={24}>
+                <ProFormText
+                  label={fieldLabels.subject}
+                  name="subject"
+                  rules={[
+                    {
+                      required: true,
+                      message: intl.formatMessage(EMAIL_INTL.SUBJECT_REQUIRED),
+                    },
+                  ]}
+                  placeholder={intl.formatMessage(EMAIL_INTL.PLACEHOLDER_SUBJECT)}
+                />
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                <ProForm.Item
+                  label={fieldLabels.content}
+                  name="content"
+                  rules={[
+                    {
+                      required: true,
+                      message: intl.formatMessage(EMAIL_INTL.CONTENT_REQUIRED),
+                    },
+                  ]}
+                >
+                  <MDEditor
+                    key={(template as any)?.metadata?.name || (isEdit ? 'edit' : 'create')}
+                    height={400}
+                    preview="live"
+                    visibleDragbar={false}
+                    previewOptions={{
+                      rehypePlugins: [rehypeRaw],
+                    }}
+                    data-color-mode="light"
+                    textareaProps={{
+                      placeholder: intl.formatMessage(EMAIL_INTL.PLACEHOLDER_CONTENT),
+                    }}
+                  />
+                </ProForm.Item>
+              </Col>
+            </Row>
+          </div>
+        </Card>
+      </PageContainer>
+    </ProForm>
   );
 };
 

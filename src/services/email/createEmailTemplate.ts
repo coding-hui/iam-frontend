@@ -7,6 +7,7 @@ export type CreateEmailTemplateRequest = {
   content: string;
   categoryId?: string;
   description?: string;
+  status?: string;
 };
 
 export async function createEmailTemplate(

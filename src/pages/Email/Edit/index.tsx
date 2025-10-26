@@ -1,18 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CloseCircleOutlined } from '@ant-design/icons';
-import {
-  PageContainer,
-  ProForm,
-  ProFormSelect,
-  ProFormText,
-  FooterToolbar,
-} from '@ant-design/pro-components';
-import { App, Form, Card, Col, Row, Popover } from 'antd';
+import { PageContainer, ProForm, FooterToolbar } from '@ant-design/pro-components';
+import { App, Form, Popover, Card } from 'antd';
 import { useIntl, useParams, useRequest } from '@umijs/max';
 import { BASIC_INTL } from '@/constant';
 import { getEmailTemplate } from '@/services/email/getEmailTemplate';
 import { updateEmailTemplate } from '@/services/email/updateEmailTemplate';
-import { listEmailTemplateCategories } from '@/services/email/listEmailTemplateCategories';
 import MDEditor from '@uiw/react-md-editor';
 import rehypeRaw from 'rehype-raw';
 import '@uiw/react-md-editor/markdown-editor.css';
@@ -63,15 +56,11 @@ const EditEmailTemplate: React.FC = () => {
   const { instanceId } = useParams<{ instanceId?: string }>();
   const [error, setError] = useState<ErrorField[]>([]);
 
-  const fieldLabels = useMemo(() => {
-    return {
-      name: intl.formatMessage(EMAIL_INTL.NAME),
-      content: intl.formatMessage(EMAIL_INTL.CONTENT),
-      category: intl.formatMessage(EMAIL_INTL.CATEGORY),
-    };
-  }, []);
-
-  const { run: runGet, loading: loadingGet } = useRequest(getEmailTemplate, {
+  const {
+    data: template,
+    run: runGet,
+    loading: loadingGet,
+  } = useRequest(getEmailTemplate, {
     manual: true,
     formatResult: (template) => template,
     onSuccess: (template) => {
@@ -89,17 +78,11 @@ const EditEmailTemplate: React.FC = () => {
     },
   });
 
-  const { data: categories, run: runListCategories } = useRequest(listEmailTemplateCategories, {
-    manual: true,
-    formatResult: (categories) => categories,
-  });
-
   useEffect(() => {
     if (instanceId) {
       runGet(instanceId);
-      runListCategories({});
     }
-  }, [instanceId, runGet, runListCategories]);
+  }, [instanceId, runGet]);
 
   const getErrorInfo = (errors: ErrorField[]): React.ReactNode => {
     const errorCount = errors.filter((item) => item.errors.length > 0).length;
@@ -117,7 +100,7 @@ const EditEmailTemplate: React.FC = () => {
         return null;
       }
       const key = err.name[0] as string;
-      const fieldLabel = fieldLabels[key as keyof typeof fieldLabels];
+      const fieldLabel = key === 'content' ? intl.formatMessage(EMAIL_INTL.CONTENT) : key;
       return (
         <li
           key={key}
@@ -168,11 +151,12 @@ const EditEmailTemplate: React.FC = () => {
     setError(errorInfo.errorFields);
   };
 
-  const categoryOptions =
-    (categories as API.EmailTemplateCategoryList)?.items?.map((cat: API.EmailTemplateCategory) => ({
-      label: cat.displayName || cat.metadata?.name,
-      value: cat.metadata?.instanceId,
-    })) || [];
+  const handleReset = () => {
+    if (template) {
+      form.setFieldsValue(template);
+      setError([]);
+    }
+  };
 
   return (
     <ProForm
@@ -187,6 +171,9 @@ const EditEmailTemplate: React.FC = () => {
               {dom}
             </FooterToolbar>
           );
+        },
+        resetButtonProps: {
+          onClick: handleReset,
         },
       }}
       form={form}
@@ -203,60 +190,26 @@ const EditEmailTemplate: React.FC = () => {
               padding: '0 24px',
             }}
           >
-            <Row gutter={16}>
-              <Col lg={12} md={12} sm={24}>
-                <ProFormText
-                  label={fieldLabels.name}
-                  disabled
-                  name={['metadata', 'name']}
-                  rules={[
-                    {
-                      required: true,
-                      message: intl.formatMessage(EMAIL_INTL.NAME_REQUIRED),
-                    },
-                  ]}
-                  placeholder={intl.formatMessage(EMAIL_INTL.PLACEHOLDER_NAME)}
-                />
-              </Col>
-              <Col lg={12} md={12} sm={24}>
-                <ProFormSelect
-                  label={fieldLabels.category}
-                  name="categoryId"
-                  rules={[
-                    {
-                      required: true,
-                      message: intl.formatMessage(EMAIL_INTL.CATEGORY_REQUIRED),
-                    },
-                  ]}
-                  options={categoryOptions}
-                  placeholder={intl.formatMessage(EMAIL_INTL.PLACEHOLDER_CATEGORY)}
-                />
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={24}>
-                <ProForm.Item
-                  label={fieldLabels.content}
-                  name="content"
-                  rules={[
-                    {
-                      required: true,
-                      message: intl.formatMessage(EMAIL_INTL.CONTENT_REQUIRED),
-                    },
-                  ]}
-                >
-                  <MDEditor
-                    height={400}
-                    preview="live"
-                    visibleDragbar={false}
-                    previewOptions={{
-                      rehypePlugins: [rehypeRaw],
-                    }}
-                    data-color-mode="light"
-                  />
-                </ProForm.Item>
-              </Col>
-            </Row>
+            <ProForm.Item
+              label={intl.formatMessage(EMAIL_INTL.CONTENT)}
+              name="content"
+              rules={[
+                {
+                  required: true,
+                  message: intl.formatMessage(EMAIL_INTL.CONTENT_REQUIRED),
+                },
+              ]}
+            >
+              <MDEditor
+                height={400}
+                preview="live"
+                visibleDragbar={false}
+                previewOptions={{
+                  rehypePlugins: [rehypeRaw],
+                }}
+                data-color-mode="light"
+              />
+            </ProForm.Item>
           </div>
         </Card>
       </PageContainer>

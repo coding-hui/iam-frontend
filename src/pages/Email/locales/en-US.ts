@@ -26,11 +26,13 @@ export default {
   'email.form.validator.name.required': 'Please enter template name',
   'email.form.validator.category.required': 'Please select template category',
   'email.form.validator.content.required': 'Please enter email content',
+  'email.form.validator.subject.required': 'Please enter email subject',
   'email.form.placeholder.category': 'Please select template category',
   'email.form.basicInfo': 'Basic Information',
   'email.form.contentInfo': 'Content',
   'email.edit.card.title': 'Edit Email Template',
   'email.operation.update.failed': 'Update failed',
+  'email.operation.create.failed': 'Create failed',
   'email.form.validation.title': 'Form Validation Details',
 
   'email.status.active': 'Active',
