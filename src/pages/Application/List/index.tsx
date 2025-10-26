@@ -2,7 +2,7 @@ import { DeleteOutlined, EllipsisOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
-import { App, Button, Dropdown, message } from 'antd';
+import { App, Button, Dropdown } from 'antd';
 import React, { useRef } from 'react';
 import { BASIC_INTL } from '@/constant';
 import { transformSearchParams } from '@/utils';
@@ -36,7 +36,7 @@ const INTL = {
 
 const AppList: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const { modal } = App.useApp();
+  const { modal, message } = App.useApp();
   const intl = useIntl();
 
   const reloadTable = () => {
@@ -98,19 +98,14 @@ const AppList: React.FC = () => {
 
   const columns: ProColumns<App.Application>[] = [
     {
-      title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
-      dataIndex: ['metadata', 'instanceId'],
-      render: (_, record: App.Application) => (
-        <a key="instanceId" onClick={() => handleEditApp(record.metadata.instanceId)}>
-          {record.metadata.instanceId}
-        </a>
-      ),
-      width: 120,
-    },
-    {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
-      width: 120,
+      render: (_, record: App.Application) => (
+        <a key="name" onClick={() => handleEditApp(record.metadata.instanceId)}>
+          {record.metadata.name}
+        </a>
+      ),
+      width: 150,
     },
     {
       title: <FormattedMessage {...INTL.DISPLAY_NAME} />,

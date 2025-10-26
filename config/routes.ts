@@ -1,4 +1,10 @@
-﻿/**
+/**
+ * Copyright (c) 2023 coding-hui. All rights reserved.
+ * Use of this source code is governed by a MIT style
+ * license that can be found in the LICENSE file.
+ */
+
+/**
  * @name umi 的路由配置
  * @description 只支持 path,component,routes,redirect,wrappers,name,icon 的配置
  * @param path  path 只支持两种占位符配置，第一种是动态参数 :id 的形式，第二种是 * 通配符，通配符只能出现路由字符串的最后。
@@ -80,6 +86,25 @@ export default [
         path: '/app-management/app',
         name: 'app.list',
         component: './Application',
+      },
+      {
+        path: '/app-management/mail-template',
+        name: 'mail.list',
+        component: './Email',
+      },
+      {
+        path: '/app-management/mail-template/create',
+        name: 'mail.create',
+        component: './Email/Create',
+        hideInMenu: true,
+        parentKeys: ['/app-management', '/app-management/mail-template'],
+      },
+      {
+        path: '/app-management/mail-template/edit/:instanceId',
+        name: 'mail.edit',
+        component: './Email/Edit',
+        hideInMenu: true,
+        parentKeys: ['/app-management', '/app-management/mail-template'],
       },
       {
         path: '/app-management/app/edit/:instanceId',

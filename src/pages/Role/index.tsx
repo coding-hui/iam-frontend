@@ -89,17 +89,13 @@ const RoleList: React.FC = () => {
 
   const columns: ProColumns<API.Role>[] = [
     {
-      title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
-      dataIndex: ['metadata', 'instanceId'],
-      render: (_, record: API.Role) => (
-        <a key="instanceId" onClick={() => handleEditRole(record.metadata.instanceId)}>
-          {record.metadata.instanceId}
-        </a>
-      ),
-    },
-    {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
+      render: (_, record: API.Role) => (
+        <a key="name" onClick={() => handleEditRole(record.metadata.instanceId)}>
+          {record.metadata.name}
+        </a>
+      ),
     },
     {
       title: <FormattedMessage {...BASIC_INTL.STATUS} />,

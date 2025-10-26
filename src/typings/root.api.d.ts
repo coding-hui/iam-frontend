@@ -238,6 +238,38 @@ declare namespace API {
     items: ApiKey[];
     total: number;
   };
+
+  type EmailTemplateCategory = {
+    metadata: ObjectMeta;
+    displayName: string;
+    description?: string;
+    status?: string;
+  };
+
+  type EmailTemplateCategoryList = {
+    items: EmailTemplateCategory[];
+    total: number;
+  };
+
+  type EmailTemplate = {
+    metadata: ObjectMeta;
+    displayName: string;
+    subject: string;
+    content: string;
+    categoryId?: string;
+    category?: EmailTemplateCategory;
+    variables?: string[];
+    status?: string;
+    owner?: string;
+    description?: string;
+    lastUsedAt?: string;
+    usageCount?: number;
+  };
+
+  type EmailTemplateList = {
+    items: EmailTemplate[];
+    total: number;
+  };
 }
 
 declare namespace App {

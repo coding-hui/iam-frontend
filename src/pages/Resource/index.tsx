@@ -2,7 +2,7 @@ import { DeleteOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icon
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
-import { App, Button, Dropdown, message } from 'antd';
+import { App, Button, Dropdown } from 'antd';
 import React, { useRef } from 'react';
 import { ListResourceOptions, listResources } from '@/services/resource/listResources';
 import { deleteResource } from '@/services/resource/deleteResource';
@@ -42,7 +42,7 @@ const INTL = {
 
 const ResourceList: React.FC = () => {
   const intl = useIntl();
-  const { modal } = App.useApp();
+  const { modal, message } = App.useApp();
   const actionRef = useRef<ActionType>();
 
   const reloadTable = () => {
@@ -104,16 +104,13 @@ const ResourceList: React.FC = () => {
 
   const columns: ProColumns<API.Resource>[] = [
     {
-      title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
-      render: (_, record: API.Resource) => (
-        <a key="instanceId" onClick={() => handleEditResource(record.metadata.instanceId)}>
-          {record.metadata.instanceId}
-        </a>
-      ),
-    },
-    {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
+      render: (_, record: API.Resource) => (
+        <a key="name" onClick={() => handleEditResource(record.metadata.instanceId)}>
+          {record.metadata.name}
+        </a>
+      ),
     },
     {
       title: <FormattedMessage {...INTL.API} />,

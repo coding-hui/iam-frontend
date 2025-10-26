@@ -115,17 +115,13 @@ const UserList: React.FC<Props> = (props) => {
 
   const columns: ProColumns<API.UserInfo>[] = [
     {
-      title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
-      dataIndex: ['metadata', 'instanceId'],
-      render: (_, record: API.UserInfo) => (
-        <a key="instanceId" onClick={() => handleEditUser(record.metadata.instanceId)}>
-          {record.metadata.instanceId}
-        </a>
-      ),
-    },
-    {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
+      render: (_, record: API.UserInfo) => (
+        <a key="name" onClick={() => handleEditUser(record.metadata.instanceId)}>
+          {record.metadata.name}
+        </a>
+      ),
     },
     {
       title: <FormattedMessage {...INTL.ALIAS} />,

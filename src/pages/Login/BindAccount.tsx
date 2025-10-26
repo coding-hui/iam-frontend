@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Card, Typography, Space, Avatar, message, Divider } from 'antd';
+import { App, Form, Input, Button, Card, Typography, Space, Avatar, Divider } from 'antd';
 import { UserOutlined, LockOutlined, LinkOutlined } from '@ant-design/icons';
 import { useLocation, useNavigate } from '@umijs/max';
 import { bindExternalAccount } from '@/services/system/login';
@@ -47,7 +47,7 @@ const BindAccount: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const intl = useIntl();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message: messageApi } = App.useApp();
 
   // Extract external user info from URL parameters
   const searchParams = new URLSearchParams(location.search);
@@ -107,7 +107,6 @@ const BindAccount: React.FC = () => {
         padding: '20px',
       }}
     >
-      {contextHolder}
       <Card
         style={{
           width: 400,

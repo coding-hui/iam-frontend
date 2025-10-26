@@ -3,7 +3,7 @@ import { FormattedMessage } from '@@/exports';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
-import { Button, Form, message } from 'antd';
+import { App, Button, Form } from 'antd';
 import React from 'react';
 import { createOrganization, CreateOrganizationRequest } from '@/services/organization';
 
@@ -45,6 +45,7 @@ const INTL = {
 
 const CreateOrganization: React.FC<UpdateFormProps> = (props) => {
   const intl = useIntl();
+  const { message } = App.useApp();
   const [form] = Form.useForm<CreateOrganizationRequest>();
 
   const handleAddOrganization = async (createReq: CreateOrganizationRequest) => {

@@ -2,7 +2,7 @@ import { DeleteOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icon
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, useRequest } from '@umijs/max';
-import { App, Button, Dropdown, message } from 'antd';
+import { App, Button, Dropdown } from 'antd';
 import React, { useRef } from 'react';
 import { BASIC_INTL } from '@/constant';
 import { transformSearchParams } from '@/utils';
@@ -35,7 +35,7 @@ const INTL = {
 
 const IdentityProviderList: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const { modal } = App.useApp();
+  const { modal, message } = App.useApp();
   const intl = useIntl();
 
   const reloadTable = () => {
@@ -97,18 +97,13 @@ const IdentityProviderList: React.FC = () => {
 
   const columns: ProColumns<App.IdentityProvider>[] = [
     {
-      title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
-      dataIndex: ['metadata', 'instanceId'],
-      render: (_, record: App.IdentityProvider) => (
-        <a key="instanceId" onClick={() => handleEditIdentityProvider(record.metadata.instanceId)}>
-          {record.metadata.instanceId}
-        </a>
-      ),
-      width: 120,
-    },
-    {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
+      render: (_, record: App.IdentityProvider) => (
+        <a key="name" onClick={() => handleEditIdentityProvider(record.metadata.instanceId)}>
+          {record.metadata.name}
+        </a>
+      ),
       width: 120,
     },
     {

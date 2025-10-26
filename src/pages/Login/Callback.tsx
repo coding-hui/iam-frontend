@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from '@umijs/max';
 import { Session } from '@/utils/storage';
 import { TOKEN_KEY } from '@/enums/cacheEnum';
-import { message, Spin } from 'antd';
+import { App, Spin } from 'antd';
 import { useIntl } from '@@/exports';
 
 const INTL = {
@@ -18,7 +18,7 @@ const Callback: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const intl = useIntl();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message: messageApi } = App.useApp();
 
   useEffect(() => {
     const handleCallback = () => {
@@ -50,7 +50,6 @@ const Callback: React.FC = () => {
         height: '100vh',
       }}
     >
-      {contextHolder}
       <Spin size="large" tip="Processing login..." />
     </div>
   );

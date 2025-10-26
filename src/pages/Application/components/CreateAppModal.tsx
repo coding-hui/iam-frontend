@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIntl } from '@umijs/max';
-import { Button, Form, message } from 'antd';
+import { App, Button, Form } from 'antd';
 import { BASIC_INTL } from '@/constant';
 import { FormattedMessage } from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
@@ -47,6 +47,7 @@ const INTL = {
 
 const CreateAppModal: React.FC<Props> = (props) => {
   const intl = useIntl();
+  const { message } = App.useApp();
   const [form] = Form.useForm<CreateApplicationRequest>();
 
   const handleAdd = async (createReq: CreateApplicationRequest) => {

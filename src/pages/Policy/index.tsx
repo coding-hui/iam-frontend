@@ -95,17 +95,13 @@ const PolicyList: React.FC = () => {
 
   const columns: ProColumns<API.Policy>[] = [
     {
-      title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
-      dataIndex: ['metadata', 'instanceId'],
-      render: (_, record: API.Policy) => (
-        <a key="instanceId" onClick={() => handleEditPolicy(record.metadata.instanceId)}>
-          {record.metadata.instanceId}
-        </a>
-      ),
-    },
-    {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,
       dataIndex: ['metadata', 'name'],
+      render: (_, record: API.Policy) => (
+        <a key="name" onClick={() => handleEditPolicy(record.metadata.instanceId)}>
+          {record.metadata.name}
+        </a>
+      ),
     },
     {
       title: <FormattedMessage {...BASIC_INTL.TYPE} />,

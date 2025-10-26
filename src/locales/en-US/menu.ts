@@ -43,6 +43,9 @@ export default {
   'menu.app-management.app.list': 'Applications',
   'menu.app-management.app.create': 'Create App',
   'menu.app-management.app.edit': 'Edit App',
+  'menu.app-management.mail.list': 'Mail Templates',
+  'menu.app-management.mail.edit': 'Edit Mail Template',
+  'menu.app-management.mail.create': 'Create Mail Template',
 
   // Authentication Management
   'menu.authn': 'Authentication',

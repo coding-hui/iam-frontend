@@ -40,6 +40,9 @@ export default {
   'menu.app-management.app.list': '应用中心',
   'menu.app-management.app.create': '创建应用',
   'menu.app-management.app.edit': '编辑应用',
+  'menu.app-management.mail.list': '邮件模板',
+  'menu.app-management.mail.edit': '编辑邮件模板',
+  'menu.app-management.mail.create': '新增邮件模板',
 
   'menu.authn': '身份认证',
   'menu.authn.identity-source.social.list': '社会化认证源',

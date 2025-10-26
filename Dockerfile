@@ -1,3 +1,7 @@
+# Copyright (c) 2023 coding-hui. All rights reserved.
+# Use of this source code is governed by a MIT style
+# license that can be found in the LICENSE file.
+
 # 定义 BASE_IMAGE 参数并设置默认值
 ARG BASE_IMAGE=node:22.20.0-alpine
 

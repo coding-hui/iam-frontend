@@ -234,8 +234,8 @@ const EditRole: React.FC = () => {
       valueType: 'index',
     },
     {
-      title: <FormattedMessage {...BASIC_INTL.INSTANCE_ID} />,
-      dataIndex: ['metadata', 'instanceId'],
+      title: <FormattedMessage {...BASIC_INTL.NAME} />,
+      dataIndex: ['metadata', 'name'],
     },
     {
       title: <FormattedMessage {...BASIC_INTL.NAME} />,

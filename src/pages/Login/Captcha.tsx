@@ -1,5 +1,5 @@
 import React from 'react';
-import { message } from 'antd';
+import { App } from 'antd';
 import { createStyles } from 'antd-style';
 import { ProFormCaptcha, ProFormText } from '@ant-design/pro-components';
 import { LockOutlined, MobileOutlined } from '@ant-design/icons';
@@ -20,6 +20,7 @@ const useStyle = createStyles(({ token }) => {
 
 export const Captcha: React.FC = () => {
   const intl = useIntl();
+  const { message } = App.useApp();
   const { styles } = useStyle();
 
   return (
