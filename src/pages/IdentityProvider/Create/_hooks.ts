@@ -1,4 +1,5 @@
-import { App, Form } from 'antd';
+import { Form } from 'antd';
+import { message } from '@/components/EscapeAntd';
 import { BASIC_INTL } from '@/constant';
 import { useEffect, useRef } from 'react';
 import { ProFormInstance } from '@ant-design/pro-components';
@@ -21,7 +22,7 @@ export type FormProps = {
 
 export default function useIdentityProviderHook() {
   const intl = useIntl();
-  const { message } = App.useApp();
+
   const { instanceId } = useParams();
   const formRef = useRef<ProFormInstance<FormType>>();
   const name = Form.useWatch('name', formRef.current);

@@ -1,4 +1,5 @@
-import { App, Form } from 'antd';
+import { Form } from 'antd';
+import { message } from '@/components/EscapeAntd';
 import { BASIC_INTL } from '@/constant';
 import { useEffect, useRef } from 'react';
 import { ProFormInstance } from '@ant-design/pro-components';
@@ -12,7 +13,6 @@ import {
 
 export default function useAppHook() {
   const intl = useIntl();
-  const { message } = App.useApp();
   const { instanceId } = useParams();
   const formRef = useRef<ProFormInstance<UpdateApplicationRequest>>();
   const name = Form.useWatch('name', formRef.current);

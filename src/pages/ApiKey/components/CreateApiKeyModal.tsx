@@ -75,14 +75,10 @@ const CreateApiKeyModal: React.FC<Props> = (props) => {
   const [createModalVisible, setCreateModalVisible] = useState(false);
 
   const handleCopy = async (text: string, setCopied: (value: boolean) => void) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      message.success(intl.formatMessage(INTL.COPY_SUCCESS));
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      message.error(intl.formatMessage(INTL.COPY_FAILED));
-    }
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    message.success(intl.formatMessage(INTL.COPY_SUCCESS));
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const SuccessContent = ({ result }: { result: API.ApiKey }) => (

@@ -1,6 +1,7 @@
 import { history, useIntl, useParams, useRequest } from '@@/exports';
 import { useEffect, useState } from 'react';
-import { App, Form } from 'antd';
+import { Form } from 'antd';
+import { message } from '@/components/EscapeAntd';
 import { BASIC_INTL } from '@/constant';
 import {
   getOrganization,
@@ -12,7 +13,7 @@ import {
 
 export default function useOrganizationHook() {
   const intl = useIntl();
-  const { message } = App.useApp();
+
   const { instanceId } = useParams();
   const [orgInfoForm] = Form.useForm();
   const [currentTab, setCurrentTab] = useState('info');

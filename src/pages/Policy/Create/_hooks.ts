@@ -5,7 +5,7 @@ import { createPolicy, CreatePolicyRequest } from '@/services/policy/createPolic
 import { updatePolicy, UpdatePolicyRequest } from '@/services/policy/updatePolicy';
 import { getPolicyInfo } from '@/services/policy/getPolicyInfo';
 import { listResources } from '@/services/resource/listResources';
-import { App } from 'antd';
+import { message } from '@/components/EscapeAntd';
 import { PolicyType } from '@/enums';
 
 const INTL = {
@@ -42,7 +42,7 @@ type FormType = UpdatePolicyRequest &
 
 export default function usePolicyHook() {
   const intl = useIntl();
-  const { message } = App.useApp();
+
   const { instanceId } = useParams();
   const formRef = useRef<ProFormInstance<FormType>>();
 

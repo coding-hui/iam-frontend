@@ -1,4 +1,4 @@
-import { App } from 'antd';
+import { message } from '@/components/EscapeAntd';
 import { flushSync } from 'react-dom';
 import { history, useIntl, useModel, useRequest } from '@umijs/max';
 import { login } from '@/services/system/login';
@@ -20,7 +20,7 @@ const INTL = {
 
 export default function useLoginHook() {
   const intl = useIntl();
-  const { message } = App.useApp();
+
   const [appConfLoadCompleted, setAppConfLoadCompleted] = useState(false);
   const [loginType, setLoginType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');

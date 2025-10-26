@@ -1,5 +1,5 @@
 import { DependencyList, Key, useEffect, useState } from 'react';
-import { App } from 'antd';
+import { message } from '@/components/EscapeAntd';
 import { useActive } from '@/hooks';
 import { BASIC_INTL } from '@/constant';
 import { useIntl, useRequest } from '@@/exports';
@@ -21,7 +21,6 @@ export type Props = {
 export default function useOrgTreeHook(props: Props) {
   const { initDeps = [], onSelect, currentKey } = props;
   const intl = useIntl();
-  const { message } = App.useApp();
 
   const [initLoading, { active: showInitLoading, deactive: hideInitLoading }] = useActive(false);
   const [searching, { active: beginSearching, deactive: endSearching }] = useActive(false);

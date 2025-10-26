@@ -3,7 +3,8 @@ import { history, useIntl, useParams, useRequest } from '@@/exports';
 import { getUserInfo } from '@/services/user/getUserInfo';
 import { useEffect, useRef, useState } from 'react';
 import { updateUser } from '@/services/user/updateUser';
-import { App, Form } from 'antd';
+import { Form } from 'antd';
+import { message } from '@/components/EscapeAntd';
 import { revokeRole } from '@/services/role/revokeRole';
 import { ActionType } from '@ant-design/pro-components';
 import { batchAssignRole } from '@/services/role/assignRole';
@@ -42,7 +43,7 @@ const USER_TABS = {
 
 export default function useUserHook() {
   const intl = useIntl();
-  const { message } = App.useApp();
+
   const { instanceId } = useParams();
   const [userInfoForm] = Form.useForm();
   const [accountInfoForm] = Form.useForm();
